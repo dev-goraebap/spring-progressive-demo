@@ -6,7 +6,7 @@ plugins {
 
 group = 'xyz.goraebap'
 version = '0.0.1-SNAPSHOT'
-description = 'spring mvc demo'
+description = 'spring progressive demo'
 
 java {
 	toolchain {
