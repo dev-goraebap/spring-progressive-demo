@@ -1,0 +1,19 @@
+services:
+  spring-progressive-demo:
+    image: spring-progressive-demo:${APP_VERSION:-latest}
+    container_name: spring-progressive-demo
+    ports:
+      - "8005:8080"
+    volumes:
+      # GitHub Secret으로 생성되는 파일 마운트
+      - ./src/main/resources/application-prod.properties:/app/BOOT-INF/classes/application-prod.properties
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    name: my-network
+    external: true
