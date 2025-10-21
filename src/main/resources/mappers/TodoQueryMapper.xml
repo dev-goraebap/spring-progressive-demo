@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.goraebap.spring_progressive_demo.app.todo.TodoQueryMapper">
+
+    <select id="findWithCursor" resultType="Todo">
+        SELECT *
+        FROM todos
+        <where>
+            <!-- 제목 검색 조건 (선택적) -->
+            <if test="title != null and title != ''">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+
+            <!-- isCompleted 조건 (선택적) -->
+            <if test="isCompleted != null">
+                AND is_completed = #{isCompleted}
+            </if>
+
+            <!-- Cursor 조건 (선택적) -->
+            <if test="cursor != null">
+                AND created_at &lt; #{cursor}
+            </if>
+        </where>
+
+        <!-- 정렬 조건 -->
+        <choose>
+            <when test="sortOrder != null and sortOrder == 'ASC'">
+                ORDER BY created_at ASC
+            </when>
+            <otherwise>
+                ORDER BY created_at DESC
+            </otherwise>
+        </choose>
+
+        <!-- 페이지 크기 제한 -->
+        <if test="perPage != null">
+            LIMIT #{perPage}
+        </if>
+    </select>
+
+</mapper>
