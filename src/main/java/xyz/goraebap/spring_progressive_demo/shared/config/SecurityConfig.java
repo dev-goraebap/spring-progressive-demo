@@ -64,13 +64,6 @@ public class SecurityConfig {
                         // All other requests require authentication
                         .anyRequest().authenticated()
                 )
-
-                // Enable Form Login (auto-generates /login page)
-                .formLogin(form -> form
-                        .defaultSuccessUrl("/swagger-ui/index.html", true)
-                        .permitAll()
-                )
-
                 // Enable HTTP Basic Authentication
                 .httpBasic(Customizer.withDefaults());
 
