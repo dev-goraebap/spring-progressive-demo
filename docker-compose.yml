@@ -7,6 +7,8 @@ services:
     volumes:
       # GitHub Secret으로 생성되는 파일 마운트
       - ./src/main/resources/application-prod.properties:/app/BOOT-INF/classes/application-prod.properties
+      # 로그 파일 볼륨 마운트
+      - ./logs:/app/logs
     environment:
       - SPRING_PROFILES_ACTIVE=prod
     restart: unless-stopped
