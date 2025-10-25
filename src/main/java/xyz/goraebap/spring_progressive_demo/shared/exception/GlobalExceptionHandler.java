@@ -2,15 +2,14 @@ package xyz.goraebap.spring_progressive_demo.shared.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationException(
+    public ProblemDetail handleValidationException(
             MethodArgumentNotValidException ex,
             WebRequest request
     ) {
@@ -28,65 +27,48 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         log.warn("Validation failed - path: {}, errors: {}",
-            request.getDescription(false), errorMessage);
+                request.getDescription(false), errorMessage);
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", errorMessage);
-        body.put("path", request.getDescription(false).replace("uri=", ""));
-
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return createProblemDetail(HttpStatus.BAD_REQUEST, errorMessage, request);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFoundException(
+    public ProblemDetail handleNotFoundException(
             NotFoundException ex,
             WebRequest request
     ) {
         log.warn("Resource not found - path: {}, message: {}",
-            request.getDescription(false), ex.getMessage());
+                request.getDescription(false), ex.getMessage());
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", ex.getMessage());
-        body.put("path", request.getDescription(false).replace("uri=", ""));
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return createProblemDetail(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, Object>> handleBadRequestException(
+    public ProblemDetail handleBadRequestException(
             BadRequestException ex,
             WebRequest request
     ) {
         log.warn("Bad request - path: {}, message: {}",
-            request.getDescription(false), ex.getMessage());
+                request.getDescription(false), ex.getMessage());
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", ex.getMessage());
-        body.put("path", request.getDescription(false).replace("uri=", ""));
-
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return createProblemDetail(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGenericException(
+    public ProblemDetail handleGenericException(
             Exception ex,
             WebRequest request
     ) {
         log.error("Unexpected error occurred - path: {}",
-            request.getDescription(false), ex);
+                request.getDescription(false), ex);
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Internal server error");
-        body.put("path", request.getDescription(false).replace("uri=", ""));
+        return createProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", request);
+    }
 
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    private ProblemDetail createProblemDetail(HttpStatus status, String detail, WebRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
+        problemDetail.setInstance(URI.create(request.getDescription(false).replace("uri=", "")));
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
     }
 }
