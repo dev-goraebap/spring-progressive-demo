@@ -33,10 +33,7 @@ public class TodoService {
 
     @Transactional
     public void create(TodoCreateDto dto) {
-        Todo todo = Todo.builder()
-                .title(dto.title())
-                .content(dto.content())
-                .build();
+        Todo todo = Todo.create(dto.title(), dto.content());
         todoRepository.save(todo);
     }
 

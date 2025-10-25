@@ -1,10 +1,7 @@
 package xyz.goraebap.spring_progressive_demo.app.todo;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import xyz.goraebap.spring_progressive_demo.app.todo.dto.TodoUpdateDto;
@@ -14,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "todos")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Todo {
 
     @Id
@@ -38,10 +34,11 @@ public class Todo {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Builder
-    public Todo(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public static Todo create(String title, String content) {
+        Todo todo = new Todo();
+        todo.title = title;
+        todo.content = content;
+        return todo;
     }
 
     public void update(TodoUpdateDto dto) {
