@@ -1,4 +1,14 @@
-# Stage 1: Build
+# Stage 1: Frontend Build
+FROM node:20-alpine AS frontend-build
+WORKDIR /app
+
+COPY frontend/package*.json ./frontend/
+RUN cd frontend && npm ci
+
+COPY frontend ./frontend
+RUN cd frontend && npm run build
+
+# Stage 2: Backend Build
 FROM gradle:8.5-jdk17 AS build
 WORKDIR /app
 
@@ -9,11 +19,16 @@ COPY gradle ./gradle
 # 의존성 다운로드 (변경 없으면 캐시 사용)
 RUN gradle dependencies --no-daemon || true
 
-# 소스 코드 복사 및 빌드
+# 소스 코드 복사
 COPY src ./src
+
+# Frontend 빌드 결과물 복사
+COPY --from=frontend-build /app/src/main/resources/static/builds ./src/main/resources/static/builds
+
+# 빌드
 RUN gradle build --no-daemon -x test
 
-# Stage 2: Runtime
+# Stage 3: Runtime
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
