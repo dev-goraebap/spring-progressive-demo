@@ -46,3 +46,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// 개발 시 소스 폴더에서 직접 리소스 읽기
+bootRun {
+    sourceResources sourceSets.main
+}
