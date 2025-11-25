@@ -49,11 +49,8 @@ public class SecurityConfig {
                         // Public endpoints - Static resources
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
 
-                        // Public endpoints - Login page
-                        .requestMatchers("/login").permitAll()
-
-                        // Swagger/API docs - Require authentication
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/api-docs.html").authenticated()
+                        // Public endpoints - Pages
+                        .requestMatchers("/", "/login", "/error").permitAll()
 
                         // Public endpoints - Health check
                         .requestMatchers("/actuator/health").permitAll()
@@ -61,8 +58,11 @@ public class SecurityConfig {
                         // Public endpoints - All API endpoints (change this in production!)
                         .requestMatchers("/api/**").permitAll()
 
-                        // All other requests require authentication
-                        .anyRequest().authenticated()
+                        // Swagger/API docs - Require authentication
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/api-docs.html").authenticated()
+
+                        // All other requests permit (change in production!)
+                        .anyRequest().permitAll()
                 )
                 // Enable HTTP Basic Authentication
                 .httpBasic(Customizer.withDefaults());
