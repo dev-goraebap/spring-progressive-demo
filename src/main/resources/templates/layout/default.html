@@ -9,6 +9,7 @@
 
     <!-- 개발 환경: Vite dev server -->
     <th:block th:if="${@environment.acceptsProfiles('local')}">
+        <link rel="stylesheet" href="http://localhost:5173/src/style.css">
         <script type="module" src="http://localhost:5173/@vite/client"></script>
         <script type="module" src="http://localhost:5173/src/app.js"></script>
     </th:block>
