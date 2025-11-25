@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="htmx-config" content='{"globalViewTransitions": true}'>
     <title>Demo</title>
 
     <!-- 개발 환경: Vite dev server -->
@@ -20,7 +21,8 @@
         <script type="module" th:src="@{/builds/app.js}"></script>
     </th:block>
 </head>
-<body>
+<body hx-boost="true">
+<div id="htmx-progress"></div>
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main layout:fragment="content"></main>
