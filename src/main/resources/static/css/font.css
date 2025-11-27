@@ -1,0 +1,84 @@
+/* Gothic A1 Font */
+@font-face {
+    font-display: swap;
+    font-family: 'Gothic A1';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/gothic-a1-v17-latin-regular.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Gothic A1';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/gothic-a1-v17-latin-500.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Gothic A1';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/gothic-a1-v17-latin-600.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Gothic A1';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/gothic-a1-v17-latin-700.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Gothic A1';
+    font-style: normal;
+    font-weight: 800;
+    src: url('/fonts/gothic-a1-v17-latin-800.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Gothic A1';
+    font-style: normal;
+    font-weight: 900;
+    src: url('/fonts/gothic-a1-v17-latin-900.woff2') format('woff2');
+}
+
+/* Open Sans Font */
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/open-sans-v43-latin-regular.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/open-sans-v43-latin-500.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/open-sans-v43-latin-600.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/open-sans-v43-latin-700.woff2') format('woff2');
+}
+@font-face {
+    font-display: swap;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 800;
+    src: url('/fonts/open-sans-v43-latin-800.woff2') format('woff2');
+}
+
+html {
+    font-family: 'Open Sans', 'Gothic A1', sans-serif;
+}

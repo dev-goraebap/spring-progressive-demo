@@ -6,16 +6,16 @@ export default defineConfig({
   plugins: [tailwindcss()],
   build: {
     manifest: true,
-    outDir: '../src/main/resources/static/builds',
-    emptyOutDir: true,
+    outDir: '../src/main/resources/static',
+    emptyOutDir: false,
     rollupOptions: {
       input: {
         app: resolve(__dirname, 'src/app.js'),
       },
       output: {
-        entryFileNames: '[name]-[hash].js',
-        chunkFileNames: '[name]-[hash].js',
-        assetFileNames: '[name]-[hash].[ext]',
+        entryFileNames: 'builds/[name]-[hash].js',
+        chunkFileNames: 'builds/[name]-[hash].js',
+        assetFileNames: 'builds/[name]-[hash].[ext]',
       },
     },
   },

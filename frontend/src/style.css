@@ -1,3 +1,52 @@
 @import 'tailwindcss';
+@plugin 'daisyui' {
+    themes: cupcake, dark;
+}
 
 @source "../../src/main/resources/templates/**/*.html";
+
+/* HTMX 로딩 프로그레스 바 */
+#htmx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: #3b82f6;
+    width: 0;
+    z-index: 9999;
+    opacity: 0;
+    transition: width 0.2s ease, opacity 0.1s ease;
+}
+
+.htmx-request #htmx-progress {
+    width: 90%;
+    opacity: 1;
+}
+
+.htmx-request-complete #htmx-progress {
+    width: 100%;
+    opacity: 0;
+}
+
+/* 페이지 전환 애니메이션 */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: fade-out 0.15s ease-out;
+}
+
+::view-transition-new(root) {
+    animation: fade-in 0.15s ease-in;
+}
+
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

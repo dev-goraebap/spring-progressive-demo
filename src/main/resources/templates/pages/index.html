@@ -1,9 +1,35 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:x-on="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/default}">
 <title>Home</title>
 <main layout:fragment="content">
-    <h1 th:text="${title}" class="text-3xl font-bold">제목</h1>
-    <p class="text-xs">Thymeleaf 템플릿 엔진이 정상적으로 연결되었습니다.</p>
+
+    <div class="flex gap-2 p-4">
+        <a th:href="@{/(orderType='DESC')}"
+           th:classappend="${#strings.equals(param.orderType, 'DESC') or param.orderType == null} ? 'btn-active' : ''"
+           class="btn btn-sm">최근</a>
+        <a th:href="@{/(orderType='ASC')}"
+           th:classappend="${#strings.equals(param.orderType, 'ASC')} ? 'btn-active' : ''"
+           class="btn btn-sm">오래된</a>
+    </div>
+
+    <ul class="flex flex-col">
+        <li th:each="post : ${posts}" class="flex flex-col gap-3 items-start p-4 border-b-4 border-base-300">
+            <div th:if="${post.thumbnailUrl != null}"
+                 x-data="{ loaded: false }"
+                 class="w-full h-[170px] flex items-center justify-center overflow-hidden transition-colors duration-700 rounded-md"
+                 th:style="'background-color: ' + (${post.thumbnailDominantColor} ?: '#e5e7eb')">
+                <img th:src="${post.thumbnailUrl}"
+                     th:alt="${post.title} + ' thumbnail image'"
+                     loading="lazy"
+                     x-on:load="loaded = true"
+                     :class="loaded ? 'opacity-100' : 'opacity-0'"
+                     class="w-full h-full object-cover transition-opacity duration-500">
+            </div>
+            <h2 th:text="${post.title}" class="text-xl font-bold"></h2>
+            <p th:text="${post.summary}" class="text-sm"></p>
+            <button class="font-bold">Read more</button>
+        </li>
+    </ul>
 </main>
 </html>

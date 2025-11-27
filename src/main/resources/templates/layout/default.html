@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      lang="ko">
+      lang="ko"
+      data-theme="cupcake">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="htmx-config" content='{"globalViewTransitions": true}'>
     <title>Demo</title>
+
+    <!-- 폰트 (Spring static) -->
+    <link rel="stylesheet" th:href="@{/css/font.css}">
 
     <!-- 개발 환경: Vite dev server -->
     <th:block th:if="${@environment.acceptsProfiles('local')}">
@@ -20,7 +25,8 @@
         <script type="module" th:src="@{/builds/app.js}"></script>
     </th:block>
 </head>
-<body>
+<body hx-boost="true">
+<div id="htmx-progress"></div>
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main layout:fragment="content"></main>
