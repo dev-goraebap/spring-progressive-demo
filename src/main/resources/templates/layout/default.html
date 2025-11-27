@@ -19,10 +19,10 @@
         <script type="module" src="http://localhost:5173/src/app.js"></script>
     </th:block>
 
-    <!-- 프로덕션: 빌드된 파일 -->
+    <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <th:block th:unless="${@environment.acceptsProfiles('local')}">
-        <link rel="stylesheet" th:href="@{/builds/app.css}">
-        <script type="module" th:src="@{/builds/app.js}"></script>
+        <link rel="stylesheet" th:href="@{'/' + ${vite.css}}">
+        <script type="module" th:src="@{'/' + ${vite.js}}"></script>
     </th:block>
 </head>
 <body hx-boost="true">

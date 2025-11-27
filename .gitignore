@@ -41,3 +41,5 @@ logs
 
 .env
 settings.local.json
+src/main/resources/static/.vite
+src/main/resources/static/builds
