@@ -3,11 +3,11 @@
       layout:decorate="~{layout/default}">
 <title>Home</title>
 <main layout:fragment="content">
-    <ul class="p-4 flex flex-col gap-12">
-        <li th:each="post : ${posts}" class="flex flex-col gap-3 items-start">
+    <ul class="flex flex-col ">
+        <li th:each="post : ${posts}" class="flex flex-col gap-3 items-start p-4 border-b-4 border-base-300">
             <div th:if="${post.thumbnailUrl != null}"
                  x-data="{ loaded: false }"
-                 class="w-full h-[170px] flex items-center justify-center overflow-hidden transition-colors duration-700"
+                 class="w-full h-[170px] flex items-center justify-center overflow-hidden transition-colors duration-700 rounded-md"
                  th:style="'background-color: ' + (${post.thumbnailDominantColor} ?: '#e5e7eb')">
                 <img th:src="${post.thumbnailUrl}"
                      th:alt="${post.title} + ' thumbnail image'"
