@@ -7,6 +7,7 @@ SELECT A.id
      , A.is_published_yn
      , A.published_at
      , C.key
+     , C.metadata
 FROM posts A
          LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
     AND B.record_type = 'post'

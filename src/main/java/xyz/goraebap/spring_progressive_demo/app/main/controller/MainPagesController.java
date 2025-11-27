@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import xyz.goraebap.spring_progressive_demo.app.main.dto.MainIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.PostViewMapper;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModelEnricher;
 
 import java.util.List;
 
@@ -16,10 +17,13 @@ import java.util.List;
 public class MainPagesController {
 
     private final PostViewMapper postViewMapper;
+    private final PostViewModelEnricher postViewModelEnricher;
 
     @GetMapping("/")
     public String index(Model model, @ParameterObject MainIndexRequest dto) {
-        List<PostViewModel> posts = postViewMapper.findPosts(dto.getOrderType());
+        List<PostViewModel> posts = postViewModelEnricher.withThumbnails(
+            postViewMapper.findPosts(dto.getOrderType())
+        );
         model.addAttribute("posts", posts);
         return "pages/index";
     }

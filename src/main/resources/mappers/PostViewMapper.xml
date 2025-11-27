@@ -12,7 +12,8 @@
         , A.view_count
         , A.is_published_yn
         , A.published_at
-        , C.key
+        , C.key AS thumbnail_key
+        , C.metadata AS thumbnail_metadata
         FROM posts A
         LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
         AND B.record_type = 'post'

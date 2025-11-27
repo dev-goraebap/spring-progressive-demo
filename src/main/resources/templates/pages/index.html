@@ -1,10 +1,21 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:x-on="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/default}">
 <title>Home</title>
 <main layout:fragment="content">
-    <ul class="p-4 flex flex-col gap-10">
-        <li th:each="post : ${posts}" class="flex flex-col gap-4 items-start">
+    <ul class="p-4 flex flex-col gap-12">
+        <li th:each="post : ${posts}" class="flex flex-col gap-3 items-start">
+            <div th:if="${post.thumbnailUrl != null}"
+                 x-data="{ loaded: false }"
+                 class="w-full h-[170px] flex items-center justify-center overflow-hidden transition-colors duration-700"
+                 th:style="'background-color: ' + (${post.thumbnailDominantColor} ?: '#e5e7eb')">
+                <img th:src="${post.thumbnailUrl}"
+                     th:alt="${post.title} + ' thumbnail image'"
+                     loading="lazy"
+                     x-on:load="loaded = true"
+                     :class="loaded ? 'opacity-100' : 'opacity-0'"
+                     class="w-full h-full object-cover transition-opacity duration-500">
+            </div>
             <h2 th:text="${post.title}" class="text-xl font-bold"></h2>
             <p th:text="${post.summary}" class="text-sm"></p>
             <button class="font-bold">Read more</button>
