@@ -9,6 +9,9 @@
     <meta name="htmx-config" content='{"globalViewTransitions": true}'>
     <title>Demo</title>
 
+    <!-- 폰트 (Spring static) -->
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+
     <!-- 개발 환경: Vite dev server -->
     <th:block th:if="${@environment.acceptsProfiles('local')}">
         <link rel="stylesheet" href="http://localhost:5173/src/style.css">
