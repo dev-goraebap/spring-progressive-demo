@@ -5,11 +5,8 @@
 @param boolean hasMore
 @param int nextPage
 @param String orderType
-@param boolean isDev = false
-@param String viteCss = ""
-@param String viteJs = ""
 
-@template.layout.default(title = "Home", isDev = isDev, viteCss = viteCss, viteJs = viteJs, content = @`
+@template.layout.default(title = "Home", content = @`
     <div class="flex gap-2 p-4">
         <a href="/"
            class="btn btn-sm ${orderType == null || orderType.isEmpty() ? "btn-active" : ""}">최근</a>

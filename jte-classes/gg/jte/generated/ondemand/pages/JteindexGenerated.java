@@ -4,10 +4,10 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "pages/index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,3,3,3,3,11,11,11,11,14,14,14,14,16,16,16,16,20,20,21,21,22,22,25,25,26,26,26,27,27,27,3,4,5,6,7,8,9,9,9,9};
-	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, List<PostViewModel> posts, boolean hasMore, int nextPage, String orderType, boolean isDev, String viteCss, String viteJs) {
+	public static final int[] JTE_LINE_INFO = {0,0,1,3,3,3,3,8,8,8,8,11,11,11,11,13,13,13,13,17,17,18,18,19,19,22,22,23,23,23,24,24,24,3,4,5,6,6,6,6};
+	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, List<PostViewModel> posts, boolean hasMore, int nextPage, String orderType) {
 		jteOutput.writeContent("\r\n");
-		gg.jte.generated.ondemand.layout.JtedefaultGenerated.render(jteOutput, jteHtmlInterceptor, "Home", isDev, viteCss, viteJs, new gg.jte.html.HtmlContent() {
+		gg.jte.generated.ondemand.layout.JtedefaultGenerated.render(jteOutput, jteHtmlInterceptor, "Home", new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
 				jteOutput.writeContent("\r\n    <div class=\"flex gap-2 p-4\">\r\n        <a href=\"/\"\r\n           class=\"btn btn-sm ");
 				jteOutput.setContext("a", "class");
@@ -35,9 +35,6 @@ public final class JteindexGenerated {
 		boolean hasMore = (boolean)params.get("hasMore");
 		int nextPage = (int)params.get("nextPage");
 		String orderType = (String)params.get("orderType");
-		boolean isDev = (boolean)params.getOrDefault("isDev", false);
-		String viteCss = (String)params.getOrDefault("viteCss", "");
-		String viteJs = (String)params.getOrDefault("viteJs", "");
-		render(jteOutput, jteHtmlInterceptor, posts, hasMore, nextPage, orderType, isDev, viteCss, viteJs);
+		render(jteOutput, jteHtmlInterceptor, posts, hasMore, nextPage, orderType);
 	}
 }
