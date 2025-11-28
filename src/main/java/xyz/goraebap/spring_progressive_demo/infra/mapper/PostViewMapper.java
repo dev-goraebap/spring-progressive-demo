@@ -8,5 +8,11 @@ import java.util.List;
 
 @Mapper
 public interface PostViewMapper {
-    List<PostViewModel> findPosts(@Param("orderType") String orderType);
+    List<PostViewModel> findPosts(
+        @Param("orderType") String orderType,
+        @Param("limit") int limit,
+        @Param("offset") int offset
+    );
+
+    int countPosts();
 }
