@@ -1,0 +1,17 @@
+<svg class="w-full stroke-base-content" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+     id="Filter-Sort-Lines-Descending--Streamline-Ultimate">
+    <desc>
+        Filter Sort Lines Descending Streamline Icon: https://streamlinehq.com
+    </desc>
+    <title>filter</title>
+    <path d="m0.5 4.534 23 0" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          stroke-width="1"></path>
+    <path d="m2.95 9.786 18.1 0" fill="none" stroke-linecap="round" stroke-linejoin="round"
+          stroke-width="1"></path>
+    <path d="m8.647 20.291 6.706 0" fill="none" stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1"></path>
+    <path d="m5.399 15.038 13.202 0" fill="none" stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1"></path>
+</svg>

@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.main.controller;
+package xyz.goraebap.spring_progressive_demo.app.feed.presentation.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -6,7 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import xyz.goraebap.spring_progressive_demo.app.main.dto.MainIndexRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import xyz.goraebap.spring_progressive_demo.app.feed.dto.WebFeedIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.PostViewMapper;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModelEnricher;
@@ -14,20 +15,21 @@ import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModelEnrich
 import java.util.List;
 
 @Controller
+@RequestMapping("/")
 @RequiredArgsConstructor
-public class MainPagesController {
+public class FeedPageController {
 
     private final PostViewMapper postViewMapper;
     private final PostViewModelEnricher postViewModelEnricher;
 
-    @GetMapping("/")
+    @GetMapping
     public String index(
             Model model,
-            @ParameterObject MainIndexRequest dto,
+            @ParameterObject WebFeedIndexRequest dto,
             @RequestHeader(value = "HX-Request", required = false) boolean htmxRequest
     ) {
         List<PostViewModel> posts = postViewModelEnricher.withThumbnails(
-            postViewMapper.findPosts(dto.getOrderType(), dto.getLimit(), dto.getOffset())
+                postViewMapper.findPosts(dto.getOrderType(), dto.getLimit(), dto.getOffset())
         );
         int totalCount = postViewMapper.countPosts();
         boolean hasMore = (dto.getOffset() + posts.size()) < totalCount;
@@ -40,12 +42,6 @@ public class MainPagesController {
         if (htmxRequest && dto.getPage() > 0) {
             return "fragments/postListItems";
         }
-        return "pages/index";
-    }
-
-    @GetMapping("/about")
-    public String about(Model model) {
-        model.addAttribute("title", "Spring Progressive Demo");
-        return "pages/about";
+        return "pages/feed/index";
     }
 }
