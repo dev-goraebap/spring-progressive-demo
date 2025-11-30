@@ -2,6 +2,7 @@
 
 @param String title = "Demo"
 @param gg.jte.Content content
+@param gg.jte.Content subContent = @``
 
 <!DOCTYPE html>
 <html lang="ko" data-theme="dark" class="overflow-y-scroll">
@@ -34,7 +35,7 @@
                 <ul class="flex flex-col">
                     <li class="tooltip tooltip-right" data-tip="About">
                         <a href="/about" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/about") ? "text-primary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.icon.identification()</div>
+                            <div class="w-6">@template.fragments.svg.identification()</div>
                         </a>
                     </li>
                     <li class="p-2">
@@ -42,22 +43,22 @@
                     </li>
                     <li class="tooltip tooltip-right" data-tip="피드">
                         <a href="/" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/") ? "text-primary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.icon.home()</div>
+                            <div class="w-6">@template.fragments.svg.home()</div>
                         </a>
                     </li>
                     <li class="tooltip tooltip-right" data-tip="시리즈">
                         <a href="/series" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/series") ? "text-primary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.icon.book()</div>
+                            <div class="w-6">@template.fragments.svg.book()</div>
                         </a>
                     </li>
                     <li class="tooltip tooltip-right" data-tip="RSS 큐레이션">
                         <a href="/curations" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/curations") ? "text-primary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.icon.news()</div>
+                            <div class="w-6">@template.fragments.svg.news()</div>
                         </a>
                     </li>
                     <li class="tooltip tooltip-right" data-tip="패치노트">
                         <a href="/patch-notes" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/patch-notes") ? "text-primary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.icon.info()</div>
+                            <div class="w-6">@template.fragments.svg.info()</div>
                         </a>
                     </li>
                 </ul>
@@ -70,7 +71,9 @@
             ${content}
         </main>
     </div>
-    <div class="hidden lg:block h-full w-[259px]"></div>
+    <div class="hidden lg:block h-full w-[259px]">
+        ${subContent}
+    </div>
 </div>
 </body>
 </html>
