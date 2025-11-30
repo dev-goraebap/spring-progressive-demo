@@ -32,7 +32,7 @@ public class PostQueryService {
 
         int offset = Pagination.getOffset(page);
         int totalCount = postViewMapper.countPosts(postType);
-        var posts = postViewMapper.findPosts(postType, sortBy, sortDir, Pagination.PAGE_SIZE, offset);
+        var posts = postViewMapper.findPosts(postType, sortBy, sortDir, Pagination.DEFAULT_PAGE_SIZE, offset);
 
         posts.forEach(this::enrichThumbnail);
 

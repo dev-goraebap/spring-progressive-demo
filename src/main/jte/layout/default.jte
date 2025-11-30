@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="htmx-config" content='{"globalViewTransitions": true}'>
-    <title>${title}</title>
+    <title>데브고래밥 | ${title}</title>
 
     <!-- 폰트 -->
     <link rel="stylesheet" href="/css/font.css">
