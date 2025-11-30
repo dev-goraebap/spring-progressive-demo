@@ -1,11 +1,13 @@
 package xyz.goraebap.spring_progressive_demo.shared.jte;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import xyz.goraebap.spring_progressive_demo.shared.vite.ViteManifest;
 
 @Component
+@Slf4j
 public class JteContext {
 
     private static ViteManifest viteManifest;
@@ -28,5 +30,18 @@ public class JteContext {
 
     public static String viteJs() {
         return viteManifest != null ? viteManifest.getJs() : "builds/app.js";
+    }
+
+    public static String currentPath() {
+        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            return attributes.getRequest().getRequestURI();
+        }
+        return "";
+    }
+
+    public static boolean isCurrentPath(String path) {
+        log.info(currentPath() + " is currentPath: " + path);
+        return currentPath().equals(path);
     }
 }

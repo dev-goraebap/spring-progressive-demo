@@ -1,17 +1,5 @@
-<svg class="w-full stroke-base-content" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-     id="Filter-Sort-Lines-Descending--Streamline-Ultimate">
-    <desc>
-        Filter Sort Lines Descending Streamline Icon: https://streamlinehq.com
-    </desc>
-    <title>filter</title>
-    <path d="m0.5 4.534 23 0" fill="none" stroke-linecap="round" stroke-linejoin="round"
-          stroke-width="1"></path>
-    <path d="m2.95 9.786 18.1 0" fill="none" stroke-linecap="round" stroke-linejoin="round"
-          stroke-width="1"></path>
-    <path d="m8.647 20.291 6.706 0" fill="none" stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1"></path>
-    <path d="m5.399 15.038 13.202 0" fill="none" stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1"></path>
+<svg class="w-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+     stroke-width="1.5" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"/>
 </svg>

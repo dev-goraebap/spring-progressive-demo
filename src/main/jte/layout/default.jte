@@ -4,7 +4,7 @@
 @param gg.jte.Content content
 
 <!DOCTYPE html>
-<html lang="ko" data-theme="dark">
+<html lang="ko" data-theme="dark" class="overflow-y-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,49 +25,52 @@
     <script type="module" src="/${viteJs()}"></script>
     @endif
 </head>
-<body hx-boost="true" class="h-screen">
+<body hx-boost="true">
 <div id="htmx-progress"></div>
-<div class="h-full flex justify-center gap-4">
-    <div class="h-full w-[249px] max-[1300px]:w-fit">
-        <div class="py-10 max-[1300px]:hidden">
-            <a href="/" class="text-2xl">데브고래밥 블로그</a>
+<div class="min-h-screen flex justify-center">
+    <div class="hidden sm:block min-h-full w-auto">
+        <div class="sticky top-0">
+            <nav class="p-4">
+                <ul class="flex flex-col">
+                    <li class="tooltip tooltip-right" data-tip="About">
+                        <a href="/about" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/about") ? "text-primary" : "text-base-content"}">
+                            <div class="w-6">@template.fragments.icon.identification()</div>
+                        </a>
+                    </li>
+                    <li class="p-2">
+                        <div class="border-t border-base-300"></div>
+                    </li>
+                    <li class="tooltip tooltip-right" data-tip="피드">
+                        <a href="/" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/") ? "text-primary" : "text-base-content"}">
+                            <div class="w-6">@template.fragments.icon.home()</div>
+                        </a>
+                    </li>
+                    <li class="tooltip tooltip-right" data-tip="시리즈">
+                        <a href="/series" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/series") ? "text-primary" : "text-base-content"}">
+                            <div class="w-6">@template.fragments.icon.book()</div>
+                        </a>
+                    </li>
+                    <li class="tooltip tooltip-right" data-tip="RSS 큐레이션">
+                        <a href="/curations" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/curations") ? "text-primary" : "text-base-content"}">
+                            <div class="w-6">@template.fragments.icon.news()</div>
+                        </a>
+                    </li>
+                    <li class="tooltip tooltip-right" data-tip="패치노트">
+                        <a href="/patch-notes" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/patch-notes") ? "text-primary" : "text-base-content"}">
+                            <div class="w-6">@template.fragments.icon.info()</div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <footer></footer>
         </div>
-        <nav>
-            <ul class="flex flex-col">
-                <li>
-                    <a href="/curations" class="flex gap-4 items-center text-base-content text-lg p-4">
-                        <div class="w-6">@template.fragments.icon.rss()</div>
-                        <span class="max-[1300px]:hidden">RSS 큐레이션</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/" class="flex gap-4 items-center text-base-content text-lg p-4">
-                        <div class="w-6">@template.fragments.icon.home()</div>
-                        <span class="max-[1300px]:hidden">피드</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/series" class="flex gap-4 items-center text-base-content text-lg p-4">
-                        <div class="w-6">@template.fragments.icon.book()</div>
-                        <span class="max-[1300px]:hidden">시리즈</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/patch-notes" class="flex gap-4 items-center text-base-content text-lg p-4">
-                        <div class="w-6">@template.fragments.icon.pencil()</div>
-                        <span class="max-[1300px]:hidden">패치노트</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <footer></footer>
     </div>
-    <div class="h-full border-x border-base-300 w-[598px]">
-        <main class="h-full">
+    <div class="w-full sm:min-w-[598px] sm:w-[598px] sm:border-x border-base-300">
+        <main>
             ${content}
         </main>
     </div>
-    <div class="h-full w-[259px]"></div>
+    <div class="hidden lg:block h-full w-[259px]"></div>
 </div>
 </body>
 </html>
