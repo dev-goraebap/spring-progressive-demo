@@ -6,7 +6,7 @@ COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm ci
 
 # Tailwind가 템플릿 스캔할 수 있도록 먼저 복사
-COPY src/main/resources/templates ./src/main/resources/templates
+COPY src/main/jte ./src/main/jte
 
 COPY frontend ./frontend
 RUN cd frontend && npm run build
