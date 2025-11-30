@@ -21,14 +21,22 @@ public class PostQueryService {
     private final ObjectMapper objectMapper;
     private final PostViewMapper postViewMapper;
 
-    public Pagination<PostViewModel> getPostsWithPagination(int page, String orderType) {
+    public Pagination<PostViewModel> getPostsWithPagination(int page, String sort) {
+        return getPostsWithPagination(page, sort, "post");
+    }
+
+    public Pagination<PostViewModel> getPostsWithPagination(int page, String sort, String postType) {
+        String[] sortParts = sort.split(",");
+        String sortBy = sortParts[0];
+        String sortDir = sortParts.length > 1 ? sortParts[1].toUpperCase() : "DESC";
+
         int offset = Pagination.getOffset(page);
-        int totalCount = postViewMapper.countPosts();
-        var posts = postViewMapper.findPosts(orderType, Pagination.PAGE_SIZE, offset);
+        int totalCount = postViewMapper.countPosts(postType);
+        var posts = postViewMapper.findPosts(postType, sortBy, sortDir, Pagination.PAGE_SIZE, offset);
 
         posts.forEach(this::enrichThumbnail);
 
-        return Pagination.of(posts, page, totalCount, orderType);
+        return Pagination.of(posts, page, totalCount, sort);
     }
 
     private void enrichThumbnail(PostViewModel post) {

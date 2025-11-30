@@ -10,9 +10,9 @@ content = @`
     <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100">
         <div class="flex gap-4">
             <div class="w-6">@template.fragments.svg.filter()</div>
-            <a href="/?orderType=viewCount"
-               class="${isQueryParam("orderType", "viewCount") || getQueryParam("orderType").isEmpty() ? "text-primary" : ""}">조회수</a>
-            <a href="/?orderType=publishedAt" class="${isQueryParam("orderType", "publishedAt") ? "text-primary" : ""}">최근</a>
+            <a href="/?sort=viewCount,desc"
+               class="${getQueryParam("sort").startsWith("viewCount") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">조회수</a>
+            <a href="/?sort=publishedAt,desc" class="${getQueryParam("sort").startsWith("publishedAt") ? "text-primary" : ""}">최근</a>
         </div>
     </div>
 

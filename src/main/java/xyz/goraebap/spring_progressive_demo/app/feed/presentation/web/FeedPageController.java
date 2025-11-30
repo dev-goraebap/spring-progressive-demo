@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import xyz.goraebap.spring_progressive_demo.app.feed.dto.WebFeedIndexRequest;
+import xyz.goraebap.spring_progressive_demo.app.feed.dto.FeedIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
@@ -22,10 +22,10 @@ public class FeedPageController {
     @GetMapping
     public String index(
             Model model,
-            @ParameterObject WebFeedIndexRequest dto,
+            @ParameterObject FeedIndexRequest dto,
             @RequestHeader(value = "HX-Request", required = false) boolean htmxRequest
     ) {
-        Pagination<PostViewModel> postData = postQueryService.getPostsWithPagination(dto.getPage(), dto.getOrderType());
+        Pagination<PostViewModel> postData = postQueryService.getPostsWithPagination(dto.getPage(), dto.getSort());
         model.addAttribute("postData", postData);
         return "pages/feed/index";
     }

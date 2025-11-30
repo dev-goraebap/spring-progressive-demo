@@ -9,10 +9,12 @@ import java.util.List;
 @Mapper
 public interface PostViewMapper {
     List<PostViewModel> findPosts(
-        @Param("orderType") String orderType,
+        @Param("postType") String postType,
+        @Param("sortBy") String sortBy,
+        @Param("sortDir") String sortDir,
         @Param("limit") int limit,
         @Param("offset") int offset
     );
 
-    int countPosts();
+    int countPosts(@Param("postType") String postType);
 }

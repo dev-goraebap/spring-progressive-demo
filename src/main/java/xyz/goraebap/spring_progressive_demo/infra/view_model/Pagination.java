@@ -18,7 +18,7 @@ public class Pagination<T> {
         this.items = items;
         this.currentPage = currentPage;
         this.nextPage = currentPage + 1;
-        this.hasMore = (currentPage * PAGE_SIZE + items.size()) < totalCount;
+        this.hasMore = ((currentPage - 1) * PAGE_SIZE + items.size()) < totalCount;
         this.orderType = orderType;
     }
 
@@ -26,7 +26,10 @@ public class Pagination<T> {
         return new Pagination<>(items, page, totalCount, orderType);
     }
 
+    /**
+     * 클라이언트 페이지(1부터 시작)를 DB offset으로 변환
+     */
     public static int getOffset(int page) {
-        return page * PAGE_SIZE;
+        return (page - 1) * PAGE_SIZE;
     }
 }
