@@ -15,7 +15,7 @@ public class PostViewModel {
     private String thumbnailMetadata;
     private LocalDateTime publishedAt;
 
-    // Enricher에서 설정
+    // After Binding
     private String thumbnailUrl;
     private String thumbnailDominantColor;
 }

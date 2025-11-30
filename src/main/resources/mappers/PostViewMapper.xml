@@ -21,8 +21,11 @@
         LEFT JOIN blobs C ON C.id = B.blob_id
         WHERE A.post_type = 'post'
         <choose>
-            <when test="orderType == 'POPULAR'">
+            <when test="orderType == 'viewCount'">
                 ORDER BY A.view_count DESC, A.published_at DESC
+            </when>
+            <when test="orderType == 'publishedAt'">
+                ORDER BY A.published_at DESC
             </when>
             <otherwise>
                 ORDER BY A.published_at DESC

@@ -1,26 +1,34 @@
-package xyz.goraebap.spring_progressive_demo.infra.view_model;
+package xyz.goraebap.spring_progressive_demo.infra.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import xyz.goraebap.spring_progressive_demo.infra.mapper.PostViewMapper;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel;
 import xyz.goraebap.spring_progressive_demo.shared.config.R2Properties;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
 
 import java.util.List;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
-public class PostViewModelEnricher {
+public class PostQueryService {
 
     private final R2Properties r2Properties;
     private final ObjectMapper objectMapper;
+    private final PostViewMapper postViewMapper;
 
-    public List<PostViewModel> withThumbnails(List<PostViewModel> posts) {
-        return posts.stream()
-            .peek(this::enrichThumbnail)
-            .toList();
+    public Pagination<PostViewModel> getPostsWithPagination(int page, String orderType) {
+        int offset = Pagination.getOffset(page);
+        int totalCount = postViewMapper.countPosts();
+        var posts = postViewMapper.findPosts(orderType, Pagination.PAGE_SIZE, offset);
+
+        posts.forEach(this::enrichThumbnail);
+
+        return Pagination.of(posts, page, totalCount, orderType);
     }
 
     private void enrichThumbnail(PostViewModel post) {
