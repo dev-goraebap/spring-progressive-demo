@@ -41,7 +41,19 @@ public class JteContext {
     }
 
     public static boolean isCurrentPath(String path) {
-        log.info(currentPath() + " is currentPath: " + path);
         return currentPath().equals(path);
+    }
+
+    public static String getQueryParam(String name) {
+        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            String value = attributes.getRequest().getParameter(name);
+            return value != null ? value : "";
+        }
+        return "";
+    }
+
+    public static boolean isQueryParam(String name, String value) {
+        return getQueryParam(name).equals(value);
     }
 }

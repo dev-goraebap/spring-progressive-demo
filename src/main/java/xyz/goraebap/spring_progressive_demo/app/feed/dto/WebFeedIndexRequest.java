@@ -8,7 +8,7 @@ import lombok.Data;
 public class WebFeedIndexRequest {
 
     @Schema(description = "정렬타입")
-    private String orderType;
+    private String orderType = "viewCount";
 
     @Schema(description = "페이지 번호 (0부터 시작)")
     private int page = 0;
