@@ -3,22 +3,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.goraebap.spring_progressive_demo.infra.mapper.PostViewMapper">
 
-    <select id="findPosts" resultType="PostViewModel">
+    <resultMap id="postViewModelResultMap" type="PostViewModel">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="thumbnailKey" column="thumbnail_key"/>
+        <result property="thumbnailMetadata" column="thumbnail_metadata"/>
+        <result property="publishedAt" column="published_at"/>
+        <collection property="tags" ofType="String">
+            <result column="tag_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="findPosts" resultMap="postViewModelResultMap">
         SELECT A.id
         , A.title
-        , A.content
-        , A.post_type
         , A.summary
         , A.view_count
-        , A.is_published_yn
         , A.published_at
         , C.key AS thumbnail_key
         , C.metadata AS thumbnail_metadata
+        , (SELECT COUNT(*) FROM comments WHERE post_id = A.id AND deleted_at IS NULL) AS comment_count
+        , T.name AS tag_name
         FROM posts A
         LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
-        AND B.record_type = 'post'
-        AND B.name = 'thumbnail'
+            AND B.record_type = 'post'
+            AND B.name = 'thumbnail'
         LEFT JOIN blobs C ON C.id = B.blob_id
+        LEFT JOIN post_tags PT ON PT.post_id = A.id
+        LEFT JOIN tags T ON T.id = PT.tag_id
         WHERE A.post_type = 'post'
         <choose>
             <when test="orderType == 'viewCount'">
