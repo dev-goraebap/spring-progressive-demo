@@ -3,31 +3,77 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.goraebap.spring_progressive_demo.infra.mapper.PostViewMapper">
 
-    <select id="findPosts" resultType="PostViewModel">
-        SELECT A.id
-        , A.title
-        , A.content
-        , A.post_type
-        , A.summary
-        , A.view_count
-        , A.is_published_yn
-        , A.published_at
-        , C.key AS thumbnail_key
-        , C.metadata AS thumbnail_metadata
-        FROM posts A
-        LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
-        AND B.record_type = 'post'
-        AND B.name = 'thumbnail'
-        LEFT JOIN blobs C ON C.id = B.blob_id
-        WHERE A.post_type = 'post'
+    <resultMap id="postViewModelResultMap" type="PostViewModel">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="thumbnailKey" column="thumbnail_key"/>
+        <result property="thumbnailMetadata" column="thumbnail_metadata"/>
+        <result property="publishedAt" column="published_at"/>
+        <collection property="tags" ofType="String">
+            <result column="tag_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="findPosts" resultMap="postViewModelResultMap">
+        SELECT P.id
+        , P.title
+        , P.summary
+        , P.view_count
+        , P.published_at
+        , P.thumbnail_key
+        , P.thumbnail_metadata
+        , P.comment_count
+        , T.name AS tag_name
+        FROM (
+            SELECT A.id
+            , A.title
+            , A.summary
+            , A.view_count
+            , A.published_at
+            , C.key AS thumbnail_key
+            , C.metadata AS thumbnail_metadata
+            , (SELECT COUNT(*) FROM comments WHERE post_id = A.id AND deleted_at IS NULL) AS comment_count
+            FROM posts A
+            LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
+                AND B.record_type = 'post'
+                AND B.name = 'thumbnail'
+            LEFT JOIN blobs C ON C.id = B.blob_id
+            WHERE A.post_type = #{postType}
+            <choose>
+                <when test="sortBy == 'viewCount'">
+                    ORDER BY A.view_count ${sortDir}, A.published_at DESC
+                </when>
+                <when test="sortBy == 'publishedAt'">
+                    ORDER BY A.published_at ${sortDir}
+                </when>
+                <otherwise>
+                    ORDER BY A.published_at DESC
+                </otherwise>
+            </choose>
+            LIMIT #{limit} OFFSET #{offset}
+        ) P
+        LEFT JOIN post_tags PT ON PT.post_id = P.id
+        LEFT JOIN tags T ON T.id = PT.tag_id
         <choose>
-            <when test="orderType == 'DESC'">
-                ORDER BY A.published_at DESC
+            <when test="sortBy == 'viewCount'">
+                ORDER BY P.view_count ${sortDir}, P.published_at DESC
+            </when>
+            <when test="sortBy == 'publishedAt'">
+                ORDER BY P.published_at ${sortDir}
             </when>
             <otherwise>
-                ORDER BY A.published_at ASC
+                ORDER BY P.published_at DESC
             </otherwise>
         </choose>
+    </select>
+
+    <select id="countPosts" resultType="int">
+        SELECT COUNT(*)
+        FROM posts
+        WHERE post_type = #{postType}
     </select>
 
 </mapper>

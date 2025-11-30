@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.6'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'gg.jte.gradle' version '3.1.16'
 }
 
 group = 'xyz.goraebap'
@@ -26,14 +27,16 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+
+    // JTE
+    implementation 'gg.jte:jte:3.1.16'
+    implementation 'gg.jte:jte-spring-boot-starter-3:3.1.16'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -50,4 +53,15 @@ tasks.named('test') {
 // 개발 시 소스 폴더에서 직접 리소스 읽기
 bootRun {
     sourceResources sourceSets.main
+}
+
+// JTE 설정
+jte {
+    sourceDirectory = file("src/main/jte").toPath()
+    generate()
+}
+
+// 컴파일 전에 JTE 템플릿 생성
+tasks.named('compileJava') {
+    dependsOn 'generateJte'
 }
