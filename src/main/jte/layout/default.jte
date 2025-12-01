@@ -29,35 +29,41 @@
 <body hx-boost="true">
 <div id="htmx-progress"></div>
 <div class="min-h-screen flex justify-center">
+    <!-- DESKTOP NAV UI -->
     <div class="hidden sm:block min-h-full w-auto">
         <div class="sticky top-0">
             <nav class="p-4">
                 <ul class="flex flex-col">
-                    <li class="tooltip tooltip-right" data-tip="About">
-                        <a href="/about" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/about") ? "text-primary" : "text-base-content"}">
+                    <li class="tooltip tooltip-left" data-tip="About">
+                        <a href="/about"
+                           class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/about") ? "text-info" : "text-base-content"}">
                             <div class="w-6">@template.fragments.svg.identification()</div>
                         </a>
                     </li>
                     <li class="p-2">
                         <div class="border-t border-base-300"></div>
                     </li>
-                    <li class="tooltip tooltip-right" data-tip="피드">
-                        <a href="/" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/") ? "text-primary" : "text-base-content"}">
+                    <li class="tooltip tooltip-left" data-tip="피드">
+                        <a href="/"
+                           class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/") ? "text-primary" : "text-base-content"}">
                             <div class="w-6">@template.fragments.svg.home()</div>
                         </a>
                     </li>
-                    <li class="tooltip tooltip-right" data-tip="시리즈">
-                        <a href="/series" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/series") ? "text-primary" : "text-base-content"}">
+                    <li class="tooltip tooltip-left" data-tip="시리즈">
+                        <a href="/series"
+                           class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/series") ? "text-accent" : "text-base-content"}">
                             <div class="w-6">@template.fragments.svg.book()</div>
                         </a>
                     </li>
-                    <li class="tooltip tooltip-right" data-tip="RSS 큐레이션">
-                        <a href="/curations" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/curations") ? "text-primary" : "text-base-content"}">
+                    <li class="tooltip tooltip-left" data-tip="RSS 큐레이션">
+                        <a href="/curations"
+                           class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/curations") ? "text-warning" : "text-base-content"}">
                             <div class="w-6">@template.fragments.svg.news()</div>
                         </a>
                     </li>
-                    <li class="tooltip tooltip-right" data-tip="패치노트">
-                        <a href="/patch-notes" class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/patch-notes") ? "text-primary" : "text-base-content"}">
+                    <li class="tooltip tooltip-left" data-tip="패치노트">
+                        <a href="/patch-notes"
+                           class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/patch-notes") ? "text-secondary" : "text-base-content"}">
                             <div class="w-6">@template.fragments.svg.info()</div>
                         </a>
                     </li>
@@ -66,14 +72,59 @@
             <footer></footer>
         </div>
     </div>
-    <div class="w-full sm:min-w-[598px] sm:w-[598px] sm:border-x border-base-300">
+
+    <!-- MAIN CONTENT UI -->
+    <div class="w-full sm:min-w-[598px] sm:w-[598px] sm:border-x border-base-300 pb-16 sm:pb-0">
         <main>
             ${content}
         </main>
     </div>
+
+    <!-- DESKTOP SUB CONTENT UI -->
     <div class="hidden lg:block h-full w-[259px]">
         ${subContent}
     </div>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="sm:hidden fixed bottom-0 left-0 right-0 bg-base-100 border-t border-base-300 z-[9999]">
+        <ul class="flex items-end h-16 pb-2">
+            <li class="flex-1">
+                <a href="/about"
+                   class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/about") ? "text-info" : "text-base-content/70"}">
+                    <div class="w-5">@template.fragments.svg.identification()</div>
+                    <span class="text-xs">About</span>
+                </a>
+            </li>
+            <li class="flex-1">
+                <a href="/curations"
+                   class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/curations") ? "text-warning" : "text-base-content/70"}">
+                    <div class="w-5">@template.fragments.svg.news()</div>
+                    <span class="text-xs">큐레이션</span>
+                </a>
+            </li>
+            <li class="flex-1">
+                <a href="/"
+                   class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/") ? "text-primary" : "text-base-content/70"}">
+                    <div class="w-5">@template.fragments.svg.home()</div>
+                    <span class="text-xs">피드</span>
+                </a>
+            </li>
+            <li class="flex-1">
+                <a href="/series"
+                   class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/series") ? "text-accent" : "text-base-content/70"}">
+                    <div class="w-5">@template.fragments.svg.book()</div>
+                    <span class="text-xs">시리즈</span>
+                </a>
+            </li>
+            <li class="flex-1">
+                <a href="/patch-notes"
+                   class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/patch-notes") ? "text-secondary" : "text-base-content/70"}">
+                    <div class="w-5">@template.fragments.svg.info()</div>
+                    <span class="text-xs">패치노트</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>
