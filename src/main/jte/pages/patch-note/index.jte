@@ -8,9 +8,9 @@
     <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100">
         <div>
             <h1 class="font-bold">패치노트</h1>
-            <p class="text-xs">블로그의 모든 주목할 만한 변경 사항이 기록됩니다.</p>
+            <p class="text-xs hidden sm:block">블로그의 모든 주목할 만한 변경 사항이 기록됩니다.</p>
         </div>
-        <div class="flex gap-2 text-sm">
+        <div class="flex gap-2 text-sm shrink-0">
             <div class="w-5">@template.fragments.svg.filter()</div>
             <a href="/patch-notes?sort=publishedAt,desc"
                class="${getQueryParam("sort").startsWith("publishedAt,desc") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">최근</a>

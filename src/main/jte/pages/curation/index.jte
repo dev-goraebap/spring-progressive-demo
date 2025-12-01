@@ -8,9 +8,9 @@
     <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100">
         <div>
             <h1 class="font-bold">RSS 큐레이션</h1>
-            <p class="text-xs">매일 업데이트되는 개발 트렌드를 전해드려요.</p>
+            <p class="text-xs hidden sm:block">매일 업데이트되는 개발 트렌드를 전해드려요.</p>
         </div>
-        <div class="flex gap-2 text-sm">
+        <div class="flex gap-2 text-sm shrink-0">
             <div class="w-5">@template.fragments.svg.filter()</div>
             <a href="/curations?sort=publishedAt,desc"
                class="${getQueryParam("sort").startsWith("publishedAt,desc") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">최근</a>
