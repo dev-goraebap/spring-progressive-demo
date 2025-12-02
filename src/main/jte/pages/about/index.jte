@@ -1,21 +1,33 @@
 @template.layout.default(title = "About", content = @`
     <div class="relative border-b border-base-300 h-[200px] justify-center items-center">
         @template.fragments.uikit.img(dominantColor = "#f7f4c9", url = "/images/about-bg.jpg")
-        <div class="absolute left-4 bottom-[-40px] sm:bottom-[-50px] w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] overflow-hidden rounded-xl">
-            @template.fragments.uikit.img(dominantColor = "#0f81fe", url = "/images/about-profile.jpg")
+        <div class="absolute left-4 bottom-[-80px] sm:bottom-[-100px]">
+            <div class="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] overflow-hidden rounded-xl">
+                @template.fragments.uikit.img(dominantColor = "#0f81fe", url = "/images/about-profile.jpg")
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold">데브고래밥</h1>
+                <p class="text-sm text-base-content/70 mt-1">@devgoraebap</p>
+            </div>
         </div>
     </div>
 
-    <div class="p-4 pt-14 sm:pt-16">
-        <h1 class="text-2xl font-bold">데브고래밥</h1>
-        <p class="text-sm text-base-content/70 mt-1">@devgoraebap</p>
+    <div class="p-6 flex justify-end gap-3">
+        <a href="https://github.com/dev-goraebap" target="_blank" class="btn btn-sm">
+            <div class="w-6 h-6">@template.fragments.svg.gitlab()</div>
+        </a>
+        <a href="mailto:dev.goraebap@gmail.com" class="btn btn-sm btn-neutral">
+            <div class="w-5 h-5">@template.fragments.svg.mail()</div>
+        </a>
+    </div>
 
-        <div class="mt-6 flex flex-col gap-1">
+    <div class="p-4 text-xs sm:text-sm">
+        <div class="flex flex-col gap-1">
             <%-- 데브고래밥 --%>
             <div class="chat chat-end">
                 <div class="chat-image avatar">
                     <div class="w-8 rounded-full">
-                        <img src="/images/about-profile.jpg" alt="데브고래밥" />
+                        <img src="/images/about-profile.jpg" alt="데브고래밥"/>
                     </div>
                 </div>
                 <div class="chat-header mb-1">데브고래밥</div>
@@ -60,16 +72,11 @@
             <div class="chat chat-end">
                 <div class="chat-image avatar">
                     <div class="w-8 rounded-full">
-                        <img src="/images/about-profile.jpg" alt="데브고래밥" />
+                        <img src="/images/about-profile.jpg" alt="데브고래밥"/>
                     </div>
                 </div>
                 <div class="chat-bubble chat-bubble-primary">ㅋㅋ</div>
             </div>
-        </div>
-
-        <div class="mt-10 flex items-center justify-center gap-4">
-            <a href="https://github.com/dev-goraebap" target="_blank" class="btn btn-sm">GitHub</a>
-            <a href="mailto:dev.goraebap@gmail.com" class="btn btn-sm">E-mail</a>
         </div>
     </div>
 `)
