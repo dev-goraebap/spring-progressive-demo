@@ -37,7 +37,7 @@
     --noise: 1;
 }
 
-@source "../../src/main/jte/**/*.jte";
+@source "../../**/*.jte";
 
 /* HTMX 로딩 프로그레스 바 */
 #htmx-progress {
