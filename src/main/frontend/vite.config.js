@@ -6,11 +6,11 @@ export default defineConfig({
   plugins: [tailwindcss()],
   build: {
     manifest: true,
-    outDir: '../../resources/static',
+    outDir: '../resources/static',
     emptyOutDir: false,
     rollupOptions: {
       input: {
-        app: resolve(__dirname, 'src/app.js'),
+        app: resolve(__dirname, 'src/app/app.js'),
       },
       output: {
         entryFileNames: 'builds/[name]-[hash].js',

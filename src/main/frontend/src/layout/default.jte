@@ -3,6 +3,7 @@
 @param String title = "Demo"
 @param gg.jte.Content content
 @param gg.jte.Content subContent = @``
+@param boolean wideContent = false
 
 <!DOCTYPE html>
 <html lang="ko" data-theme="dark" class="overflow-y-scroll">
@@ -17,9 +18,9 @@
 
     @if(isDev())
     <!-- 개발 환경: Vite dev server -->
-    <link rel="stylesheet" href="http://localhost:5173/src/style.css">
+    <link rel="stylesheet" href="http://localhost:5173/src/app/style.css">
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <script type="module" src="http://localhost:5173/src/app.js"></script>
+    <script type="module" src="http://localhost:5173/src/app/app.js"></script>
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">
@@ -37,7 +38,7 @@
                     <li class="tooltip tooltip-left" data-tip="About">
                         <a href="/about"
                            class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/about") ? "text-info" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.svg.identification()</div>
+                            <div class="w-6">@template.shared.svg.identification()</div>
                         </a>
                     </li>
                     <li class="p-2">
@@ -46,25 +47,25 @@
                     <li class="tooltip tooltip-left" data-tip="피드">
                         <a href="/"
                            class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/") ? "text-primary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.svg.home()</div>
+                            <div class="w-6">@template.shared.svg.home()</div>
                         </a>
                     </li>
                     <li class="tooltip tooltip-left" data-tip="시리즈">
                         <a href="/series"
                            class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/series") ? "text-accent" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.svg.book()</div>
+                            <div class="w-6">@template.shared.svg.book()</div>
                         </a>
                     </li>
                     <li class="tooltip tooltip-left" data-tip="RSS 큐레이션">
                         <a href="/curations"
                            class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/curations") ? "text-warning" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.svg.news()</div>
+                            <div class="w-6">@template.shared.svg.news()</div>
                         </a>
                     </li>
                     <li class="tooltip tooltip-left" data-tip="패치노트">
                         <a href="/patch-notes"
                            class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/patch-notes") ? "text-secondary" : "text-base-content"}">
-                            <div class="w-6">@template.fragments.svg.info()</div>
+                            <div class="w-6">@template.shared.svg.info()</div>
                         </a>
                     </li>
                 </ul>
@@ -74,7 +75,7 @@
     </div>
 
     <!-- MAIN CONTENT UI -->
-    <div class="w-full sm:min-w-[598px] sm:w-[598px] sm:border-x border-base-300 pb-16 sm:pb-0">
+    <div class="w-full sm:border-x border-base-300 pb-16 sm:pb-0 transition-all duration-300 ${wideContent ? "sm:min-w-[698px] sm:w-[698px]" : "sm:min-w-[598px] sm:w-[598px]"}">
         <main>
             ${content}
         </main>
@@ -88,16 +89,8 @@
 
         <!-- Sticky 컨텐츠 영역 -->
         <div class="sticky top-4">
-            <!-- 패치노트 -->
-            <div class="mb-6">
-                <div class="bg-base-200 border border-base-300 rounded-xl p-4">
-                    <h3 class="font-bold text-sm mb-2">패치노트</h3>
-                    <p class="text-xs text-base-content/70">최근 업데이트 내용이 여기에 표시됩니다.</p>
-                </div>
-            </div>
-
             <!-- Music Player UI -->
-            @template.fragments.bgm-player()
+            @template.shared.components.bgm()
         </div>
     </div>
 
@@ -107,35 +100,35 @@
             <li class="flex-1">
                 <a href="/about"
                    class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/about") ? "text-info" : "text-base-content/70"}">
-                    <div class="w-5">@template.fragments.svg.identification()</div>
+                    <div class="w-5">@template.shared.svg.identification()</div>
                     <span class="text-xs">About</span>
                 </a>
             </li>
             <li class="flex-1">
                 <a href="/curations"
                    class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/curations") ? "text-warning" : "text-base-content/70"}">
-                    <div class="w-5">@template.fragments.svg.news()</div>
+                    <div class="w-5">@template.shared.svg.news()</div>
                     <span class="text-xs">큐레이션</span>
                 </a>
             </li>
             <li class="flex-1">
                 <a href="/"
                    class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/") ? "text-primary" : "text-base-content/70"}">
-                    <div class="w-5">@template.fragments.svg.home()</div>
+                    <div class="w-5">@template.shared.svg.home()</div>
                     <span class="text-xs">피드</span>
                 </a>
             </li>
             <li class="flex-1">
                 <a href="/series"
                    class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/series") ? "text-accent" : "text-base-content/70"}">
-                    <div class="w-5">@template.fragments.svg.book()</div>
+                    <div class="w-5">@template.shared.svg.book()</div>
                     <span class="text-xs">시리즈</span>
                 </a>
             </li>
             <li class="flex-1">
                 <a href="/patch-notes"
                    class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/patch-notes") ? "text-secondary" : "text-base-content/70"}">
-                    <div class="w-5">@template.fragments.svg.info()</div>
+                    <div class="w-5">@template.shared.svg.info()</div>
                     <span class="text-xs">패치노트</span>
                 </a>
             </li>

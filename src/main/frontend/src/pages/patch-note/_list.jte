@@ -8,7 +8,7 @@
         <div class="p-4 flex flex-col items-start gap-2">
             @if(post.getThumbnailUrl() != null)
                 <div class="w-full h-[200px] sm:h-[250px] rounded-xl overflow-hidden">
-                    @template.fragments.uikit.img(
+                    @template.shared.components.img(
                     url = post.getThumbnailUrl(),
                     dominantColor = post.getThumbnailDominantColor(),
                     alt = post.getTitle()
@@ -22,13 +22,13 @@
                 <div class="flex items-center gap-4">
                     <div class="flex gap-1 items-center">
                         <div class="w-4">
-                            @template.fragments.svg.see()
+                            @template.shared.svg.see()
                         </div>
                         <div class="text-sm">${post.getViewCount()}</div>
                     </div>
                     <div class="flex gap-1 items-center">
                         <div class="w-4">
-                            @template.fragments.svg.comment()
+                            @template.shared.svg.comment()
                         </div>
                         <div class="text-sm">${post.getCommentCount()}</div>
                     </div>

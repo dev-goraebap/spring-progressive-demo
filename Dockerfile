@@ -3,12 +3,12 @@ FROM node:20-alpine AS frontend-build
 WORKDIR /app
 
 # package 파일 먼저 복사 (캐싱 최적화)
-COPY src/main/jte/frontend/package*.json ./src/main/jte/frontend/
-RUN cd src/main/jte/frontend && npm ci
+COPY src/main/frontend/package*.json ./src/main/frontend/
+RUN cd src/main/frontend && npm ci
 
-# jte 폴더 전체 복사 (템플릿 + 프론트엔드 소스)
-COPY src/main/jte ./src/main/jte
-RUN cd src/main/jte/frontend && npm run build
+# frontend 폴더 전체 복사 (템플릿 + 프론트엔드 소스)
+COPY src/main/frontend ./src/main/frontend
+RUN cd src/main/frontend && npm run build
 
 # Stage 2: Backend Build
 FROM gradle:8.5-jdk17 AS build

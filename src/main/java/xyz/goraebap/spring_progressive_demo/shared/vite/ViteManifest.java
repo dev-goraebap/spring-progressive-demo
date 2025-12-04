@@ -30,7 +30,7 @@ public class ViteManifest {
             if (resource.exists()) {
                 try (InputStream is = resource.getInputStream()) {
                     JsonNode manifest = objectMapper.readTree(is);
-                    JsonNode appEntry = manifest.get("src/app.js");
+                    JsonNode appEntry = manifest.get("src/app/app.js");
                     if (appEntry != null) {
                         this.js = appEntry.get("file").asText();
                         JsonNode cssArray = appEntry.get("css");

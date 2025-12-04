@@ -6,7 +6,9 @@
     <resultMap id="postViewModelResultMap" type="PostViewModel">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
+        <result property="slug" column="slug"/>
         <result property="summary" column="summary"/>
+        <result property="content" column="content"/>
         <result property="viewCount" column="view_count"/>
         <result property="commentCount" column="comment_count"/>
         <result property="thumbnailKey" column="thumbnail_key"/>
@@ -19,6 +21,7 @@
 
     <select id="findPosts" resultMap="postViewModelResultMap">
         SELECT P.id
+        , P.slug
         , P.title
         , P.summary
         , P.view_count
@@ -29,6 +32,7 @@
         , T.name AS tag_name
         FROM (
             SELECT A.id
+            , A.slug
             , A.title
             , A.summary
             , A.view_count
@@ -74,6 +78,40 @@
         SELECT COUNT(*)
         FROM posts
         WHERE post_type = #{postType}
+    </select>
+
+    <select id="findPostBySlug" resultMap="postViewModelResultMap">
+        SELECT P.id
+             , P.slug
+             , P.title
+             , P.summary
+             , P.content
+             , P.view_count
+             , P.published_at
+             , P.thumbnail_key
+             , P.thumbnail_metadata
+             , P.comment_count
+             , T.name AS tag_name
+        FROM (
+            SELECT A.id
+                 , A.slug
+                 , A.title
+                 , A.summary
+                 , A.content
+                 , A.view_count
+                 , A.published_at
+                 , C.key AS thumbnail_key
+                 , C.metadata AS thumbnail_metadata
+                 , (SELECT COUNT(*) FROM comments WHERE post_id = A.id AND deleted_at IS NULL) AS comment_count
+            FROM posts A
+            LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
+                AND B.record_type = 'post'
+                AND B.name = 'thumbnail'
+            LEFT JOIN blobs C ON C.id = B.blob_id
+            WHERE A.slug = #{slug}
+        ) P
+        LEFT JOIN post_tags PT ON PT.post_id = P.id
+        LEFT JOIN tags T ON T.id = PT.tag_id
     </select>
 
 </mapper>

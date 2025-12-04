@@ -17,4 +17,6 @@ public interface PostViewMapper {
     );
 
     int countPosts(@Param("postType") String postType);
+
+    PostViewModel findPostBySlug(@Param("slug") String slug);
 }

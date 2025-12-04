@@ -1,9 +1,9 @@
 @template.layout.default(title = "About", content = @`
     <div class="relative border-b border-base-300 h-[200px] justify-center items-center">
-        @template.fragments.uikit.img(dominantColor = "#f7f4c9", url = "/images/about-bg.jpg")
+        @template.shared.components.img(dominantColor = "#f7f4c9", url = "/images/about-bg.jpg")
         <div class="absolute left-4 bottom-[-80px] sm:bottom-[-100px]">
             <div class="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] overflow-hidden rounded-xl">
-                @template.fragments.uikit.img(dominantColor = "#0f81fe", url = "/images/about-profile.jpg")
+                @template.shared.components.img(dominantColor = "#0f81fe", url = "/images/about-profile.jpg")
             </div>
             <div>
                 <h1 class="text-2xl font-bold">데브고래밥</h1>
@@ -14,10 +14,10 @@
 
     <div class="p-6 flex justify-end gap-3">
         <a href="https://github.com/dev-goraebap" target="_blank" class="btn btn-sm">
-            <div class="w-6 h-6">@template.fragments.svg.gitlab()</div>
+            <div class="w-6 h-6">@template.shared.svg.gitlab()</div>
         </a>
         <a href="mailto:dev.goraebap@gmail.com" class="btn btn-sm btn-neutral">
-            <div class="w-5 h-5">@template.fragments.svg.mail()</div>
+            <div class="w-5 h-5">@template.shared.svg.mail()</div>
         </a>
     </div>
 

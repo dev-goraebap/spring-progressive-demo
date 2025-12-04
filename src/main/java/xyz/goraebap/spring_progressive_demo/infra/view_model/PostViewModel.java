@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class PostViewModel {
     private Long id;
+    private String slug;
     private String title;
     private String summary;
     private int viewCount;
@@ -16,6 +17,7 @@ public class PostViewModel {
     private String thumbnailMetadata;
     private LocalDateTime publishedAt;
     private List<String> tags;
+    private String content;
 
     // After Binding
     private String thumbnailUrl;
