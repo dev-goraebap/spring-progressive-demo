@@ -39,6 +39,14 @@ public class PostQueryService {
         return Pagination.of(posts, page, totalCount, sort);
     }
 
+    public PostViewModel getPostBySlug(String slug) {
+        var post = postViewMapper.findPostBySlug(slug);
+        if (post != null) {
+            enrichThumbnail(post);
+        }
+        return post;
+    }
+
     private void enrichThumbnail(PostViewModel post) {
         if (post.getThumbnailKey() != null) {
             post.setThumbnailUrl(r2Properties.getPublicUrl(post.getThumbnailKey()));

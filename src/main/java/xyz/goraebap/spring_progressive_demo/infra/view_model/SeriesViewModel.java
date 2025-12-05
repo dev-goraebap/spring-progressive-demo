@@ -3,21 +3,18 @@ package xyz.goraebap.spring_progressive_demo.infra.view_model;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-public class PostViewModel {
+public class SeriesViewModel {
     private Long id;
     private String slug;
-    private String title;
-    private String summary;
-    private int viewCount;
-    private int commentCount;
+    private String name;
+    private String description;
+    private String status;
+    private LocalDateTime publishedAt;
+    private int postCount;
     private String thumbnailKey;
     private String thumbnailMetadata;
-    private LocalDateTime publishedAt;
-    private List<String> tags;
-    private String content;
 
     // After Binding
     private String thumbnailUrl;

@@ -1,0 +1,53 @@
+@import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel
+
+@param PostViewModel post
+
+@template.layout.default(title = post.getTitle(), wideContent = true, content = @`
+    <div class="w-full p-4 border-b border-base-300 flex items-center gap-2 sticky top-0 bg-base-100 z-[999]">
+        <a href="javascript:history.back()" class="flex items-center gap-1">
+            <div class="w-5">@template.shared.svg.back()</div>
+            <span>돌아가기</span>
+        </a>
+    </div>
+
+    <article>
+        @if(post.getThumbnailUrl() != null)
+            <div class="w-full max-h-[180px] sm:max-h-[300px] overflow-hidden flex items-center justify-center">
+                <img src="${post.getThumbnailUrl()}"
+                     alt="${post.getTitle()}"
+                     class="w-full object-cover" />
+            </div>
+        @endif
+
+        <div class="p-4">
+            <div class="flex items-center gap-4 text-sm text-base-content/70 mb-4">
+                @if(post.getPublishedAt() != null)
+                    <time>${post.getPublishedAt().toLocalDate().toString()}</time>
+                @endif
+                <div class="flex items-center gap-1">
+                    <div class="w-4">
+                        @template.shared.svg.see()
+                    </div>
+                    <span>${post.getViewCount()}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-4">
+                        @template.shared.svg.comment()
+                    </div>
+                    <span>${post.getCommentCount()}</span>
+                </div>
+                @if(post.getTags() != null && !post.getTags().isEmpty())
+                    <div class="flex flex-wrap gap-x-2">
+                        @for(var tag : post.getTags())
+                            <span>#${tag}</span>
+                        @endfor
+                    </div>
+                @endif
+            </div>
+
+            <div class="prose prose-sm sm:prose-base max-w-none">
+                $unsafe{post.getContent()}
+            </div>
+        </div>
+    </article>
+`)

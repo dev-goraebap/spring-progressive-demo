@@ -6,7 +6,9 @@
     <resultMap id="postViewModelResultMap" type="PostViewModel">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
+        <result property="slug" column="slug"/>
         <result property="summary" column="summary"/>
+        <result property="content" column="content"/>
         <result property="viewCount" column="view_count"/>
         <result property="commentCount" column="comment_count"/>
         <result property="thumbnailKey" column="thumbnail_key"/>
@@ -18,62 +20,98 @@
     </resultMap>
 
     <select id="findPosts" resultMap="postViewModelResultMap">
-        SELECT P.id
-        , P.title
-        , P.summary
-        , P.view_count
-        , P.published_at
-        , P.thumbnail_key
-        , P.thumbnail_metadata
-        , P.comment_count
-        , T.name AS tag_name
-        FROM (
-            SELECT A.id
-            , A.title
-            , A.summary
-            , A.view_count
-            , A.published_at
-            , C.key AS thumbnail_key
-            , C.metadata AS thumbnail_metadata
-            , (SELECT COUNT(*) FROM comments WHERE post_id = A.id AND deleted_at IS NULL) AS comment_count
-            FROM posts A
-            LEFT JOIN attachments B ON B.record_id = TEXT(A.id)
-                AND B.record_type = 'post'
-                AND B.name = 'thumbnail'
-            LEFT JOIN blobs C ON C.id = B.blob_id
-            WHERE A.post_type = #{postType}
+        select p.id
+             , p.slug
+             , p.title
+             , p.summary
+             , p.view_count
+             , p.published_at
+             , p.thumbnail_key
+             , p.thumbnail_metadata
+             , p.comment_count
+             , t.name as tag_name
+        from (
+            select a.id
+                 , a.slug
+                 , a.title
+                 , a.summary
+                 , a.view_count
+                 , a.published_at
+                 , c.key as thumbnail_key
+                 , c.metadata as thumbnail_metadata
+                 , (select count(*) from comments where post_id = a.id and deleted_at is null) as comment_count
+            from posts a
+            left join attachments b on b.record_id = text(a.id)
+                and b.record_type = 'post'
+                and b.name = 'thumbnail'
+            left join blobs c on c.id = b.blob_id
+            where a.post_type = #{postType}
             <choose>
                 <when test="sortBy == 'viewCount'">
-                    ORDER BY A.view_count ${sortDir}, A.published_at DESC
+                    order by a.view_count ${sortDir}, a.published_at desc
                 </when>
                 <when test="sortBy == 'publishedAt'">
-                    ORDER BY A.published_at ${sortDir}
+                    order by a.published_at ${sortDir}
                 </when>
                 <otherwise>
-                    ORDER BY A.published_at DESC
+                    order by a.published_at desc
                 </otherwise>
             </choose>
-            LIMIT #{limit} OFFSET #{offset}
-        ) P
-        LEFT JOIN post_tags PT ON PT.post_id = P.id
-        LEFT JOIN tags T ON T.id = PT.tag_id
+            limit #{limit} offset #{offset}
+        ) p
+        left join post_tags pt on pt.post_id = p.id
+        left join tags t on t.id = pt.tag_id
         <choose>
             <when test="sortBy == 'viewCount'">
-                ORDER BY P.view_count ${sortDir}, P.published_at DESC
+                order by p.view_count ${sortDir}, p.published_at desc
             </when>
             <when test="sortBy == 'publishedAt'">
-                ORDER BY P.published_at ${sortDir}
+                order by p.published_at ${sortDir}
             </when>
             <otherwise>
-                ORDER BY P.published_at DESC
+                order by p.published_at desc
             </otherwise>
         </choose>
     </select>
 
     <select id="countPosts" resultType="int">
-        SELECT COUNT(*)
-        FROM posts
-        WHERE post_type = #{postType}
+        select count(*)
+        from posts
+        where post_type = #{postType}
+    </select>
+
+    <select id="findPostBySlug" resultMap="postViewModelResultMap">
+        select p.id
+             , p.slug
+             , p.title
+             , p.summary
+             , p.content
+             , p.view_count
+             , p.published_at
+             , p.thumbnail_key
+             , p.thumbnail_metadata
+             , p.comment_count
+             , t.name as tag_name
+        from (
+            select a.id
+                 , a.slug
+                 , a.title
+                 , a.summary
+                 , a.content
+                 , a.view_count
+                 , a.published_at
+                 , c.key as thumbnail_key
+                 , c.metadata as thumbnail_metadata
+                 , (select count(*) from comments where post_id = a.id and deleted_at is null) as comment_count
+            from posts a
+            left join attachments b on b.record_id = text(a.id)
+                and b.record_type = 'post'
+                and b.name = 'thumbnail'
+            left join blobs c on c.id = b.blob_id
+            where a.slug = #{slug}
+        ) p
+        left join post_tags pt on pt.post_id = p.id
+        left join tags t on t.id = pt.tag_id
     </select>
 
 </mapper>
