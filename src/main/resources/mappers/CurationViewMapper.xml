@@ -4,27 +4,27 @@
 <mapper namespace="xyz.goraebap.spring_progressive_demo.infra.mapper.CurationViewMapper">
 
     <select id="findItems" resultType="CurationViewModel">
-        SELECT id
-        , title
-        , link
-        , snippet
-        , pub_date AS pubDate
-        , source
-        FROM curated_items
+        select id
+             , title
+             , link
+             , snippet
+             , pub_date as pubDate
+             , source
+        from curated_items
         <choose>
             <when test="sortBy == 'publishedAt'">
-                ORDER BY pub_date ${sortDir}
+                order by pub_date ${sortDir}
             </when>
             <otherwise>
-                ORDER BY pub_date DESC
+                order by pub_date desc
             </otherwise>
         </choose>
-        LIMIT #{limit} OFFSET #{offset}
+        limit #{limit} offset #{offset}
     </select>
 
     <select id="countItems" resultType="int">
-        SELECT COUNT(*)
-        FROM curated_items
+        select count(*)
+        from curated_items
     </select>
 
 </mapper>

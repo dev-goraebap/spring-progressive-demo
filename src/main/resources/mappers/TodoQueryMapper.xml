@@ -4,38 +4,38 @@
 <mapper namespace="xyz.goraebap.spring_progressive_demo.app.todo.TodoQueryMapper">
 
     <select id="findWithCursor" resultType="Todo">
-        SELECT *
-        FROM todos
+        select *
+        from todos
         <where>
             <!-- 제목 검색 조건 (선택적) -->
             <if test="title != null and title != ''">
-                AND title LIKE CONCAT('%', #{title}, '%')
+                and title like concat('%', #{title}, '%')
             </if>
 
             <!-- isCompleted 조건 (선택적) -->
             <if test="isCompleted != null">
-                AND is_completed = #{isCompleted}
+                and is_completed = #{isCompleted}
             </if>
 
             <!-- Cursor 조건 (선택적) -->
             <if test="cursor != null">
-                AND created_at &lt; #{cursor}
+                and created_at &lt; #{cursor}
             </if>
         </where>
 
         <!-- 정렬 조건 -->
         <choose>
             <when test="sortOrder != null and sortOrder == 'ASC'">
-                ORDER BY created_at ASC
+                order by created_at asc
             </when>
             <otherwise>
-                ORDER BY created_at DESC
+                order by created_at desc
             </otherwise>
         </choose>
 
         <!-- 페이지 크기 제한 -->
         <if test="perPage != null">
-            LIMIT #{perPage}
+            limit #{perPage}
         </if>
     </select>
 
