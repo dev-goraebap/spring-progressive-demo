@@ -2,7 +2,7 @@
 
 @param PostViewModel post
 
-@template.layout.default(title = post.getTitle(), wideContent = true, content = @`
+@template.shared.layout.default(title = post.getTitle(), content = @`
     <div class="w-full p-4 border-b border-base-300 flex items-center gap-2 sticky top-0 bg-base-100 z-[999]">
         <a href="javascript:history.back()" class="flex items-center gap-1">
             <div class="w-5">@template.shared.svg.back()</div>

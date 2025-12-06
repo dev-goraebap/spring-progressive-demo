@@ -7,7 +7,7 @@
 @param Pagination<PostViewModel> postData
 @param List<CurationViewModel> curationItems
 
-@template.layout.default(title = "피드", content = @`
+@template.shared.layout.default(title = "피드", content = @`
     <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100 z-[999]">
         <h1 class="font-bold">피드</h1>
         <div class="flex gap-2 text-sm shrink-0">

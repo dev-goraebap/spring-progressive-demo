@@ -39,4 +39,78 @@
                  s.created_at desc
     </select>
 
+    <resultMap id="seriesDetailResultMap" type="SeriesDetailViewModel">
+        <id property="id" column="id"/>
+        <result property="slug" column="slug"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <result property="publishedAt" column="published_at"/>
+        <result property="thumbnailKey" column="thumbnail_key"/>
+        <result property="thumbnailMetadata" column="thumbnail_metadata"/>
+        <collection property="posts" ofType="xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel$PostItem">
+            <id property="id" column="post_id"/>
+            <result property="slug" column="post_slug"/>
+            <result property="title" column="post_title"/>
+            <result property="summary" column="post_summary"/>
+            <result property="viewCount" column="post_view_count"/>
+            <result property="commentCount" column="post_comment_count"/>
+            <result property="thumbnailKey" column="post_thumbnail_key"/>
+            <result property="thumbnailMetadata" column="post_thumbnail_metadata"/>
+        </collection>
+    </resultMap>
+
+    <select id="findSeriesWithPosts" resultMap="seriesDetailResultMap">
+        with media as (
+            select a.record_type
+                 , a.record_id
+                 , b.key
+                 , b.metadata
+            from attachments a
+            inner join blobs b on b.id = a.blob_id
+            where a.name = 'thumbnail'
+        ),
+        comment_counts as (
+            select post_id, count(*) as cnt
+            from comments
+            where deleted_at is null
+            group by post_id
+        ),
+        post_list as (
+            select p.id
+                 , p.slug
+                 , p.title
+                 , p.summary
+                 , p.view_count
+                 , m.key as thumbnail_key
+                 , m.metadata as thumbnail_metadata
+                 , coalesce(cc.cnt, 0) as comment_count
+            from posts p
+            left join media m on m.record_id = text(p.id) and m.record_type = 'post'
+            left join comment_counts cc on cc.post_id = p.id
+            where p.is_published_yn = 'Y'
+        )
+        select s.id
+             , s.slug
+             , s.name
+             , s.status
+             , s.published_at
+             , sm.key as thumbnail_key
+             , sm.metadata as thumbnail_metadata
+             , p.id as post_id
+             , p.slug as post_slug
+             , p.title as post_title
+             , p.summary as post_summary
+             , p.view_count as post_view_count
+             , p.comment_count as post_comment_count
+             , p.thumbnail_key as post_thumbnail_key
+             , p.thumbnail_metadata as post_thumbnail_metadata
+        from series s
+        left join media sm on sm.record_id = text(s.id) and sm.record_type = 'series'
+        left join series_posts sp on sp.series_id = s.id
+        left join post_list p on p.id = sp.post_id
+        where s.slug = #{slug}
+          and s.is_published_yn = 'Y'
+        order by sp."order"
+    </select>
+
 </mapper>

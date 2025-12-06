@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class PostViewModel {
+public class PostViewModel implements ThumbnailEnrichable {
     private Long id;
     private String slug;
     private String title;
