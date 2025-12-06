@@ -1,10 +1,13 @@
 package xyz.goraebap.spring_progressive_demo.app.series.presentation.web;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 import xyz.goraebap.spring_progressive_demo.infra.service.SeriesQueryService;
 
 @Controller
@@ -19,5 +22,15 @@ public class SeriesPageController {
         var seriesList = seriesQueryService.getAllSeries();
         model.addAttribute("seriesList", seriesList);
         return "pages/series/index";
+    }
+
+    @GetMapping("/{slug}")
+    public String show(@PathVariable String slug, Model model) {
+        var series = seriesQueryService.getSeriesWithPosts(slug);
+        if (series == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("series", series);
+        return "pages/series/show";
     }
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class SeriesViewModel {
+public class SeriesViewModel implements ThumbnailEnrichable {
     private Long id;
     private String slug;
     private String name;

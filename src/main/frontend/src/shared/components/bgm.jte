@@ -36,10 +36,8 @@
                     <div class="w-5">@template.shared.svg.prev()</div>
                 </button>
                 <button @click="$store.bgm.toggle()" class="btn btn-primary btn-circle">
-                    <div class="w-5">
-                        <template x-if="!$store.bgm.isPlaying">@template.shared.svg.play()</template>
-                        <template x-if="$store.bgm.isPlaying">@template.shared.svg.pause()</template>
-                    </div>
+                    <div class="w-5" x-show="!$store.bgm.isPlaying">@template.shared.svg.play()</div>
+                    <div class="w-5" x-show="$store.bgm.isPlaying" x-cloak>@template.shared.svg.pause()</div>
                 </button>
                 <button @click="$store.bgm.next()" class="btn btn-ghost btn-sm btn-circle">
                     <div class="w-5">@template.shared.svg.next()</div>
