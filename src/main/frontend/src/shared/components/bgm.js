@@ -2,14 +2,30 @@ import Alpine from 'alpinejs';
 
 // BGM 플레이리스트
 const playlist = [
-    { title: 'Jane Doe', src: '/bgm/jane-doe.mp3', cover: '/bgm/jane-doe.webp' },
-    { title: 'Nanase Dear', src: '/bgm/nanase-dear.mp3', cover: '/bgm/nanase-dear.png' }
+    { title: 'Jane Doe', artist: '요네즈 켄시 와 우타다 히카루', src: '/bgm/jane-doe.mp3', cover: '/bgm/jane-doe.webp' },
+    { title: 'Dear', artist: 'Nanase', src: '/bgm/nanase-dear.mp3', cover: '/bgm/nanase-dear.png' }
 ];
 
 // Audio 객체 전역 유지 (페이지 이동해도 끊기지 않게)
 if (!window.bgmAudio) {
     window.bgmAudio = new Audio();
-    window.bgmAudio.volume = 0.5;
+    window.bgmAudio.volume = 0.3;
+}
+
+// 첫 클릭 시 자동 재생
+if (!window.bgmAutoPlayRegistered) {
+    window.bgmAutoPlayRegistered = true;
+    const autoPlay = () => {
+        const audio = window.bgmAudio;
+        if (!audio.src) {
+            audio.src = playlist[0].src;
+        }
+        if (audio.paused) {
+            audio.play().catch(() => {});
+        }
+        document.removeEventListener('click', autoPlay);
+    };
+    document.addEventListener('click', autoPlay);
 }
 
 // 시간 포맷
@@ -27,7 +43,8 @@ Alpine.store('bgm', {
     currentTime: '0:00',
     duration: '0:00',
     progress: 0,
-    volume: 50,
+    volume: 30,
+    isMuted: false,
 
     init() {
         const audio = window.bgmAudio;
@@ -41,7 +58,7 @@ Alpine.store('bgm', {
         });
 
         audio.addEventListener('ended', () => {
-            this.next();
+            this.next(true);
         });
 
         audio.addEventListener('timeupdate', () => {
@@ -86,11 +103,11 @@ Alpine.store('bgm', {
         if (this.isPlaying) window.bgmAudio.play();
     },
 
-    next() {
+    next(autoPlay = false) {
         let newIndex = this.currentIndex + 1;
         if (newIndex >= playlist.length) newIndex = 0;
         this.load(newIndex);
-        if (this.isPlaying) window.bgmAudio.play();
+        if (this.isPlaying || autoPlay) window.bgmAudio.play();
     },
 
     seek(value) {
@@ -103,5 +120,10 @@ Alpine.store('bgm', {
     setVolume(value) {
         this.volume = value;
         window.bgmAudio.volume = value / 100;
+    },
+
+    toggleMute() {
+        this.isMuted = !this.isMuted;
+        window.bgmAudio.muted = this.isMuted;
     }
 });

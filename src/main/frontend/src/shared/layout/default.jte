@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="htmx-config" content='{"globalViewTransitions": true}'>
     <title>데브고래밥 | ${title}</title>
+    <link rel="icon" type="image/png" href="/images/logo.png">
 
     <%-- 쿠키 없을 때 시스템 설정 감지 (FOUC 방지) --%>
     @if(getTheme() == null)
@@ -35,8 +36,43 @@
     <script type="module" src="/${viteJs()}"></script>
     @endif
 </head>
-<body hx-boost="true">
+<body hx-boost="true" x-data="{ drawer: false }">
 <div id="htmx-progress"></div>
+
+<!-- MOBILE DRAWER OVERLAY -->
+<div x-show="drawer" x-cloak
+     @click="drawer = false"
+     class="sm:hidden fixed inset-0 bg-black/50 z-[10000]"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+</div>
+
+<!-- MOBILE DRAWER -->
+<div x-show="drawer" x-cloak
+     class="sm:hidden fixed top-0 right-0 h-full w-[300px] bg-base-100 z-[10001] overflow-y-auto p-4 pb-20"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="translate-x-full"
+     x-transition:enter-end="translate-x-0"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="translate-x-0"
+     x-transition:leave-end="translate-x-full">
+
+    <!-- 상단: 테마 토글 + 닫기 버튼 -->
+    <div class="flex justify-between items-center mb-4">
+        @template.shared.components.themeToggle()
+        <button @click="drawer = false" class="btn btn-ghost btn-sm btn-circle">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    @template.shared.components.aside()
+</div>
 
 <!-- MOBILE THEME TOGGLE -->
 <%--<div class="sm:hidden fixed top-2 right-2 z-[999]">--%>
@@ -52,15 +88,6 @@
         <div class="sticky top-0">
             <nav class="p-4">
                 <ul class="flex flex-col">
-                    <li class="tooltip tooltip-left" data-tip="About">
-                        <a href="/about"
-                           class="flex gap-4 items-center text-lg p-4 ${isPathStartsWith("/about") ? "text-info" : "text-base-content"}">
-                            <div class="w-6">@template.shared.svg.identification()</div>
-                        </a>
-                    </li>
-                    <li class="p-2">
-                        <div class="border-t border-base-300"></div>
-                    </li>
                     <li class="tooltip tooltip-left" data-tip="피드">
                         <a href="/"
                            class="flex gap-4 items-center text-lg p-4 ${isCurrentPath("/") || isPathStartsWith("/posts") ? "text-primary" : "text-base-content"}">
@@ -106,38 +133,14 @@
 
     <!-- DESKTOP SUB CONTENT UI -->
     <div class="hidden lg:flex lg:flex-col min-w-[300px] w-[300px] p-4">
-
-        <!-- Sticky 컨텐츠 영역 -->
         <div class="sticky top-4">
-            <!-- 블로그 제목 -->
-            <div class="mb-6 flex items-center gap-2">
-                <div class="w-16">
-                    @template.shared.components.img(dominantColor = "", url = "/images/logo.png")
-                </div>
-                <h2 class="text-xl font-bold">데브고래밥 블로그</h2>
-            </div>
-            <!-- Music Player UI -->
-            @template.shared.components.bgm()
+            @template.shared.components.aside()
         </div>
     </div>
 
     <!-- MOBILE BOTTOM NAV -->
     <nav class="sm:hidden fixed bottom-0 left-0 right-0 bg-base-100 border-t border-base-300 z-[9999]">
-        <ul class="flex items-end h-16 pb-2">
-            <li class="flex-1">
-                <a href="/about"
-                   class="flex flex-col items-center gap-1 p-2 ${isPathStartsWith("/about") ? "text-info" : "text-base-content/70"}">
-                    <div class="w-5">@template.shared.svg.identification()</div>
-                    <span class="text-xs">About</span>
-                </a>
-            </li>
-            <li class="flex-1">
-                <a href="/curations"
-                   class="flex flex-col items-center gap-1 p-2 ${isPathStartsWith("/curations") ? "text-warning" : "text-base-content/70"}">
-                    <div class="w-5">@template.shared.svg.news()</div>
-                    <span class="text-xs">큐레이션</span>
-                </a>
-            </li>
+        <ul class="flex items-center h-16">
             <li class="flex-1">
                 <a href="/"
                    class="flex flex-col items-center gap-1 p-2 ${isCurrentPath("/") || isPathStartsWith("/posts") ? "text-primary" : "text-base-content/70"}">
@@ -153,11 +156,38 @@
                 </a>
             </li>
             <li class="flex-1">
+                <a href="/curations"
+                   class="flex flex-col items-center gap-1 p-2 ${isPathStartsWith("/curations") ? "text-warning" : "text-base-content/70"}">
+                    <div class="w-5">@template.shared.svg.news()</div>
+                    <span class="text-xs">큐레이션</span>
+                </a>
+            </li>
+            <li class="flex-1">
                 <a href="/patch-notes"
                    class="flex flex-col items-center gap-1 p-2 ${isPathStartsWith("/patch-notes") ? "text-secondary" : "text-base-content/70"}">
                     <div class="w-5">@template.shared.svg.info()</div>
                     <span class="text-xs">패치노트</span>
                 </a>
+            </li>
+            <li class="flex-1">
+                <button @click="drawer = true"
+                        class="flex flex-col items-center gap-1 p-2 text-base-content/70 w-full">
+                    <%-- BGM 재생 중: 앨범아트 + 레인보우 테두리 --%>
+                    <div x-show="$store.bgm.isPlaying" x-cloak
+                         class="relative w-8 h-8">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 animate-spin-slow opacity-70"></div>
+                        <div class="absolute inset-[2px] rounded-full overflow-hidden">
+                            <img :src="$store.bgm.track?.cover || '/bgm/jane-doe.webp'"
+                                 alt="Now Playing"
+                                 class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                    <%-- BGM 정지: 메뉴 아이콘 --%>
+                    <div x-show="!$store.bgm.isPlaying" class="w-5">
+                        @template.shared.svg.menu()
+                    </div>
+                    <span class="text-xs" x-text="$store.bgm.isPlaying ? '' : '더보기'">더보기</span>
+                </button>
             </li>
         </ul>
     </nav>

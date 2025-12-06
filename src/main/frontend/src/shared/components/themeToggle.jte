@@ -4,6 +4,6 @@
         <div class="w-6"
              x-show="$store.theme.current === 'dark'">@template.shared.svg.sun()</div>
         <div class="w-6"
-             x-show="$store.theme.current === 'cupcake'">@template.shared.svg.moon()</div>
+             x-show="$store.theme.current === 'light'">@template.shared.svg.moon()</div>
     </button>
 </div>
