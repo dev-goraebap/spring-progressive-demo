@@ -13,8 +13,7 @@ import.meta.glob([
     '../shared/**/*.js',
     '../pages/**/*.js',
     '../layout/**/*.js',
-    './!(app).js'  // app 폴더 내 app.js 제외한 파일들
-], { eager: true });
+], {eager: true});
 
 // Alpine 시작
 Alpine.start();

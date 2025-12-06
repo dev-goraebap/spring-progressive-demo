@@ -3,7 +3,7 @@
 
 @param List<SeriesViewModel> seriesList
 
-@template.layout.default(title = "시리즈", content = @`
+@template.shared.layout.default(title = "시리즈", content = @`
     <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100 z-[999]">
         <div>
             <h1 class="font-bold">시리즈</h1>

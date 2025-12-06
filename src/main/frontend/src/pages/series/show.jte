@@ -2,7 +2,7 @@
 
 @param SeriesDetailViewModel series
 
-@template.layout.default(title = series.getName(), content = @`
+@template.shared.layout.default(title = series.getName(), content = @`
     <div class="w-full p-4 border-b border-base-300 flex items-center gap-2 sticky top-0 bg-base-100 z-[999]">
         <a href="/series" class="flex items-center gap-1">
             <div class="w-5">@template.shared.svg.back()</div>
@@ -58,7 +58,7 @@
             @for(var post : series.getPosts())
                 <a href="/posts/${post.getSlug()}" class="flex gap-3 p-4 hover:bg-base-200 transition-colors">
                     <%-- 썸네일 --%>
-                    <div class="w-20 sm:w-24 h-12 sm:h-14 rounded overflow-hidden flex-shrink-0 bg-base-200">
+                    <div class="w-24 sm:w-40 h-16 sm:h-24 rounded overflow-hidden flex-shrink-0 bg-base-200">
                         @if(post.getThumbnailUrl() != null)
                             @template.shared.components.img(
                                 url = post.getThumbnailUrl(),

@@ -4,49 +4,48 @@
 @param Pagination<PostViewModel> postData
 
 @for(var post: postData.getItems())
-    <div class="border-b border-base-300">
-        <div class="p-4 flex flex-col items-start gap-2">
+    <a href="/posts/${post.getSlug()}" class="flex gap-4 p-4 border-b border-base-300 hover:bg-base-200 transition-colors">
+        <%-- 썸네일 --%>
+        <div class="w-24 sm:w-40 h-16 sm:h-24 rounded overflow-hidden flex-shrink-0 bg-base-200">
             @if(post.getThumbnailUrl() != null)
-                <div class="w-full h-[200px] sm:h-[250px] rounded-xl overflow-hidden">
-                    @template.shared.components.img(
+                @template.shared.components.img(
                     url = post.getThumbnailUrl(),
                     dominantColor = post.getThumbnailDominantColor(),
                     alt = post.getTitle()
-                    )
+                )
+            @else
+                <div class="w-full h-full flex items-center justify-center text-base-content/20">
+                    <div class="w-8">@template.shared.svg.image()</div>
                 </div>
             @endif
-            <a href="/posts/${post.getSlug()}" class="text-xl font-bold">${post.getTitle()}</a>
-            <a href="/posts/${post.getSlug()}" class="text-sm line-clamp-2">${post.getSummary()}</a>
-            @if(post.getTags() != null && !post.getTags().isEmpty())
-                <div class="flex flex-wrap gap-2 mt-2">
-                    @for(var tag : post.getTags())
-                        <div class="text-xs">#${tag}</div>
-                    @endfor
-                </div>
-            @endif
-            <div class="w-full flex items-center justify-between mt-2">
-                <div class="flex items-center gap-4">
-                    <div class="flex gap-1 items-center">
-                        <div class="w-4">
-                            @template.shared.svg.see()
-                        </div>
-                        <div class="text-sm">${post.getViewCount()}</div>
-                    </div>
-                    <div class="flex gap-1 items-center">
-                        <div class="w-4">
-                            @template.shared.svg.comment()
-                        </div>
-                        <div class="text-sm">${post.getCommentCount()}</div>
-                    </div>
-                </div>
+        </div>
+
+        <%-- 포스트 정보 --%>
+        <div class="flex flex-col justify-center min-w-0 flex-1">
+            <h2 class="font-bold text-base sm:text-lg line-clamp-1">${post.getTitle()}</h2>
+            <p class="text-sm text-base-content/70 line-clamp-2 mt-1">${post.getSummary()}</p>
+            <div class="flex items-center gap-4 text-xs text-base-content/50 mt-2">
                 @if(post.getPublishedAt() != null)
-                    <div class="text-sm">
-                        ${post.getPublishedAt().toLocalDate().toString()}
+                    <span>${post.getPublishedAt().toLocalDate().toString()}</span>
+                @endif
+                <div class="flex items-center gap-1">
+                    <div class="w-3">@template.shared.svg.see()</div>
+                    <span>${post.getViewCount()}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-3">@template.shared.svg.comment()</div>
+                    <span>${post.getCommentCount()}</span>
+                </div>
+                @if(post.getTags() != null && !post.getTags().isEmpty())
+                    <div class="hidden sm:flex gap-2">
+                        @for(var tag : post.getTags())
+                            <span>#${tag}</span>
+                        @endfor
                     </div>
                 @endif
             </div>
         </div>
-    </div>
+    </a>
 @endfor
 @if(postData.isHasMore())
     <div id="load-more" class="flex justify-center p-4">

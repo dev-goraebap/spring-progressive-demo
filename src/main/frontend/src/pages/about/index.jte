@@ -1,4 +1,4 @@
-@template.layout.default(title = "About", content = @`
+@template.shared.layout.default(title = "About", content = @`
     <div class="relative border-b border-base-300 h-[200px] justify-center items-center">
         @template.shared.components.img(dominantColor = "#f7f4c9", url = "/images/about-bg.jpg")
         <div class="absolute left-4 bottom-[-80px] sm:bottom-[-100px]">

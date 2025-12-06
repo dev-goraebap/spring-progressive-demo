@@ -40,6 +40,20 @@
 
 @source "../**/*.jte";
 
+/* Alpine.js x-cloak */
+[x-cloak] {
+    display: none !important;
+}
+
+/* 테마 전환 트랜지션 */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+*, *::before, *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
 /* HTMX 로딩 프로그레스 바 */
 #htmx-progress {
     position: fixed;

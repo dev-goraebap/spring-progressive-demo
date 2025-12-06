@@ -1,5 +1,6 @@
 package xyz.goraebap.spring_progressive_demo.shared.jte;
 
+import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -34,26 +35,49 @@ public class JteContext {
 
     public static String currentPath() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes != null) {
-            return attributes.getRequest().getRequestURI();
+        if (attributes == null) {
+            return "";
         }
-        return "";
+        return attributes.getRequest().getRequestURI();
     }
 
     public static boolean isCurrentPath(String path) {
         return currentPath().equals(path);
     }
 
+    public static boolean isPathStartsWith(String prefix) {
+        return currentPath().startsWith(prefix);
+    }
+
     public static String getQueryParam(String name) {
         var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes != null) {
-            String value = attributes.getRequest().getParameter(name);
-            return value != null ? value : "";
+        if (attributes == null) {
+            return "";
         }
-        return "";
+        String value = attributes.getRequest().getParameter(name);
+        return value != null ? value : "";
     }
 
     public static boolean isQueryParam(String name, String value) {
         return getQueryParam(name).equals(value);
+    }
+
+    public static String getTheme() {
+        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        }
+
+        Cookie[] cookies = attributes.getRequest().getCookies();
+        if (cookies == null) {
+            return null;
+        }
+
+        for (Cookie cookie : cookies) {
+            if ("theme".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }

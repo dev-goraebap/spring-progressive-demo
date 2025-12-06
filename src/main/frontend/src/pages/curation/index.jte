@@ -4,7 +4,7 @@
 
 @param Pagination<CurationViewModel> curationData
 
-@template.layout.default(title = "RSS 큐레이션", content = @`
+@template.shared.layout.default(title = "RSS 큐레이션", content = @`
     <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100">
         <div>
             <h1 class="font-bold">RSS 큐레이션</h1>
