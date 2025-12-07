@@ -12,10 +12,12 @@
 
     <article>
         @if(post.getThumbnailUrl() != null)
-            <div class="w-full max-h-[180px] sm:max-h-[300px] overflow-hidden flex items-center justify-center">
-                <img src="${post.getThumbnailUrl()}"
-                     alt="${post.getTitle()}"
-                     class="w-full object-cover" />
+            <div class="w-full h-[180px] sm:h-[300px] overflow-hidden flex items-center justify-center">
+                @template.shared.components.img(
+                    url = post.getThumbnailUrl(),
+                    dominantColor = post.getThumbnailDominantColor(),
+                    alt = post.getTitle()
+                )
             </div>
         @endif
 
@@ -47,6 +49,17 @@
 
             <div class="prose prose-sm sm:prose-base max-w-none">
                 $unsafe{post.getContent()}
+            </div>
+        </div>
+
+        <%-- 댓글 영역 --%>
+        <div class="p-4 border-t border-base-300">
+            <div hx-get="/comments/${post.getSlug()}"
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
+                <div class="flex justify-center py-8">
+                    <span class="loading loading-spinner loading-md"></span>
+                </div>
             </div>
         </div>
     </article>
