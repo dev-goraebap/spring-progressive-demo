@@ -17,7 +17,7 @@
             <div class="flex items-center gap-4">
                 <%-- 앨범아트 (원형) --%>
                 <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 shadow-lg ring-2 ring-white/20"
-                     :class="$store.bgm.isPlaying ? 'animate-[spin_8s_linear_infinite]' : ''">
+                     :style="'transform: rotate(' + $store.bgm.rotation + 'deg)'">
                     <img x-bind:src="$store.bgm.track?.cover || '/bgm/jane-doe.webp'"
                          alt="Album Art"
                          class="w-full h-full object-cover"/>
