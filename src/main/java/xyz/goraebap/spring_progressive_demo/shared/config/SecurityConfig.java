@@ -47,7 +47,7 @@ public class SecurityConfig {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints - Static resources
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/builds/**", "/.vite/**", "/favicon.ico").permitAll()
 
                         // Public endpoints - Pages
                         .requestMatchers("/", "/login", "/error").permitAll()
