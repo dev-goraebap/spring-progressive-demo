@@ -49,4 +49,8 @@ left join post_list p on p.id = sp.post_id
 where
     s.slug = 'lib-lab'
     and s.is_published_yn = 'Y'
-order by sp.order
+order by sp.order;
+
+select *
+from app_logs
+order by created_at desc
