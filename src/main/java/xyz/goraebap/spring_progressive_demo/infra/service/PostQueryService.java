@@ -32,7 +32,11 @@ public class PostQueryService {
     }
 
     public PostViewModel getPostBySlug(String slug) {
-        var post = postViewMapper.findPostBySlug(slug);
+        return getPostBySlug(slug, "post");
+    }
+
+    public PostViewModel getPostBySlug(String slug, String postType) {
+        var post = postViewMapper.findPostBySlug(slug, postType);
         if (post != null) {
             thumbnailEnricher.enrich(post);
         }
