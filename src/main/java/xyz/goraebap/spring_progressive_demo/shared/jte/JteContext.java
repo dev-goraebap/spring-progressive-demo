@@ -62,22 +62,27 @@ public class JteContext {
         return getQueryParam(name).equals(value);
     }
 
+    private static final java.util.Set<String> VALID_THEMES = java.util.Set.of("dark", "light");
+    private static final String DEFAULT_THEME = "dark";
+
     public static String getTheme() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
-            return null;
+            return DEFAULT_THEME;
         }
 
         Cookie[] cookies = attributes.getRequest().getCookies();
         if (cookies == null) {
-            return null;
+            return DEFAULT_THEME;
         }
 
         for (Cookie cookie : cookies) {
             if ("theme".equals(cookie.getName())) {
-                return cookie.getValue();
+                String theme = cookie.getValue();
+                // 유효한 테마만 허용, 그 외는 기본값 반환
+                return VALID_THEMES.contains(theme) ? theme : DEFAULT_THEME;
             }
         }
-        return null;
+        return DEFAULT_THEME;
     }
 }
