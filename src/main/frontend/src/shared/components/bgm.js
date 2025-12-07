@@ -36,6 +36,11 @@ function formatTime(seconds) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
+// 회전 각도 전역 유지
+if (typeof window.bgmRotation === 'undefined') {
+    window.bgmRotation = 0;
+}
+
 // BGM Alpine Store 등록
 Alpine.store('bgm', {
     isPlaying: false,
@@ -45,9 +50,13 @@ Alpine.store('bgm', {
     progress: 0,
     volume: 30,
     isMuted: false,
+    rotation: window.bgmRotation,
 
     init() {
         const audio = window.bgmAudio;
+
+        // 회전 애니메이션 시작
+        this._startRotation();
 
         audio.addEventListener('play', () => {
             this.isPlaying = true;
@@ -125,5 +134,19 @@ Alpine.store('bgm', {
     toggleMute() {
         this.isMuted = !this.isMuted;
         window.bgmAudio.muted = this.isMuted;
+    },
+
+    _startRotation() {
+        if (window.bgmRotationStarted) return;
+        window.bgmRotationStarted = true;
+
+        const animate = () => {
+            if (this.isPlaying) {
+                window.bgmRotation += 0.5; // 속도 조절 (값이 클수록 빠름)
+                this.rotation = window.bgmRotation;
+            }
+            requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
     }
 });

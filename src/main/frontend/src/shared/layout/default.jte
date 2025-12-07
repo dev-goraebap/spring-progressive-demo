@@ -18,7 +18,6 @@
         <script>
             document.documentElement.setAttribute('data-theme',
                 window.matchMedia('(prefers-color-scheme: light)').matches ? 'cupcake' : 'dark');
-            console.log('실행됨!!');
         </script>
     @endif
 
@@ -52,7 +51,7 @@
 </div>
 
 <!-- MOBILE DRAWER -->
-<div x-show="drawer" x-cloak
+<div id="mobile-drawer" hx-preserve="true" x-show="drawer" x-cloak
      class="sm:hidden fixed top-0 right-0 h-full w-[300px] bg-base-100 z-[10001] overflow-y-auto p-4 pb-20"
      x-transition:enter="transition ease-out duration-300"
      x-transition:enter-start="translate-x-full"
@@ -73,14 +72,6 @@
 
     @template.shared.components.aside()
 </div>
-
-<!-- MOBILE THEME TOGGLE -->
-<%--<div class="sm:hidden fixed top-2 right-2 z-[999]">--%>
-<%--    <button @click="$store.theme.toggle()" class="btn btn-ghost btn-circle btn-sm">--%>
-<%--        <div class="w-4" x-show="$store.theme.current === 'dark'">@template.shared.svg.sun()</div>--%>
-<%--        <div class="w-4" x-show="$store.theme.current === 'cupcake'" x-cloak>@template.shared.svg.moon()</div>--%>
-<%--    </button>--%>
-<%--</div>--%>
 
 <div class="min-h-screen flex justify-center">
     <!-- DESKTOP NAV UI -->
@@ -126,13 +117,13 @@
 
     <!-- MAIN CONTENT UI -->
     <div class="w-full sm:border-x border-base-300 pb-16 sm:pb-0 sm:min-w-[698px] sm:w-[698px]">
-        <main>
+        <main id="main-content">
             ${content}
         </main>
     </div>
 
     <!-- DESKTOP SUB CONTENT UI -->
-    <div class="hidden lg:flex lg:flex-col min-w-[300px] w-[300px] p-4">
+    <div id="desktop-aside" hx-preserve="true" class="hidden lg:flex lg:flex-col min-w-[300px] w-[300px] p-4">
         <div class="sticky top-4">
             @template.shared.components.aside()
         </div>
