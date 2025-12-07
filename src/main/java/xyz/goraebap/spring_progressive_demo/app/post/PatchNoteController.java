@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.post.presentation.web;
+package xyz.goraebap.spring_progressive_demo.app.post;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
 @Controller
 @RequestMapping("/patch-notes")
 @RequiredArgsConstructor
-public class PatchNotePageController {
+public class PatchNoteController {
 
     private final PostQueryService postQueryService;
 

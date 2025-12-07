@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.feed.presentation.web;
+package xyz.goraebap.spring_progressive_demo.app.feed;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -16,7 +16,7 @@ import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class FeedPageController {
+public class FeedController {
 
     private final PostQueryService postQueryService;
     private final CurationQueryService curationQueryService;

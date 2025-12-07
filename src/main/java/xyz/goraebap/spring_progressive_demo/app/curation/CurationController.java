@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.curation.presentation.web;
+package xyz.goraebap.spring_progressive_demo.app.curation;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -13,7 +13,7 @@ import xyz.goraebap.spring_progressive_demo.infra.service.CurationQueryService;
 @Controller
 @RequestMapping("/curations")
 @RequiredArgsConstructor
-public class CurationPageController {
+public class CurationController {
 
     private final CurationQueryService curationQueryService;
 
