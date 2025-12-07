@@ -110,7 +110,109 @@
         left join post_list p on p.id = sp.post_id
         where s.slug = #{slug}
           and s.is_published_yn = 'Y'
-        order by sp."order"
+        order by sp."order" desc
+    </select>
+
+    <resultMap id="postSeriesNavResultMap" type="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel">
+        <result property="seriesId" column="series_id"/>
+        <result property="seriesSlug" column="series_slug"/>
+        <result property="seriesName" column="series_name"/>
+        <result property="seriesStatus" column="series_status"/>
+        <result property="thumbnailKey" column="thumbnail_key"/>
+        <result property="thumbnailMetadata" column="thumbnail_metadata"/>
+        <result property="totalCount" column="total_count"/>
+        <result property="currentOrder" column="current_order"/>
+        <association property="prev" javaType="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel$NavItem">
+            <result property="id" column="prev_id"/>
+            <result property="slug" column="prev_slug"/>
+            <result property="title" column="prev_title"/>
+        </association>
+        <association property="next" javaType="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel$NavItem">
+            <result property="id" column="next_id"/>
+            <result property="slug" column="next_slug"/>
+            <result property="title" column="next_title"/>
+        </association>
+    </resultMap>
+
+    <select id="findSeriesNavByPostId" resultMap="postSeriesNavResultMap">
+        with series_base as (
+            select s.id as series_id
+                 , s.slug as series_slug
+                 , s.name as series_name
+                 , s.status as series_status
+                 , sp."order" as raw_order
+            from series_posts sp
+            inner join series s on s.id = sp.series_id
+            where sp.post_id = #{postId}
+              and s.is_published_yn = 'Y'
+            limit 1
+        ),
+        series_posts_ordered as (
+            select sp.post_id
+                 , sp."order"
+                 , p.slug
+                 , p.title
+                 , row_number() over (order by sp."order" desc) as display_order
+            from series_posts sp
+            inner join posts p on p.id = sp.post_id
+            inner join series_base sb on sp.series_id = sb.series_id
+            where p.is_published_yn = 'Y'
+        ),
+        series_info as (
+            select sb.series_id
+                 , sb.series_slug
+                 , sb.series_name
+                 , sb.series_status
+                 , sb.raw_order
+                 , spo.display_order as current_order
+            from series_base sb
+            inner join series_posts_ordered spo on spo.post_id = #{postId}
+        ),
+        total as (
+            select count(*) as cnt from series_posts_ordered
+        ),
+        prev_post as (
+            select spo.post_id as id, spo.slug, spo.title
+            from series_posts_ordered spo
+            inner join series_info si on true
+            where spo."order" &gt; si.raw_order
+            order by spo."order" asc
+            limit 1
+        ),
+        next_post as (
+            select spo.post_id as id, spo.slug, spo.title
+            from series_posts_ordered spo
+            inner join series_info si on true
+            where spo."order" &lt; si.raw_order
+            order by spo."order" desc
+            limit 1
+        ),
+        media as (
+            select a.record_id, b.key, b.metadata
+            from attachments a
+            inner join blobs b on b.id = a.blob_id
+            where a.record_type = 'series'
+              and a.name = 'thumbnail'
+        )
+        select si.series_id
+             , si.series_slug
+             , si.series_name
+             , si.series_status
+             , m.key as thumbnail_key
+             , m.metadata as thumbnail_metadata
+             , t.cnt as total_count
+             , si.current_order
+             , pp.id as prev_id
+             , pp.slug as prev_slug
+             , pp.title as prev_title
+             , np.id as next_id
+             , np.slug as next_slug
+             , np.title as next_title
+        from series_info si
+        cross join total t
+        left join prev_post pp on true
+        left join next_post np on true
+        left join media m on m.record_id = text(si.series_id)
     </select>
 
 </mapper>

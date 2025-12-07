@@ -34,6 +34,12 @@ public class FeedController {
         var curationItems = curationQueryService.getLatestItems(3);
         model.addAttribute("curationItems", curationItems);
 
+        // 첫 페이지일 때만 최근 패치노트 조회
+        if (dto.getPage() == 1) {
+            var latestPatchNote = postQueryService.getLatestPatchNote();
+            model.addAttribute("latestPatchNote", latestPatchNote);
+        }
+
         if (htmxRequest && !htmxBoosted) {
             return "pages/feed/_list";
         }

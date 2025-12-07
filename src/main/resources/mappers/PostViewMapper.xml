@@ -132,4 +132,25 @@
         left join tags t on t.id = pt.tag_id
     </select>
 
+    <select id="findLatestByPostType" resultType="PostViewModel">
+        select a.id
+             , a.slug
+             , a.title
+             , a.summary
+             , a.view_count as viewCount
+             , a.published_at as publishedAt
+             , c.key as thumbnailKey
+             , c.metadata as thumbnailMetadata
+             , (select count(*) from comments where post_id = a.id and deleted_at is null) as commentCount
+        from posts a
+        left join attachments b on b.record_id = text(a.id)
+            and b.record_type = 'post'
+            and b.name = 'thumbnail'
+        left join blobs c on c.id = b.blob_id
+        where a.post_type = #{postType}
+          and a.is_published_yn = 'Y'
+        order by a.published_at desc
+        limit 1
+    </select>
+
 </mapper>

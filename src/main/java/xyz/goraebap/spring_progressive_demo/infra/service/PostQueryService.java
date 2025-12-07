@@ -42,4 +42,12 @@ public class PostQueryService {
         }
         return post;
     }
+
+    public PostViewModel getLatestPatchNote() {
+        var post = postViewMapper.findLatestByPostType("patch-note");
+        if (post != null) {
+            thumbnailEnricher.enrich(post);
+        }
+        return post;
+    }
 }
