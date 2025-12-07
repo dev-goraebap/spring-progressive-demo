@@ -1,7 +1,17 @@
 import Alpine from "alpinejs";
 
+// 유효한 테마만 허용, 그 외는 dark로 리셋
+const validThemes = ['dark', 'light'];
+const savedTheme = document.documentElement.getAttribute('data-theme');
+const initialTheme = validThemes.includes(savedTheme) ? savedTheme : 'dark';
+
+// 잘못된 테마가 저장되어 있으면 즉시 수정
+if (savedTheme && !validThemes.includes(savedTheme)) {
+    document.documentElement.setAttribute('data-theme', initialTheme);
+}
+
 Alpine.store('theme', {
-    current: document.documentElement.getAttribute('data-theme') || 'dark',
+    current: initialTheme,
 
     toggle() {
         // 트랜지션 클래스 추가
