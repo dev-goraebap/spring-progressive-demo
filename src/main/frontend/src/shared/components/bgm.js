@@ -2,8 +2,13 @@ import Alpine from 'alpinejs';
 
 // BGM 플레이리스트
 const playlist = [
-    { title: 'Jane Doe', artist: '요네즈 켄시 와 우타다 히카루', src: '/bgm/jane-doe.mp3', cover: '/bgm/jane-doe.webp' },
-    { title: 'Dear', artist: 'Nanase', src: '/bgm/nanase-dear.mp3', cover: '/bgm/nanase-dear.png' }
+    { title: 'Jane Doe', artist: '요네즈 켄시 와 우타다 히카루', src: '/bgm/bgm01.mp3', cover: '/bgm/bgm01.webp' },
+    { title: '34+35 slow (guitar)', artist: 'Ariana grande (cover)', src: '/bgm/bgm02.mp3', cover: '/bgm/bgm02.webp' },
+    { title: 'Eternal Anamnesis', artist: 'Genshin Impact Main Theme', src: '/bgm/bgm03.mp3', cover: '/bgm/bgm03.jpg' },
+    { title: 'Reminiscence', artist: '테일즈위버', src: '/bgm/bgm04-1.mp3', cover: '/bgm/bgm04-1.jpg' },
+    { title: '어릴 적 할머니가 들려주신 옛 전설', artist: '마비노기', src: '/bgm/bgm04-2.mp3', cover: '/bgm/bgm04-2.jpg' },
+    { title: '나비보벳따우', artist: '동물의숲', src: '/bgm/bgm04-3.mp3', cover: '/bgm/bgm04-3.jpg' },
+    { title: 'Dear', artist: 'Nanase', src: '/bgm/bgm05.mp3', cover: '/bgm/bgm05.png' },
 ];
 
 // Audio 객체 전역 유지 (페이지 이동해도 끊기지 않게)

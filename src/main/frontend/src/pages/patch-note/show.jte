@@ -48,7 +48,7 @@
         <%-- 댓글 영역 --%>
         <div class="p-4 border-t border-base-300">
             <div hx-get="/comments/${post.getSlug()}"
-                 hx-trigger="load"
+                 hx-trigger="load once"
                  hx-swap="innerHTML">
                 <div class="flex justify-center py-8">
                     <span class="loading loading-spinner loading-md"></span>
