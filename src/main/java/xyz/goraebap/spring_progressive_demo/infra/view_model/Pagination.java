@@ -6,7 +6,7 @@ import java.util.List;
 
 @Getter
 public class Pagination<T> {
-    public static final int DEFAULT_PAGE_SIZE = 5;
+    public static final int DEFAULT_PAGE_SIZE = 10;
 
     private final List<T> items;
     private final int currentPage;

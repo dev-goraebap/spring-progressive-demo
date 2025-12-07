@@ -18,5 +18,7 @@ public interface PostViewMapper {
 
     int countPosts(@Param("postType") String postType);
 
-    PostViewModel findPostBySlug(@Param("slug") String slug);
+    PostViewModel findPostBySlug(@Param("slug") String slug, @Param("postType") String postType);
+
+    PostViewModel findLatestByPostType(@Param("postType") String postType);
 }

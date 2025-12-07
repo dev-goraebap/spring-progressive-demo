@@ -3,6 +3,7 @@ package xyz.goraebap.spring_progressive_demo.infra.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.SeriesViewMapper;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesViewModel;
 
@@ -31,5 +32,13 @@ public class SeriesQueryService {
         series.getPosts().forEach(thumbnailEnricher::enrich);
 
         return series;
+    }
+
+    public PostSeriesNavViewModel getSeriesNavByPostId(Long postId) {
+        var nav = seriesViewMapper.findSeriesNavByPostId(postId);
+        if (nav != null) {
+            thumbnailEnricher.enrich(nav);
+        }
+        return nav;
     }
 }

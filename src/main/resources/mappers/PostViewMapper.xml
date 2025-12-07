@@ -46,6 +46,14 @@
                 and b.name = 'thumbnail'
             left join blobs c on c.id = b.blob_id
             where a.post_type = #{postType}
+              and a.is_published_yn = 'Y'
+              and not exists (
+                  select 1
+                  from series_posts sp
+                  inner join series s on s.id = sp.series_id
+                  where sp.post_id = a.id
+                    and s.slug = 'game-series'
+              )
             <choose>
                 <when test="sortBy == 'viewCount'">
                     order by a.view_count ${sortDir}, a.published_at desc
@@ -76,8 +84,16 @@
 
     <select id="countPosts" resultType="int">
         select count(*)
-        from posts
-        where post_type = #{postType}
+        from posts a
+        where a.post_type = #{postType}
+          and a.is_published_yn = 'Y'
+          and not exists (
+              select 1
+              from series_posts sp
+              inner join series s on s.id = sp.series_id
+              where sp.post_id = a.id
+                and s.slug = 'game-series'
+          )
     </select>
 
     <select id="findPostBySlug" resultMap="postViewModelResultMap">
@@ -109,9 +125,32 @@
                 and b.name = 'thumbnail'
             left join blobs c on c.id = b.blob_id
             where a.slug = #{slug}
+              and a.post_type = #{postType}
+              and a.is_published_yn = 'Y'
         ) p
         left join post_tags pt on pt.post_id = p.id
         left join tags t on t.id = pt.tag_id
+    </select>
+
+    <select id="findLatestByPostType" resultType="PostViewModel">
+        select a.id
+             , a.slug
+             , a.title
+             , a.summary
+             , a.view_count as viewCount
+             , a.published_at as publishedAt
+             , c.key as thumbnailKey
+             , c.metadata as thumbnailMetadata
+             , (select count(*) from comments where post_id = a.id and deleted_at is null) as commentCount
+        from posts a
+        left join attachments b on b.record_id = text(a.id)
+            and b.record_type = 'post'
+            and b.name = 'thumbnail'
+        left join blobs c on c.id = b.blob_id
+        where a.post_type = #{postType}
+          and a.is_published_yn = 'Y'
+        order by a.published_at desc
+        limit 1
     </select>
 
 </mapper>

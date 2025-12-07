@@ -13,6 +13,7 @@ import.meta.glob([
     '../shared/**/*.js',
     '../pages/**/*.js',
     '../layout/**/*.js',
+    '../entities/**/*.js',
 ], {eager: true});
 
 // Alpine 시작

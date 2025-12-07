@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.series.presentation.web;
+package xyz.goraebap.spring_progressive_demo.app.series;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import xyz.goraebap.spring_progressive_demo.infra.service.SeriesQueryService;
 @Controller
 @RequestMapping("/series")
 @RequiredArgsConstructor
-public class SeriesPageController {
+public class SeriesController {
 
     private final SeriesQueryService seriesQueryService;
 

@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.feed.presentation.web;
+package xyz.goraebap.spring_progressive_demo.app.feed;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -16,7 +16,7 @@ import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class FeedPageController {
+public class FeedController {
 
     private final PostQueryService postQueryService;
     private final CurationQueryService curationQueryService;
@@ -33,6 +33,12 @@ public class FeedPageController {
 
         var curationItems = curationQueryService.getLatestItems(3);
         model.addAttribute("curationItems", curationItems);
+
+        // 첫 페이지일 때만 최근 패치노트 조회
+        if (dto.getPage() == 1) {
+            var latestPatchNote = postQueryService.getLatestPatchNote();
+            model.addAttribute("latestPatchNote", latestPatchNote);
+        }
 
         if (htmxRequest && !htmxBoosted) {
             return "pages/feed/_list";

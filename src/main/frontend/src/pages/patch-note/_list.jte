@@ -4,7 +4,7 @@
 @param Pagination<PostViewModel> postData
 
 @for(var post: postData.getItems())
-    <a href="/posts/${post.getSlug()}" class="flex gap-4 p-4 border-b border-base-300 hover:bg-base-200 transition-colors">
+    <a href="/patch-notes/${post.getSlug()}" class="flex gap-4 p-4 border-b border-base-300 hover:bg-base-200 transition-colors">
         <%-- 썸네일 --%>
         <div class="w-24 sm:w-40 h-16 sm:h-24 rounded overflow-hidden flex-shrink-0 bg-base-200">
             @if(post.getThumbnailUrl() != null)
