@@ -6,7 +6,7 @@
     <select id="findByPostSlug" resultType="xyz.goraebap.spring_progressive_demo.infra.view_model.CommentViewModel">
         select c.id
              , c.nickname
-             , c.comment
+             , c.commentEntity
              , c.avatar_no as avatarNo
              , c.created_at as createdAt
         from comments c
@@ -22,12 +22,6 @@
         inner join posts p on p.id = c.post_id
         where p.slug = #{postSlug}
           and c.deleted_at is null
-    </select>
-
-    <select id="findPostIdBySlug" resultType="Long">
-        select id
-        from posts
-        where slug = #{postSlug}
     </select>
 
 </mapper>

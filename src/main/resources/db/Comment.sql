@@ -8,7 +8,7 @@ create table comments
             unique,
     avatar_no  integer                 not null,
     nickname   varchar(50)             not null,
-    comment    varchar(1000)           not null,
+    commentEntity    varchar(1000)           not null,
     created_at timestamp default now() not null,
     deleted_at timestamp,
     post_id    integer                 not null

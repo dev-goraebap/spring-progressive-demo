@@ -19,6 +19,8 @@ public class PostEntity {
     @Id
     private Long id;
 
+    private String slug;
+
     @Column(name = "view_count")
     private Integer viewCount;
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "comments")
 @Getter
 @NoArgsConstructor
-public class Comment {
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +38,8 @@ public class Comment {
 
     private LocalDateTime deletedAt;
 
-    public static Comment create(String requestId, Long postId, String nickname, String comment, Integer avatarNo) {
-        Comment c = new Comment();
+    public static CommentEntity create(String requestId, Long postId, String nickname, String comment, Integer avatarNo) {
+        CommentEntity c = new CommentEntity();
         c.requestId = requestId;
         c.postId = postId;
         c.nickname = nickname;

@@ -11,6 +11,4 @@ public interface CommentViewMapper {
     List<CommentViewModel> findByPostSlug(@Param("postSlug") String postSlug);
 
     int countByPostSlug(@Param("postSlug") String postSlug);
-
-    Long findPostIdBySlug(@Param("postSlug") String postSlug);
 }
