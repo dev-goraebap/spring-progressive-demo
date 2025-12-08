@@ -15,7 +15,7 @@
     <form action="/comments/${postSlug}"
           method="post"
           hx-post="/comments/${postSlug}"
-          hx-target="#commentEntity-section"
+          hx-target="#comment-section"
           hx-swap="outerHTML"
           class="space-y-4">
 
@@ -41,8 +41,8 @@
             </label>
         </div>
 
-        <textarea name="commentEntity"
-                  x-model="commentEntity"
+        <textarea name="comment"
+                  x-model="comment"
                   @input="checkValid()"
                   placeholder="입력한 댓글은 수정하거나 삭제할 수 없어요. 또한 허위사실, 욕설, 사칭 등 댓글은 통보없이 삭제될 수 있습니다."
                   class="w-full textarea rounded-xl"

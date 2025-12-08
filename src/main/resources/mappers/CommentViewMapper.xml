@@ -6,7 +6,7 @@
     <select id="findByPostSlug" resultType="xyz.goraebap.spring_progressive_demo.infra.view_model.CommentViewModel">
         select c.id
              , c.nickname
-             , c.commentEntity
+             , c.comment
              , c.avatar_no as avatarNo
              , c.created_at as createdAt
         from comments c

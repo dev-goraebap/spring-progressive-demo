@@ -23,14 +23,14 @@ public class ViewCountHelper {
     public void process(Long postId, String viewedPosts, HttpServletResponse response) {
         Set<String> viewedSet = viewedPosts.isEmpty()
                 ? new HashSet<>()
-                : Arrays.stream(viewedPosts.split(",")).collect(Collectors.toSet());
+                : Arrays.stream(viewedPosts.split("\\|")).collect(Collectors.toSet());
 
         String postIdStr = String.valueOf(postId);
         if (!viewedSet.contains(postIdStr)) {
             postService.incrementViewCount(postId);
             viewedSet.add(postIdStr);
 
-            Cookie cookie = new Cookie(VIEWED_POSTS_COOKIE, String.join(",", viewedSet));
+            Cookie cookie = new Cookie(VIEWED_POSTS_COOKIE, String.join("|", viewedSet));
             cookie.setMaxAge(COOKIE_MAX_AGE);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
