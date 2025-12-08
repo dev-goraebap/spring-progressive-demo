@@ -16,8 +16,8 @@
     @endif
 
     <%-- 댓글 폼 --%>
-    @template.entities.comments.form(postSlug = postSlug, commentCount = commentCount, requestId = requestId)
+    @template.entities.comment.form(postSlug = postSlug, commentCount = commentCount, requestId = requestId)
 
     <%-- 댓글 목록 --%>
-    @template.entities.comments.list(comments = comments)
+    @template.entities.comment.list(comments = comments)
 </div>

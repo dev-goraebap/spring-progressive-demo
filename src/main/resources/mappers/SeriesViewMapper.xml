@@ -43,11 +43,12 @@
         <id property="id" column="id"/>
         <result property="slug" column="slug"/>
         <result property="name" column="name"/>
+        <result property="description" column="description"/>
         <result property="status" column="status"/>
         <result property="publishedAt" column="published_at"/>
         <result property="thumbnailKey" column="thumbnail_key"/>
         <result property="thumbnailMetadata" column="thumbnail_metadata"/>
-        <collection property="posts" ofType="xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel$PostItem">
+        <collection property="posts" ofType="PostViewModel">
             <id property="id" column="post_id"/>
             <result property="slug" column="post_slug"/>
             <result property="title" column="post_title"/>
@@ -92,6 +93,7 @@
         select s.id
              , s.slug
              , s.name
+             , s.description
              , s.status
              , s.published_at
              , sm.key as thumbnail_key

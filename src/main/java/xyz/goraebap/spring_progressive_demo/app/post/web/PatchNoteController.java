@@ -1,15 +1,13 @@
-package xyz.goraebap.spring_progressive_demo.app.post;
+package xyz.goraebap.spring_progressive_demo.app.post.web;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import xyz.goraebap.spring_progressive_demo.app.post.dto.PatchNoteIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
@@ -20,6 +18,7 @@ import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
 public class PatchNoteController {
 
     private final PostQueryService postQueryService;
+    private final ViewCountHelper viewCountHelper;
 
     @GetMapping
     public String index(
@@ -32,7 +31,7 @@ public class PatchNoteController {
         model.addAttribute("postData", postData);
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/patch-note/_list";
+            return "pages/patch-note/_htmxList";
         }
         return "pages/patch-note/index";
     }
@@ -40,12 +39,18 @@ public class PatchNoteController {
     @GetMapping("/{slug}")
     public String show(
             @PathVariable String slug,
+            @CookieValue(name = "viewed_posts", defaultValue = "") String viewedPosts,
+            HttpServletResponse response,
             Model model
     ) {
         var post = postQueryService.getPostBySlug(slug, "patch-note");
         if (post == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+
+        // 조회수 증가 처리
+        viewCountHelper.process(post.getId(), viewedPosts, response);
+
         model.addAttribute("post", post);
         return "pages/patch-note/show";
     }

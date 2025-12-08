@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.comment;
+package xyz.goraebap.spring_progressive_demo.app.comment.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import xyz.goraebap.spring_progressive_demo.app.comment.CommentService;
 import xyz.goraebap.spring_progressive_demo.app.comment.dto.CreateCommentRequest;
 
 @Controller
@@ -31,7 +32,7 @@ public class CommentController {
         model.addAttribute("commentCount", commentCount);
         model.addAttribute("requestId", commentService.generateRequestId());
 
-        return "entities/comments/index";
+        return "entities/comment/index";
     }
 
     /**
@@ -55,6 +56,6 @@ public class CommentController {
         model.addAttribute("requestId", commentService.generateRequestId());
         model.addAttribute("success", true);
 
-        return "entities/comments/index";
+        return "entities/comment/index";
     }
 }

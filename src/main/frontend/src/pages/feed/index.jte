@@ -8,17 +8,28 @@
 @param List<CurationViewModel> curationItems
 @param PostViewModel latestPatchNote = null
 
-@template.shared.layout.default(title = "피드", content = @`
-    <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100 z-[999]">
-        <h1 class="font-bold">피드</h1>
-        <div class="flex gap-2 text-sm shrink-0">
-            <div class="w-5">@template.shared.svg.filter()</div>
-            <a href="/?sort=viewCount,desc"
-               class="${getQueryParam("sort").startsWith("viewCount") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">조회수</a>
-            <a href="/?sort=publishedAt,desc"
-               class="${getQueryParam("sort").startsWith("publishedAt") ? "text-primary" : ""}">최근</a>
-        </div>
-    </div>
+!{var firstPost = postData.getItems().isEmpty() ? null : postData.getItems().get(0);}
+!{var feedOgImage = firstPost != null && firstPost.getThumbnailUrl() != null ? firstPost.getThumbnailUrl() : null;}
+!{var pageDescription = "개발 관련 글과 팁을 공유합니다.";}
+
+@template.shared.layout.default(
+    title = "피드",
+    description = pageDescription,
+    ogImage = feedOgImage,
+    content = @`
+    @template.shared.components.appHeader(
+        title = "피드",
+        description = pageDescription,
+        right = @`
+            <div class="flex gap-2 text-sm shrink-0">
+                <div class="w-5">@template.shared.svg.filter()</div>
+                <a href="/?sort=viewCount,desc"
+                   class="${getQueryParam("sort").startsWith("viewCount") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">조회수</a>
+                <a href="/?sort=publishedAt,desc"
+                   class="${getQueryParam("sort").startsWith("publishedAt") ? "text-primary" : ""}">최근</a>
+            </div>
+        `
+    )
 
     <div class="border-b border-base-300">
         @template.pages.feed._curationNews(items = curationItems)
@@ -69,7 +80,10 @@
     @endif
 
     @if(!postData.getItems().isEmpty())
-        @template.pages.feed._list(postData = postData)
+        <div id="post-list">
+            @template.entities.post.list(items = postData.getItems())
+        </div>
+        @template.entities.post.pagination(postData = postData)
     @else
         <div class="w-full flex flex-col items-center p-10 gap-4">
             <div class="w-2/3">

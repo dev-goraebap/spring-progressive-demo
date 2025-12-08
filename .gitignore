@@ -45,3 +45,5 @@ src/main/resources/static/.vite
 src/main/resources/static/builds
 jte-classes
 node_modules
+
+test.sql

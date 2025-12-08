@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.curation;
+package xyz.goraebap.spring_progressive_demo.app.curation.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -28,7 +28,7 @@ public class CurationController {
         model.addAttribute("curationData", curationData);
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/curation/_list";
+            return "pages/curation/_htmxList";
         }
         return "pages/curation/index";
     }

@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.feed;
+package xyz.goraebap.spring_progressive_demo.app.feed.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -41,7 +41,7 @@ public class FeedController {
         }
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/feed/_list";
+            return "pages/feed/_htmxList";
         }
         return "pages/feed/index";
     }

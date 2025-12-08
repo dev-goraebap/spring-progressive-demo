@@ -24,10 +24,4 @@
           and c.deleted_at is null
     </select>
 
-    <select id="findPostIdBySlug" resultType="Long">
-        select id
-        from posts
-        where slug = #{postSlug}
-    </select>
-
 </mapper>
