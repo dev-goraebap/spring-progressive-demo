@@ -3,10 +3,18 @@
 
 @param List<SeriesViewModel> seriesList
 
-@template.shared.layout.default(title = "시리즈", content = @`
+!{var firstSeries = seriesList.isEmpty() ? null : seriesList.get(0);}
+!{var seriesOgImage = firstSeries != null && firstSeries.getThumbnailUrl() != null ? firstSeries.getThumbnailUrl() : null;}
+!{var pageDescription = "연재 형태로 작성된 글들을 시리즈별로 모아볼 수 있습니다.";}
+
+@template.shared.layout.default(
+    title = "시리즈",
+    description = pageDescription,
+    ogImage = seriesOgImage,
+    content = @`
     @template.shared.components.appHeader(
         title = "시리즈",
-        description = "연재 형태로 작성된 글들을 시리즈별로 모아볼 수 있습니다."
+        description = pageDescription
     )
 
     @if(!seriesList.isEmpty())

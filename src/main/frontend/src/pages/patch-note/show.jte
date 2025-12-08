@@ -2,7 +2,11 @@
 
 @param PostViewModel post
 
-@template.shared.layout.default(title = post.getTitle(), content = @`
+@template.shared.layout.default(
+    title = post.getTitle(),
+    description = post.getSummary(),
+    ogImage = post.getThumbnailUrl(),
+    content = @`
     @template.shared.components.appHeader(backAction = true, backUrl = "/patch-notes", title = "패치노트 목록")
 
     <article>

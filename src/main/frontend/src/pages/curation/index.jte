@@ -4,10 +4,15 @@
 
 @param Pagination<CurationViewModel> curationData
 
-@template.shared.layout.default(title = "RSS 큐레이션", content = @`
+!{var pageDescription = "매일 업데이트되는 개발 트렌드를 전해드려요.";}
+
+@template.shared.layout.default(
+    title = "RSS 큐레이션",
+    description = pageDescription,
+    content = @`
     @template.shared.components.appHeader(
         title = "RSS 큐레이션",
-        description = "매일 업데이트되는 개발 트렌드를 전해드려요.",
+        description = pageDescription,
         right = @`
             <div class="flex gap-2 text-sm shrink-0">
                 <div class="w-5">@template.shared.svg.filter()</div>

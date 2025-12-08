@@ -1,8 +1,13 @@
 @import static xyz.goraebap.spring_progressive_demo.shared.jte.JteContext.*
 
 @param String title = "Demo"
+@param String description = "dev.goraebap 블로그입니다."
+@param String ogImage = null
 @param gg.jte.Content content
 @param gg.jte.Content subContent = @``
+
+!{var siteName = "데브고래밥";}
+!{var finalOgImage = ogImage != null ? ogImage : "/images/og-default.png";}
 
 <!DOCTYPE html>
 <html lang="ko" data-theme="${getTheme()}" class="overflow-y-scroll">
@@ -10,7 +15,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="htmx-config" content='{"globalViewTransitions": true}'>
-    <title>데브고래밥 | ${title}</title>
+    <meta name="description" content="${description}">
+
+    <%-- Open Graph --%>
+    <meta property="og:title" content="${siteName} | ${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:image" content="${finalOgImage}">
+    <meta property="og:url" content="${currentUrl()}">
+    <meta property="og:type" content="article">
+
+    <%-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${siteName} | ${title}">
+    <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="${finalOgImage}">
+
+    <title>${siteName} | ${title}</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
 
     <%-- 쿠키 없을 때 시스템 설정 감지 (FOUC 방지) --%>

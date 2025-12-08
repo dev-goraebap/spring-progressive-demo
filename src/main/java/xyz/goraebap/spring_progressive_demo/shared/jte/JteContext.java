@@ -58,6 +58,27 @@ public class JteContext {
         return value != null ? value : "";
     }
 
+    public static String currentUrl() {
+        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return "";
+        }
+        var request = attributes.getRequest();
+        String scheme = request.getHeader("X-Forwarded-Proto");
+        if (scheme == null) {
+            scheme = request.getScheme();
+        }
+        String host = request.getHeader("X-Forwarded-Host");
+        if (host == null) {
+            host = request.getServerName();
+            int port = request.getServerPort();
+            if ((scheme.equals("http") && port != 80) || (scheme.equals("https") && port != 443)) {
+                host += ":" + port;
+            }
+        }
+        return scheme + "://" + host + request.getRequestURI();
+    }
+
     public static boolean isQueryParam(String name, String value) {
         return getQueryParam(name).equals(value);
     }

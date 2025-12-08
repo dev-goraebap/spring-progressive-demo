@@ -11,6 +11,7 @@ public class SeriesDetailViewModel implements ThumbnailEnrichable {
     private Long id;
     private String slug;
     private String name;
+    private String description;
     private String status;
     private LocalDateTime publishedAt;
     private String thumbnailKey;

@@ -4,10 +4,15 @@
 
 @param Pagination<PostViewModel> postData
 
-@template.shared.layout.default(title = "패치노트", content = @`
+!{var pageDescription = "블로그의 모든 주목할 만한 변경 사항이 기록됩니다.";}
+
+@template.shared.layout.default(
+    title = "패치노트",
+    description = pageDescription,
+    content = @`
     @template.shared.components.appHeader(
         title = "패치노트",
-        description = "블로그의 모든 주목할 만한 변경 사항이 기록됩니다.",
+        description = pageDescription,
         right = @`
             <div class="flex gap-2 text-sm shrink-0">
                 <div class="w-5">@template.shared.svg.filter()</div>

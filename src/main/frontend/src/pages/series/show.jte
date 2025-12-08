@@ -2,7 +2,11 @@
 
 @param SeriesDetailViewModel series
 
-@template.shared.layout.default(title = series.getName(), content = @`
+@template.shared.layout.default(
+    title = series.getName(),
+    description = series.getDescription(),
+    ogImage = series.getThumbnailUrl(),
+    content = @`
     @template.shared.components.appHeader(backAction = true, backUrl = "/series", title = "시리즈 목록")
 
     <%-- 시리즈 헤더 --%>

@@ -4,7 +4,11 @@
 @param PostViewModel post
 @param PostSeriesNavViewModel seriesNav = null
 
-@template.shared.layout.default(title = post.getTitle(), content = @`
+@template.shared.layout.default(
+    title = post.getTitle(),
+    description = post.getSummary(),
+    ogImage = post.getThumbnailUrl(),
+    content = @`
     @template.shared.components.appHeader(backAction = true, title = "돌아가기")
 
     <%-- 시리즈 네비게이션 (상단) --%>

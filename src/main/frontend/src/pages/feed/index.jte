@@ -8,9 +8,18 @@
 @param List<CurationViewModel> curationItems
 @param PostViewModel latestPatchNote = null
 
-@template.shared.layout.default(title = "피드", content = @`
+!{var firstPost = postData.getItems().isEmpty() ? null : postData.getItems().get(0);}
+!{var feedOgImage = firstPost != null && firstPost.getThumbnailUrl() != null ? firstPost.getThumbnailUrl() : null;}
+!{var pageDescription = "개발 관련 글과 팁을 공유합니다.";}
+
+@template.shared.layout.default(
+    title = "피드",
+    description = pageDescription,
+    ogImage = feedOgImage,
+    content = @`
     @template.shared.components.appHeader(
         title = "피드",
+        description = pageDescription,
         right = @`
             <div class="flex gap-2 text-sm shrink-0">
                 <div class="w-5">@template.shared.svg.filter()</div>
