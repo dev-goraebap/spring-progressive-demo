@@ -31,7 +31,7 @@ public class CommentController {
         model.addAttribute("commentCount", commentCount);
         model.addAttribute("requestId", commentService.generateRequestId());
 
-        return "entities/comments/index";
+        return "entities/comment/index";
     }
 
     /**
@@ -55,6 +55,6 @@ public class CommentController {
         model.addAttribute("requestId", commentService.generateRequestId());
         model.addAttribute("success", true);
 
-        return "entities/comments/index";
+        return "entities/comment/index";
     }
 }

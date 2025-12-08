@@ -3,12 +3,7 @@
 @param SeriesDetailViewModel series
 
 @template.shared.layout.default(title = series.getName(), content = @`
-    <div class="w-full p-4 border-b border-base-300 flex items-center gap-2 sticky top-0 bg-base-100 z-[999]">
-        <a href="/series" class="flex items-center gap-1">
-            <div class="w-5">@template.shared.svg.back()</div>
-            <span>시리즈 목록</span>
-        </a>
-    </div>
+    @template.shared.components.appHeader(backAction = true, backUrl = "/series", title = "시리즈 목록")
 
     <%-- 시리즈 헤더 --%>
     <div class="p-4 border-b border-base-300">

@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.post;
+package xyz.goraebap.spring_progressive_demo.app.post.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

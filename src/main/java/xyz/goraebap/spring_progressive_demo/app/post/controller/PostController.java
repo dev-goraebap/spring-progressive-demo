@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.post;
+package xyz.goraebap.spring_progressive_demo.app.post.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

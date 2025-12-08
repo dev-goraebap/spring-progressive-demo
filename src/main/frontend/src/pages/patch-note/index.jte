@@ -5,19 +5,19 @@
 @param Pagination<PostViewModel> postData
 
 @template.shared.layout.default(title = "패치노트", content = @`
-    <div class="w-full p-4 border-b border-base-300 flex justify-between sticky top-0 bg-base-100">
-        <div>
-            <h1 class="font-bold">패치노트</h1>
-            <p class="text-xs hidden sm:block">블로그의 모든 주목할 만한 변경 사항이 기록됩니다.</p>
-        </div>
-        <div class="flex gap-2 text-sm shrink-0">
-            <div class="w-5">@template.shared.svg.filter()</div>
-            <a href="/patch-notes?sort=publishedAt,desc"
-               class="${getQueryParam("sort").startsWith("publishedAt,desc") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">최근</a>
-            <a href="/patch-notes?sort=publishedAt,asc"
-               class="${getQueryParam("sort").startsWith("publishedAt,asc") ? "text-primary" : ""}">오래된</a>
-        </div>
-    </div>
+    @template.shared.components.appHeader(
+        title = "패치노트",
+        description = "블로그의 모든 주목할 만한 변경 사항이 기록됩니다.",
+        right = @`
+            <div class="flex gap-2 text-sm shrink-0">
+                <div class="w-5">@template.shared.svg.filter()</div>
+                <a href="/patch-notes?sort=publishedAt,desc"
+                   class="${getQueryParam("sort").startsWith("publishedAt,desc") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">최근</a>
+                <a href="/patch-notes?sort=publishedAt,asc"
+                   class="${getQueryParam("sort").startsWith("publishedAt,asc") ? "text-primary" : ""}">오래된</a>
+            </div>
+        `
+    )
 
     @if(!postData.getItems().isEmpty())
         @template.pages.patch-note._list(postData = postData)
