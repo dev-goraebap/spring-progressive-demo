@@ -80,7 +80,10 @@
     @endif
 
     @if(!postData.getItems().isEmpty())
-        @template.pages.feed._list(postData = postData)
+        <div id="post-list">
+            @template.entities.post.list(items = postData.getItems())
+        </div>
+        @template.entities.post.pagination(postData = postData)
     @else
         <div class="w-full flex flex-col items-center p-10 gap-4">
             <div class="w-2/3">

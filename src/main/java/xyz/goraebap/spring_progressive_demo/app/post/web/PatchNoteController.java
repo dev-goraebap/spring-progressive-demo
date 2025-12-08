@@ -31,7 +31,7 @@ public class PatchNoteController {
         model.addAttribute("postData", postData);
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/patch-note/_list";
+            return "pages/patch-note/_htmxList";
         }
         return "pages/patch-note/index";
     }

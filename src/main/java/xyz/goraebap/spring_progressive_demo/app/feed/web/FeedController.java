@@ -41,7 +41,7 @@ public class FeedController {
         }
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/feed/_list";
+            return "pages/feed/_htmxList";
         }
         return "pages/feed/index";
     }

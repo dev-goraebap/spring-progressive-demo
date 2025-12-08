@@ -10,7 +10,7 @@
     @template.shared.components.appHeader(backAction = true, backUrl = "/patch-notes", title = "패치노트 목록")
 
     <article>
-        @template.entities.post.postDetail(
+        @template.entities.post.detail(
             post = post,
             showTags = false,
             backUrl = "/patch-notes",

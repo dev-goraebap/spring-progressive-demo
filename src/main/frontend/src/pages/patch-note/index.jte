@@ -25,7 +25,10 @@
     )
 
     @if(!postData.getItems().isEmpty())
-        @template.pages.patch-note._list(postData = postData)
+        <div id="post-list">
+            @template.entities.post.list(items = postData.getItems(), linkPrefix = "/patch-notes", showTags = false)
+        </div>
+        @template.entities.post.pagination(postData = postData, loadMoreUrl = "/patch-notes")
     @else
         <div class="w-full flex flex-col items-center p-10 gap-4">
             <div class="w-2/3">

@@ -53,44 +53,7 @@
 
     <%-- 포스트 목록 --%>
     @if(!series.getPosts().isEmpty())
-        <div class="divide-y divide-base-300">
-            @for(var post : series.getPosts())
-                <a href="/posts/${post.getSlug()}" class="flex gap-3 p-4 hover:bg-base-200 transition-colors">
-                    <%-- 썸네일 --%>
-                    <div class="w-24 sm:w-40 h-16 sm:h-24 rounded overflow-hidden flex-shrink-0 bg-base-200">
-                        @if(post.getThumbnailUrl() != null)
-                            @template.shared.components.img(
-                                url = post.getThumbnailUrl(),
-                                dominantColor = post.getThumbnailDominantColor(),
-                                alt = post.getTitle()
-                            )
-                        @else
-                            <div class="w-full h-full flex items-center justify-center text-base-content/20">
-                                <div class="w-6">@template.shared.svg.image()</div>
-                            </div>
-                        @endif
-                    </div>
-
-                    <%-- 포스트 정보 --%>
-                    <div class="flex flex-col justify-center min-w-0 flex-1">
-                        <h2 class="font-semibold text-sm line-clamp-1">${post.getTitle()}</h2>
-                        @if(post.getSummary() != null)
-                            <p class="text-xs text-base-content/70 line-clamp-2 mt-1">${post.getSummary()}</p>
-                        @endif
-                        <div class="flex items-center gap-3 text-xs text-base-content/50 mt-1">
-                            <div class="flex items-center gap-1">
-                                <div class="w-3">@template.shared.svg.see()</div>
-                                <span>${post.getViewCount()}</span>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <div class="w-3">@template.shared.svg.comment()</div>
-                                <span>${post.getCommentCount()}</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            @endfor
-        </div>
+        @template.entities.post.list(items = series.getPosts(), showTags = false)
     @else
         <div class="w-full flex flex-col items-center p-10 gap-4">
             <div class="w-2/3">

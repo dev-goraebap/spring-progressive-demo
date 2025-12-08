@@ -48,7 +48,7 @@
         <result property="publishedAt" column="published_at"/>
         <result property="thumbnailKey" column="thumbnail_key"/>
         <result property="thumbnailMetadata" column="thumbnail_metadata"/>
-        <collection property="posts" ofType="xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel$PostItem">
+        <collection property="posts" ofType="PostViewModel">
             <id property="id" column="post_id"/>
             <result property="slug" column="post_slug"/>
             <result property="title" column="post_title"/>

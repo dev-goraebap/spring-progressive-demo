@@ -47,7 +47,7 @@
     @endif
 
     <article>
-        @template.entities.post.postDetail(
+        @template.entities.post.detail(
             post = post,
             seriesNav = seriesNav,
             showTags = true,

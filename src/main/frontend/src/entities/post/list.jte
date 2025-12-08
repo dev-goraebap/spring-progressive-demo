@@ -1,10 +1,12 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel
+@import java.util.List
 
-@param Pagination<PostViewModel> postData
+@param List<PostViewModel> items
+@param String linkPrefix = "/posts"
+@param boolean showTags = true
 
-@for(var post: postData.getItems())
-    <a href="/posts/${post.getSlug()}" class="flex gap-4 p-4 border-b border-base-300 hover:bg-base-200 transition-colors">
+@for(var post: items)
+    <a href="${linkPrefix}/${post.getSlug()}" class="flex gap-4 p-4 border-b border-base-300 hover:bg-base-200 transition-colors">
         <%-- 썸네일 --%>
         <div class="w-24 sm:w-40 h-16 sm:h-24 rounded overflow-hidden flex-shrink-0 bg-base-200">
             @if(post.getThumbnailUrl() != null)
@@ -36,7 +38,7 @@
                     <div class="w-3">@template.shared.svg.comment()</div>
                     <span>${post.getCommentCount()}</span>
                 </div>
-                @if(post.getTags() != null && !post.getTags().isEmpty())
+                @if(showTags && post.getTags() != null && !post.getTags().isEmpty())
                     <div class="hidden sm:flex gap-2">
                         @for(var tag : post.getTags())
                             <span>#${tag}</span>
@@ -47,15 +49,3 @@
         </div>
     </a>
 @endfor
-@if(postData.isHasMore())
-    <div id="load-more" class="flex justify-center p-4">
-        <button class="btn"
-                hx-get="/?page=${postData.getNextPage()}&sort=${postData.getOrderType()}"
-                hx-target="#load-more"
-                hx-swap="outerHTML"
-        >
-            <span class="loading loading-spinner loading-sm hidden [.htmx-request_&]:inline"></span>
-            <span class="[.htmx-request_&]:hidden">더 보기</span>
-        </button>
-    </div>
-@endif

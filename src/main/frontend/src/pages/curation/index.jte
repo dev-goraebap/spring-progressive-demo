@@ -25,7 +25,10 @@
     )
 
     @if(!curationData.getItems().isEmpty())
-        @template.pages.curation._list(curationData = curationData)
+        <div id="curation-list">
+            @template.pages.curation._list(items = curationData.getItems())
+        </div>
+        @template.pages.curation._pagination(curationData = curationData)
     @else
         <div class="w-full flex flex-col items-center p-10 gap-4">
             <div class="w-2/3">

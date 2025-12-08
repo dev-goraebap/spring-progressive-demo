@@ -28,7 +28,7 @@ public class CurationController {
         model.addAttribute("curationData", curationData);
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/curation/_list";
+            return "pages/curation/_htmxList";
         }
         return "pages/curation/index";
     }
