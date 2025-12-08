@@ -3,6 +3,8 @@ package xyz.goraebap.spring_progressive_demo.app.comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.goraebap.spring_progressive_demo.app.comment.domain.Comment;
+import xyz.goraebap.spring_progressive_demo.app.comment.domain.CommentRepository;
 import xyz.goraebap.spring_progressive_demo.app.comment.dto.CreateCommentRequest;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.CommentViewMapper;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.CommentViewModel;

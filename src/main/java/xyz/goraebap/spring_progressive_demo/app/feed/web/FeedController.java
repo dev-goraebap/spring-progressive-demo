@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.feed;
+package xyz.goraebap.spring_progressive_demo.app.feed.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
