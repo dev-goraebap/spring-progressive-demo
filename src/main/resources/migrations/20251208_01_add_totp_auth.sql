@@ -1,0 +1,3 @@
+-- users 테이블에 TOTP 인증 관련 컬럼 추가
+ALTER TABLE users ADD COLUMN IF NOT EXISTS totp_secret VARCHAR(32);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'USER';
