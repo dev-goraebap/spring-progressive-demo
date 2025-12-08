@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ViewCountHelper {
 
     private static final String VIEWED_POSTS_COOKIE = "viewed_posts";
-    private static final int COOKIE_MAX_AGE = 3600; // 1시간
+    private static final int COOKIE_MAX_AGE = 60 * 10; // 10분
 
     private final PostService postService;
 
