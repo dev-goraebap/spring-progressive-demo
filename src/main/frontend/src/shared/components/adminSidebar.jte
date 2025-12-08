@@ -1,17 +1,20 @@
 @import static xyz.goraebap.spring_progressive_demo.shared.jte.JteContext.*
 
 <ul class="menu min-h-full w-72 p-4 bg-base-100">
-    <%-- 로고 영역 --%>
-    <li class="flex items-center p-4">
+    <%-- 상단: 로고 + 테마 토글 --%>
+    <li class="flex flex-row items-center justify-between p-4">
         <a href="/admin/posts" class="flex items-center gap-3">
-            <div class="w-14 h-14">
+            <div class="w-12 h-12">
                 <img src="/images/logo.png" alt="로고" class="w-full h-full object-contain"/>
             </div>
-            <div class="leading-5 font-bold text-base">
+            <div class="leading-4 font-bold text-sm">
                 데브고래밥<br/>
                 스튜디오
             </div>
         </a>
+        <div class="ml-auto">
+            @template.shared.components.themeToggle()
+        </div>
     </li>
 
     <%-- Menu 섹션 --%>
@@ -76,8 +79,15 @@
         </a>
     </li>
 
-    <%-- 하단 테마/로그아웃 --%>
+    <%-- 하단 로그아웃 --%>
     <li class="mt-auto">
-        @template.shared.components.themeToggle()
+        <form action="/admin/logout" method="post">
+            <button type="submit" class="p-3 w-full flex items-center gap-3 text-error hover:bg-error/10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"/>
+                </svg>
+                로그아웃
+            </button>
+        </form>
     </li>
 </ul>

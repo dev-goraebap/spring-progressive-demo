@@ -1,8 +1,8 @@
 package xyz.goraebap.spring_progressive_demo.app.auth;
 
-import dev.samstevens.totp.code.CodeVerifier;
 import dev.samstevens.totp.code.DefaultCodeGenerator;
 import dev.samstevens.totp.code.DefaultCodeVerifier;
+import lombok.extern.slf4j.Slf4j;
 import dev.samstevens.totp.qr.QrData;
 import dev.samstevens.totp.qr.QrGenerator;
 import dev.samstevens.totp.qr.ZxingPngQrGenerator;
@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -34,29 +35,43 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     private final SecretGenerator secretGenerator = new DefaultSecretGenerator();
-    private final CodeVerifier codeVerifier = new DefaultCodeVerifier(
-            new DefaultCodeGenerator(),
-            new SystemTimeProvider()
-    );
+    private final DefaultCodeVerifier codeVerifier = createCodeVerifier();
+
+    private static DefaultCodeVerifier createCodeVerifier() {
+        DefaultCodeVerifier verifier = new DefaultCodeVerifier(
+                new DefaultCodeGenerator(),
+                new SystemTimeProvider()
+        );
+        // 시간 허용 범위 확대: ±2 윈도우 (약 1분)
+        verifier.setAllowedTimePeriodDiscrepancy(2);
+        return verifier;
+    }
 
     /**
      * TOTP 코드 검증 후 JWT 발급
      */
     @Transactional(readOnly = true)
     public boolean login(String code, HttpServletResponse response) {
+        log.info("=== TOTP 로그인 디버깅 ===");
+        log.info("입력된 코드: [{}], 길이: {}", code, code.length());
+
         // ADMIN 유저 찾기
         Optional<UserEntity> adminOpt = userRepository.findByRole("ADMIN");
+        log.info("Admin 찾음: {}", adminOpt.isPresent());
         if (adminOpt.isEmpty()) {
             return false;
         }
 
         UserEntity admin = adminOpt.get();
+        log.info("TOTP Secret: {}", admin.getTotpSecret());
         if (admin.getTotpSecret() == null) {
             return false;
         }
 
         // TOTP 검증
-        if (!codeVerifier.isValidCode(admin.getTotpSecret(), code)) {
+        boolean isValid = codeVerifier.isValidCode(admin.getTotpSecret(), code);
+        log.info("검증 결과: {}", isValid);
+        if (!isValid) {
             return false;
         }
 
