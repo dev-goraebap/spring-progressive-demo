@@ -59,13 +59,12 @@
                     <a href="/admin/posts" class="btn btn-ghost text-lg font-bold">${siteName}</a>
                 </div>
                 <div class="flex-none">
-                    @template.shared.components.themeToggle()
                 </div>
             </div>
         </header>
 
         <%-- 컨텐츠 --%>
-        <main class="flex-1 p-4 lg:p-6">
+        <main class="flex-1 flex flex-col">
             ${content}
         </main>
     </div>
@@ -73,7 +72,7 @@
     <%-- 사이드바 --%>
     <div class="drawer-side z-20">
         <label for="admin-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-        <div class="border-r border-base-300 min-h-full bg-base-100">
+        <div class="border-r border-base-300 h-full bg-base-100">
             @template.shared.layout.admin.sidebar()
         </div>
     </div>
