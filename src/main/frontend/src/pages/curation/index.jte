@@ -6,7 +6,7 @@
 
 !{var pageDescription = "매일 업데이트되는 개발 트렌드를 전해드려요.";}
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = "RSS 큐레이션",
     description = pageDescription,
     content = @`

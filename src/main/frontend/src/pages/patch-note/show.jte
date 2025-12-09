@@ -2,7 +2,7 @@
 
 @param PostViewModel post
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = post.getTitle(),
     description = post.getSummary(),
     ogImage = post.getThumbnailUrl(),

@@ -4,7 +4,7 @@
 
 @template.shared.layout.error(title = error, content = @`
     <div class="flex flex-col items-center justify-center p-8 text-center">
-        <div class="text-[120px] sm:text-[180px] font-bold text-base-content/20 leading-none">${status}</div>
+        <div class="text-[7.5rem] sm:text-[11.25rem] font-bold text-base-content/20 leading-none">${status}</div>
         <h1 class="text-3xl sm:text-5xl font-bold -mt-4">${error}</h1>
 
         <div class="mt-16">

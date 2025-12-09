@@ -59,7 +59,7 @@
                 <div class="divider my-4"></div>
 
                 <div class="text-center">
-                    <a href="/" class="link link-hover text-sm text-base-content/50">
+                    <a href="/" hx-boost="false" class="link link-hover text-sm text-base-content/50">
                         ← 블로그로 돌아가기
                     </a>
                 </div>

@@ -11,6 +11,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         app: resolve(__dirname, 'src/app/app.js'),
+        admin: resolve(__dirname, 'src/app/admin.js'),
       },
       output: {
         entryFileNames: 'builds/[name]-[hash].js',

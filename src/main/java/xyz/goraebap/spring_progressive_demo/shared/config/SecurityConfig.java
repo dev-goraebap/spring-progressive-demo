@@ -65,7 +65,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
 
                         // Admin login page - permitAll
-                        .requestMatchers("/admin/login", "/admin/setup-totp").permitAll()
+                        .requestMatchers(
+                                "/admin/login"
+//                                ,"/admin/setup-totp"
+                        ).permitAll()
 
                         // Admin endpoints - Require ADMIN role
                         .requestMatchers("/admin/**").hasRole("ADMIN")

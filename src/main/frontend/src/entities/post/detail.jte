@@ -10,7 +10,7 @@
 
 <%-- 썸네일 --%>
 @if(post.getThumbnailUrl() != null)
-    <div class="w-full h-[180px] sm:h-[300px] overflow-hidden flex items-center justify-center">
+    <div class="w-full h-[11.25rem] sm:h-[18.75rem] overflow-hidden flex items-center justify-center">
         @template.shared.components.img(
             url = post.getThumbnailUrl(),
             dominantColor = post.getThumbnailDominantColor(),

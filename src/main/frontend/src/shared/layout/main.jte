@@ -52,7 +52,7 @@
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">
-    <script type="module" src="/${viteJs()}"></script>
+    <script type="module" src="/${viteJs("app")}"></script>
     @endif
 </head>
 <body hx-boost="true" x-data="{ drawer: false }">
@@ -72,7 +72,7 @@
 
 <!-- MOBILE DRAWER -->
 <div id="mobile-drawer" hx-preserve="true" x-show="drawer" x-cloak
-     class="sm:hidden fixed top-0 right-0 h-full w-[300px] bg-base-100 z-[10001] overflow-y-auto p-4 pb-20"
+     class="sm:hidden fixed top-0 right-0 h-full w-[18.75rem] bg-base-100 z-[10001] overflow-y-auto p-4 pb-20"
      x-transition:enter="transition ease-out duration-300"
      x-transition:enter-start="translate-x-full"
      x-transition:enter-end="translate-x-0"
@@ -90,7 +90,7 @@
         </button>
     </div>
 
-    @template.shared.components.aside()
+    @template.shared.layout.main.aside()
 </div>
 
 <div class="min-h-screen flex justify-center">
@@ -136,16 +136,16 @@
     </div>
 
     <!-- MAIN CONTENT UI -->
-    <div class="w-full sm:border-x border-base-300 pb-16 sm:pb-0 sm:min-w-[698px] sm:w-[698px]">
+    <div class="w-full sm:border-x border-base-300 pb-16 sm:pb-0 sm:min-w-[43.625rem] sm:w-[43.625rem]">
         <main id="main-content">
             ${content}
         </main>
     </div>
 
     <!-- DESKTOP SUB CONTENT UI -->
-    <div id="desktop-aside" hx-preserve="true" class="hidden lg:flex lg:flex-col min-w-[300px] w-[300px] p-4">
+    <div id="desktop-aside" hx-preserve="true" class="hidden lg:flex lg:flex-col min-w-[18.75rem] w-[18.75rem] p-4">
         <div class="sticky top-4">
-            @template.shared.components.aside()
+            @template.shared.layout.main.aside()
         </div>
     </div>
 

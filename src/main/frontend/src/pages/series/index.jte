@@ -7,7 +7,7 @@
 !{var seriesOgImage = firstSeries != null && firstSeries.getThumbnailUrl() != null ? firstSeries.getThumbnailUrl() : null;}
 !{var pageDescription = "연재 형태로 작성된 글들을 시리즈별로 모아볼 수 있습니다.";}
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = "시리즈",
     description = pageDescription,
     ogImage = seriesOgImage,

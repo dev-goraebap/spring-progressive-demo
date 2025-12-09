@@ -76,6 +76,19 @@
 
 @source "../**/*.jte";
 
+/* 고해상도 화면에서 전체 크기 확대 */
+@media (min-width: 1920px) {
+    html {
+        font-size: 110%;
+    }
+}
+
+@media (min-width: 2560px) {
+    html {
+        font-size: 120%;
+    }
+}
+
 /* Alpine.js x-cloak */
 [x-cloak] {
     display: none !important;
@@ -121,42 +134,3 @@ html.theme-transitioning *::after {
     width: 100%;
     opacity: 0;
 }
-
-/*!* 페이지 전환 애니메이션 (블러) - main 영역만 *!*/
-/*@view-transition {*/
-/*    navigation: auto;*/
-/*}*/
-
-/*main {*/
-/*    view-transition-name: main-content;*/
-/*}*/
-
-/*::view-transition-old(main-content) {*/
-/*    animation: blur-out 0.25s ease-out;*/
-/*}*/
-
-/*::view-transition-new(main-content) {*/
-/*    animation: blur-in 0.25s ease-in;*/
-/*}*/
-
-/*@keyframes blur-out {*/
-/*    from {*/
-/*        opacity: 1;*/
-/*        filter: blur(0);*/
-/*    }*/
-/*    to {*/
-/*        opacity: 0;*/
-/*        filter: blur(8px);*/
-/*    }*/
-/*}*/
-
-/*@keyframes blur-in {*/
-/*    from {*/
-/*        opacity: 0;*/
-/*        filter: blur(8px);*/
-/*    }*/
-/*    to {*/
-/*        opacity: 1;*/
-/*        filter: blur(0);*/
-/*    }*/
-/*}*/

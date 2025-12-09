@@ -30,11 +30,11 @@
     <!-- 개발 환경: Vite dev server -->
     <link rel="stylesheet" href="http://localhost:5173/src/app/style.css">
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <script type="module" src="http://localhost:5173/src/app/app.js"></script>
+    <script type="module" src="http://localhost:5173/src/app/admin.js"></script>
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">
-    <script type="module" src="/${viteJs()}"></script>
+    <script type="module" src="/${viteJs("admin")}"></script>
     @endif
 </head>
 <body hx-boost="true">
@@ -74,7 +74,7 @@
     <div class="drawer-side z-20">
         <label for="admin-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
         <div class="border-r border-base-300 min-h-full bg-base-100">
-            @template.shared.components.adminSidebar()
+            @template.shared.layout.admin.sidebar()
         </div>
     </div>
 </div>
