@@ -26,11 +26,11 @@ public class JteContext {
     }
 
     public static String viteCss() {
-        return viteManifest != null ? viteManifest.getCss() : "builds/app.css";
+        return viteManifest != null ? viteManifest.getCss() : "builds/style.css";
     }
 
-    public static String viteJs() {
-        return viteManifest != null ? viteManifest.getJs() : "builds/app.js";
+    public static String viteJs(String entry) {
+        return viteManifest != null ? viteManifest.getJs(entry) : "builds/" + entry + ".js";
     }
 
     public static String currentPath() {

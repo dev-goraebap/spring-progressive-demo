@@ -1,7 +1,9 @@
 <%-- Bio --%>
 <div class="mb-4">
     <div class="flex items-center gap-3">
-        <div class="w-14 h-14 rounded-full overflow-hidden shrink-0">
+        <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 cursor-pointer"
+             x-data="easterEgg"
+             @click="handleClick()">
             <img src="/images/about-profile.jpg" alt="프로필" class="w-full h-full object-cover"/>
         </div>
         <div>

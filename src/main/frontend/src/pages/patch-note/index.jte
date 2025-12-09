@@ -6,7 +6,7 @@
 
 !{var pageDescription = "블로그의 모든 주목할 만한 변경 사항이 기록됩니다.";}
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = "패치노트",
     description = pageDescription,
     content = @`

@@ -4,7 +4,7 @@
 @param PostViewModel post
 @param PostSeriesNavViewModel seriesNav = null
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = post.getTitle(),
     description = post.getSummary(),
     ogImage = post.getThumbnailUrl(),

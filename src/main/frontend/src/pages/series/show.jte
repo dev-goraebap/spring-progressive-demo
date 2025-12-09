@@ -2,7 +2,7 @@
 
 @param SeriesDetailViewModel series
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = series.getName(),
     description = series.getDescription(),
     ogImage = series.getThumbnailUrl(),

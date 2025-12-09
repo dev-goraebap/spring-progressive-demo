@@ -1,8 +1,8 @@
 import './common.js';
 
-// app 전용 JS 로드
+// admin 전용 JS 로드
 import.meta.glob([
-    '../**/*.app.js',
+    '../**/*.admin.js',
 ], {eager: true});
 
 // Alpine 시작

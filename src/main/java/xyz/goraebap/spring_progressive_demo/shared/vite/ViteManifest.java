@@ -13,15 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
-@Getter
 @Component
 @RequiredArgsConstructor
 public class ViteManifest {
 
     private final ObjectMapper objectMapper;
-
-    private String js;
-    private String css;
+    private final java.util.Map<String, EntryAssets> entries = new java.util.HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -30,25 +27,43 @@ public class ViteManifest {
             if (resource.exists()) {
                 try (InputStream is = resource.getInputStream()) {
                     JsonNode manifest = objectMapper.readTree(is);
-                    JsonNode appEntry = manifest.get("src/app/app.js");
-                    if (appEntry != null) {
-                        this.js = appEntry.get("file").asText();
-                        JsonNode cssArray = appEntry.get("css");
-                        if (cssArray != null && cssArray.isArray() && !cssArray.isEmpty()) {
-                            this.css = cssArray.get(0).asText();
+                    manifest.fields().forEachRemaining(field -> {
+                        String path = field.getKey();
+                        if (path.startsWith("src/app/") && path.endsWith(".js")) {
+                            String name = path.replace("src/app/", "").replace(".js", "");
+                            JsonNode entry = field.getValue();
+                            String js = entry.get("file").asText();
+                            String css = null;
+                            JsonNode cssArray = entry.get("css");
+                            if (cssArray != null && cssArray.isArray() && !cssArray.isEmpty()) {
+                                css = cssArray.get(0).asText();
+                            }
+                            entries.put(name, new EntryAssets(js, css));
                         }
-                    }
+                    });
                 }
-                log.info("Vite manifest loaded: js={}, css={}", js, css);
+                log.info("Vite manifest loaded: {}", entries.keySet());
             } else {
-                log.warn("Vite manifest not found, using default paths");
-                this.js = "builds/app.js";
-                this.css = "builds/app.css";
+                log.warn("Vite manifest not found");
             }
         } catch (IOException e) {
             log.error("Failed to load Vite manifest", e);
-            this.js = "builds/app.js";
-            this.css = "builds/app.css";
         }
     }
+
+    public String getJs(String entryName) {
+        EntryAssets assets = entries.get(entryName);
+        return assets != null ? assets.js() : "builds/" + entryName + ".js";
+    }
+
+    public String getCss() {
+        // 첫 번째 엔트리의 CSS 반환 (모든 엔트리가 같은 style.css 사용)
+        return entries.values().stream()
+                .filter(e -> e.css() != null)
+                .map(EntryAssets::css)
+                .findFirst()
+                .orElse("builds/style.css");
+    }
+
+    private record EntryAssets(String js, String css) {}
 }

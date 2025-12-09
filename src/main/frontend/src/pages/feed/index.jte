@@ -12,7 +12,7 @@
 !{var feedOgImage = firstPost != null && firstPost.getThumbnailUrl() != null ? firstPost.getThumbnailUrl() : null;}
 !{var pageDescription = "개발 관련 글과 팁을 공유합니다.";}
 
-@template.shared.layout.default(
+@template.shared.layout.main(
     title = "피드",
     description = pageDescription,
     ogImage = feedOgImage,
