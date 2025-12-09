@@ -29,16 +29,16 @@ public class ViteManifest {
                     JsonNode manifest = objectMapper.readTree(is);
                     manifest.fields().forEachRemaining(field -> {
                         String path = field.getKey();
+                        JsonNode entry = field.getValue();
+                        // JS 엔트리포인트 파싱
                         if (path.startsWith("src/app/") && path.endsWith(".js")) {
                             String name = path.replace("src/app/", "").replace(".js", "");
-                            JsonNode entry = field.getValue();
                             String js = entry.get("file").asText();
-                            String css = null;
-                            JsonNode cssArray = entry.get("css");
-                            if (cssArray != null && cssArray.isArray() && !cssArray.isEmpty()) {
-                                css = cssArray.get(0).asText();
-                            }
-                            entries.put(name, new EntryAssets(js, css));
+                            entries.put(name, new EntryAssets(js));
+                        }
+                        // CSS 엔트리포인트 파싱
+                        if (path.equals("src/app/style.css")) {
+                            cssFile = entry.get("file").asText();
                         }
                     });
                 }
@@ -56,14 +56,11 @@ public class ViteManifest {
         return assets != null ? assets.js() : "builds/" + entryName + ".js";
     }
 
+    private String cssFile;
+
     public String getCss() {
-        // 첫 번째 엔트리의 CSS 반환 (모든 엔트리가 같은 style.css 사용)
-        return entries.values().stream()
-                .filter(e -> e.css() != null)
-                .map(EntryAssets::css)
-                .findFirst()
-                .orElse("builds/style.css");
+        return cssFile != null ? cssFile : "builds/style.css";
     }
 
-    private record EntryAssets(String js, String css) {}
+    private record EntryAssets(String js) {}
 }
