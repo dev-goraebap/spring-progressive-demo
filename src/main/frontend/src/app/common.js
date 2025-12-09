@@ -1,4 +1,3 @@
-import './style.css';
 import htmx from 'htmx.org';
 import Alpine from 'alpinejs';
 
