@@ -1,5 +1,6 @@
 import htmx from 'htmx.org';
 import Alpine from 'alpinejs';
+import './htmx-progress.js';
 
 // HTMX 전역 등록
 window.htmx = htmx;
