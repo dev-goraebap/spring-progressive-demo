@@ -1,17 +1,16 @@
 /**
  * HTMX 프로그레스 바 이벤트 리스너 등록
+ * - htmx boost 모드에서 body가 교체되어도 동작하도록 html에 클래스 적용
  */
-document.addEventListener('htmx:beforeRequest', () => {
-    document.body.classList.add('htmx-request');
-    document.body.classList.remove('htmx-request-complete');
+window.addEventListener('htmx:beforeRequest', () => {
+    document.documentElement.classList.remove('htmx-request-complete');
+    document.documentElement.classList.add('htmx-request');
 });
 
-document.addEventListener('htmx:afterRequest', () => {
-    document.body.classList.remove('htmx-request');
-    document.body.classList.add('htmx-request-complete');
+window.addEventListener('htmx:afterRequest', () => {
+    document.documentElement.classList.remove('htmx-request');
+    document.documentElement.classList.add('htmx-request-complete');
     setTimeout(() => {
-        document.body.classList.remove('htmx-request-complete');
-        const progress = document.getElementById('htmx-progress');
-        if (progress) progress.style.width = '0';
-    }, 200);
+        document.documentElement.classList.remove('htmx-request-complete');
+    }, 300);
 });

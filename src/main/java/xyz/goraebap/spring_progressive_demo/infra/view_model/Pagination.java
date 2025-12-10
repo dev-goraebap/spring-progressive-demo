@@ -14,6 +14,8 @@ public class Pagination<T> {
     private final boolean hasMore;
     private final String orderType;
     private final int pageSize;
+    private final int totalCount;
+    private final int totalPages;
 
     private Pagination(List<T> items, int currentPage, int totalCount, String orderType, int pageSize) {
         this.items = items;
@@ -22,6 +24,8 @@ public class Pagination<T> {
         this.hasMore = ((currentPage - 1) * pageSize + items.size()) < totalCount;
         this.orderType = orderType;
         this.pageSize = pageSize;
+        this.totalCount = totalCount;
+        this.totalPages = (int) Math.ceil((double) totalCount / pageSize);
     }
 
     public static <T> Pagination<T> of(List<T> items, int page, int totalCount, String orderType) {

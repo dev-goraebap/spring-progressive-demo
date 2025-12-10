@@ -1,10 +1,10 @@
 package xyz.goraebap.spring_progressive_demo.app.curation.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import xyz.goraebap.spring_progressive_demo.app.curation.dto.CurationIndexRequest;
@@ -20,11 +20,11 @@ public class CurationController {
     @GetMapping
     public String index(
             Model model,
-            @ParameterObject CurationIndexRequest dto,
+            @ModelAttribute("req") CurationIndexRequest req,
             @RequestHeader(value = "HX-Request", required = false) boolean htmxRequest,
             @RequestHeader(value = "HX-Boosted", required = false) boolean htmxBoosted
     ) {
-        var curationData = curationQueryService.getItemsWithPagination(dto.getPage(), dto.getSort());
+        var curationData = curationQueryService.getItemsWithPagination(req.getPage(), req.getSort());
         model.addAttribute("curationData", curationData);
 
         if (htmxRequest && !htmxBoosted) {

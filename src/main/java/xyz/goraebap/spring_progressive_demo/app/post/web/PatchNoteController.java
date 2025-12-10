@@ -3,7 +3,7 @@ package xyz.goraebap.spring_progressive_demo.app.post.web;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +23,11 @@ public class PatchNoteController {
     @GetMapping
     public String index(
             Model model,
-            @Valid @ParameterObject PatchNoteIndexRequest dto,
+            @Valid @ModelAttribute("req") PatchNoteIndexRequest req,
             @RequestHeader(value = "HX-Request", required = false) boolean htmxRequest,
             @RequestHeader(value = "HX-Boosted", required = false) boolean htmxBoosted
     ) {
-        var postData = postQueryService.getPostsWithPagination(dto.getPage(), dto.getSort(), "patch-note");
+        var postData = postQueryService.getPostsWithPagination(req.getPage(), req.getSort(), "patch-note");
         model.addAttribute("postData", postData);
 
         if (htmxRequest && !htmxBoosted) {
