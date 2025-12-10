@@ -3,8 +3,11 @@ package xyz.goraebap.spring_progressive_demo.infra.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.PostViewMapper;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminPostViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +52,15 @@ public class PostQueryService {
             thumbnailEnricher.enrich(post);
         }
         return post;
+    }
+
+    // Admin
+    public Pagination<AdminPostViewModel> getAdminPostsWithPagination(
+            String postType, String isPublishedYn, String title, int page, int size) {
+        int offset = Pagination.getOffset(page, size);
+        int totalCount = postViewMapper.countAdminPosts(postType, isPublishedYn, title);
+        var posts = postViewMapper.findAdminPosts(postType, isPublishedYn, title, size, offset);
+        posts.forEach(thumbnailEnricher::enrich);
+        return Pagination.of(posts, page, totalCount, null, size);
     }
 }

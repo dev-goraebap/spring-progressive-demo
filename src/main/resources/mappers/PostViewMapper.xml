@@ -153,4 +153,69 @@
         limit 1
     </select>
 
+    <!-- ADMIN -->
+    <select id="countAdminPosts" resultType="int">
+        select count(*)
+        from posts p
+        where 1 = 1
+        <if test="postType != null and postType != ''">
+          and p.post_type::text = #{postType}
+        </if>
+        <if test="isPublishedYn != null and isPublishedYn != ''">
+          and p.is_published_yn::text = #{isPublishedYn}
+        </if>
+        <if test="title != null and title != ''">
+          and p.title ilike '%' || #{title} || '%'
+        </if>
+    </select>
+
+    <select id="findAdminPosts" resultType="AdminPostViewModel">
+        with with_filtered_posts as (
+            select p.id
+            from posts p
+            where 1 = 1
+            <if test="postType != null and postType != ''">
+              and p.post_type::text = #{postType}
+            </if>
+            <if test="isPublishedYn != null and isPublishedYn != ''">
+              and p.is_published_yn::text = #{isPublishedYn}
+            </if>
+            <if test="title != null and title != ''">
+              and p.title ilike '%' || #{title} || '%'
+            </if>
+            order by p.created_at desc
+            limit #{limit} offset #{offset}
+        ),
+        with_tags as (
+            select pt.post_id, string_agg(t.name, ',') as name_agg
+            from tags t
+            inner join post_tags pt on pt.tag_id = t.id
+            where pt.post_id in (select id from with_filtered_posts)
+            group by pt.post_id
+        ),
+        with_thumbnail as (
+            select a.record_id, b.key, b.metadata
+            from attachments a
+            left join blobs b on b.id = a.blob_id
+            where a.record_type = 'post'
+              and a.name = 'thumbnail'
+              and a.record_id in (select id::text from with_filtered_posts)
+        )
+        select p.id
+             , thum.key as thumbnail_key
+             , thum.metadata as thumbnail_metadata
+             , p.title
+             , p.post_type
+             , tag.name_agg as tags
+             , p.is_published_yn
+             , p.view_count
+             , p.published_at
+             , p.created_at
+        from posts p
+        inner join with_filtered_posts fp on fp.id = p.id
+        left join with_tags tag on tag.post_id = p.id
+        left join with_thumbnail thum on thum.record_id = p.id::text
+        order by p.created_at desc
+    </select>
+
 </mapper>

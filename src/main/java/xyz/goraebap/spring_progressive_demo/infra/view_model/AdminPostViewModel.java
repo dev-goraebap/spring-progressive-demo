@@ -1,0 +1,27 @@
+package xyz.goraebap.spring_progressive_demo.infra.view_model;
+
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+public class AdminPostViewModel implements ThumbnailEnrichable {
+    private Long id;
+    private String title;
+    private String postType;
+    private String tags;
+    private String isPublishedYn;
+    private int viewCount;
+    private LocalDateTime publishedAt;
+    private LocalDateTime createdAt;
+    private String thumbnailKey;
+    private String thumbnailMetadata;
+
+    // After Binding
+    private String thumbnailUrl;
+    private String thumbnailDominantColor;
+
+    public boolean isPublished() {
+        return "Y".equals(isPublishedYn);
+    }
+}
