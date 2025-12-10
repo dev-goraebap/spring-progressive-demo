@@ -49,15 +49,6 @@ public class JteContext {
         return currentPath().startsWith(prefix);
     }
 
-    public static String getQueryParam(String name) {
-        var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes == null) {
-            return "";
-        }
-        String value = attributes.getRequest().getParameter(name);
-        return value != null ? value : "";
-    }
-
     public static String currentUrl() {
         var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
@@ -77,10 +68,6 @@ public class JteContext {
             }
         }
         return scheme + "://" + host + request.getRequestURI();
-    }
-
-    public static boolean isQueryParam(String name, String value) {
-        return getQueryParam(name).equals(value);
     }
 
     private static final java.util.Set<String> VALID_THEMES = java.util.Set.of("dark", "light");

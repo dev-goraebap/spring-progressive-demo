@@ -1,12 +1,13 @@
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.CurationViewModel
-@import static xyz.goraebap.spring_progressive_demo.shared.jte.JteContext.*
+@import xyz.goraebap.spring_progressive_demo.app.feed.dto.FeedIndexRequest
 @import java.util.List
 
 @param Pagination<PostViewModel> postData
 @param List<CurationViewModel> curationItems
 @param PostViewModel latestPatchNote = null
+@param FeedIndexRequest req
 
 !{var firstPost = postData.getItems().isEmpty() ? null : postData.getItems().get(0);}
 !{var feedOgImage = firstPost != null && firstPost.getThumbnailUrl() != null ? firstPost.getThumbnailUrl() : null;}
@@ -24,9 +25,9 @@
             <div class="flex gap-2 text-sm shrink-0">
                 <div class="w-5">@template.shared.svg.filter()</div>
                 <a href="/?sort=viewCount,desc"
-                   class="${getQueryParam("sort").startsWith("viewCount") || getQueryParam("sort").isEmpty() ? "text-primary" : ""}">조회수</a>
+                   class="${req.getSort().startsWith("viewCount") ? "text-primary" : ""}">조회수</a>
                 <a href="/?sort=publishedAt,desc"
-                   class="${getQueryParam("sort").startsWith("publishedAt") ? "text-primary" : ""}">최근</a>
+                   class="${req.getSort().startsWith("publishedAt") ? "text-primary" : ""}">최근</a>
             </div>
         `
     )
