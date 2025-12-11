@@ -205,6 +205,7 @@
              , thum.key as thumbnail_key
              , thum.metadata as thumbnail_metadata
              , p.title
+             , p.summary
              , p.post_type
              , tag.name_agg as tags
              , p.is_published_yn

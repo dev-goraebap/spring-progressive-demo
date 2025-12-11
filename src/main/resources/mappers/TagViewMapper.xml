@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.goraebap.spring_progressive_demo.infra.mapper.TagViewMapper">
+
+    <select id="findAdminTags" resultType="AdminTagViewModel">
+        with with_filtered_tags as (
+            select t.id
+            from tags t
+            where 1 = 1
+            <if test="name != null and name != ''">
+                and t.name ilike '%' || #{name} || '%'
+            </if>
+            order by t.created_at desc
+            limit #{limit} offset #{offset}
+        ),
+        with_post_counts as (
+            select pt.tag_id, count(*) as post_count
+            from post_tags pt
+            where pt.tag_id in (select id from with_filtered_tags)
+            group by pt.tag_id
+        )
+        select t.id
+             , t.name
+             , t.created_at
+             , coalesce(wpc.post_count, 0) as post_count
+        from tags t
+        inner join with_filtered_tags wtf on wtf.id = t.id
+        left join with_post_counts wpc on wpc.tag_id = t.id
+        order by t.created_at desc
+    </select>
+
+    <select id="countAdminTags" resultType="int">
+        select count(*)
+        from tags t
+        where 1 = 1
+        <if test="name != null and name != ''">
+            and t.name ilike '%' || #{name} || '%'
+        </if>
+    </select>
+
+</mapper>

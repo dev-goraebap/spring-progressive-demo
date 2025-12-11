@@ -48,6 +48,8 @@ public class CustomErrorController implements ErrorController {
 
     private boolean wantsJson(HttpServletRequest request) {
         String accept = request.getHeader("Accept");
-        return accept != null && accept.contains(MediaType.APPLICATION_JSON_VALUE);
+        String hxRequest = request.getHeader("HX-Request");
+        return (accept != null && accept.contains(MediaType.APPLICATION_JSON_VALUE))
+                || hxRequest != null;
     }
 }

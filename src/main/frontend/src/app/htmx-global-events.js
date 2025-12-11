@@ -1,6 +1,8 @@
+import Alpine from "alpinejs";
+
 /**
- * HTMX 프로그레스 바 이벤트 리스너 등록
- * - htmx boost 모드에서 body가 교체되어도 동작하도록 html에 클래스 적용
+ * 프로그레스바 UI
+ * 페이지 전환시 오래 걸리는 작업에 대해서 상단 프로그래스바 UI 노출
  */
 window.addEventListener('htmx:beforeRequest', () => {
     document.documentElement.classList.remove('htmx-request-complete');
@@ -13,4 +15,17 @@ window.addEventListener('htmx:afterRequest', () => {
     setTimeout(() => {
         document.documentElement.classList.remove('htmx-request-complete');
     }, 300);
+});
+
+/**
+ * 전역 에러 핸들러
+ */
+document.addEventListener('htmx:responseError', (e) => {
+    console.debug(e);
+
+    if (e.detail.target.id === 'modal-content') {
+        Alpine.store('modal').onClose();
+    }
+
+    Alpine.store('toast').show(e?.detail?.error);
 });

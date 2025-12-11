@@ -3,6 +3,8 @@ package xyz.goraebap.spring_progressive_demo.infra.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.SeriesViewMapper;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesViewModel;
@@ -40,5 +42,19 @@ public class SeriesQueryService {
             thumbnailEnricher.enrich(nav);
         }
         return nav;
+    }
+
+    public Pagination<AdminSeriesViewModel> getAdminSeriesWithPagination(
+            String name,
+            String status,
+            String isPublishedYn,
+            int page,
+            int size
+    ) {
+        int offset = Pagination.getOffset(page, size);
+        var items = seriesViewMapper.findAdminSeries(name, status, isPublishedYn, size, offset);
+        items.forEach(thumbnailEnricher::enrich);
+        int totalCount = seriesViewMapper.countAdminSeries(name, status, isPublishedYn);
+        return Pagination.of(items, page, totalCount, null, size);
     }
 }

@@ -5,16 +5,16 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class AdminPostViewModel implements ThumbnailEnrichable {
+public class AdminSeriesViewModel implements ThumbnailEnrichable {
     private Long id;
-    private String title;
-    private String summary;
-    private String postType;
-    private String tags;
+    private String name;
+    private String slug;
+    private String description;
+    private String status;
     private String isPublishedYn;
-    private int viewCount;
     private LocalDateTime publishedAt;
     private LocalDateTime createdAt;
+    private int postCount;
     private String thumbnailKey;
     private String thumbnailMetadata;
 
