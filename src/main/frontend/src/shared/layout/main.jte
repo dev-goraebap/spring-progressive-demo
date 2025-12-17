@@ -33,6 +33,20 @@
     <title>${siteName} | ${title}</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/images/logo.png">
+
+    <!-- Service Worker 등록 -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+    </script>
+
     <%-- 쿠키 없을 때 시스템 설정 감지 (FOUC 방지) --%>
     @if(getTheme() == null)
         <script>
@@ -57,6 +71,7 @@
 </head>
 <body hx-boost="true" x-data="{ drawer: false }">
 <div id="htmx-progress"></div>
+@template.shared.layout.common.pwaInstallBanner()
 
 <!-- MOBILE DRAWER OVERLAY -->
 <div x-show="drawer" x-cloak
