@@ -94,6 +94,5 @@
 </div>
 
 @template.shared.layout.admin.modal()
-@template.shared.components.toast()
 </body>
 </html>

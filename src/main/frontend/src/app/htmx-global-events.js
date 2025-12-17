@@ -27,5 +27,5 @@ document.addEventListener('htmx:responseError', (e) => {
         Alpine.store('modal').onClose();
     }
 
-    Alpine.store('toast').show(e?.detail?.error);
+    window.toast.error(e?.detail?.error);
 });
