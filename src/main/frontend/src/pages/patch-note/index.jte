@@ -1,6 +1,6 @@
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel
-@import xyz.goraebap.spring_progressive_demo.app.post.dto.PatchNoteIndexRequest
+@import xyz.goraebap.spring_progressive_demo.app.client.dto.PatchNoteIndexRequest
 
 @param Pagination<PostViewModel> postData
 @param PatchNoteIndexRequest req

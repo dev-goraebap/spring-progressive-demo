@@ -1,6 +1,7 @@
+@import xyz.goraebap.spring_progressive_demo.app.client.dto.AdminPostIndexRequest
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminPostViewModel
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
-@import xyz.goraebap.spring_progressive_demo.app.post.dto.AdminPostIndexRequest
+@import xyz.goraebap.spring_progressive_demo.app.client.dto.AdminPostIndexRequest
 @import java.time.format.DateTimeFormatter
 @import java.util.List
 
