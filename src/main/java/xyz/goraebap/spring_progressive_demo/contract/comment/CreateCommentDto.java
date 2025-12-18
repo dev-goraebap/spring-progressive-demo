@@ -1,10 +1,10 @@
-package xyz.goraebap.spring_progressive_demo.app.client.dto;
+package xyz.goraebap.spring_progressive_demo.contract.comment;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record CreateCommentRequest(
+public record CreateCommentDto(
         @NotNull
         Integer avatarNo,
 

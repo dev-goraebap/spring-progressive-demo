@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import xyz.goraebap.spring_progressive_demo.app.client.dto.CreateCommentRequest;
+import xyz.goraebap.spring_progressive_demo.contract.comment.CreateCommentDto;
 import xyz.goraebap.spring_progressive_demo.contract.comment.CommentCreator;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.CommentViewMapper;
 
@@ -45,7 +45,7 @@ public class CommentController {
     public String create(
             @PathVariable String postSlug,
             @RequestParam String requestId,
-            @Valid CreateCommentRequest request,
+            @Valid CreateCommentDto request,
             Model model
     ) {
         commentCreator.create(requestId, postSlug, request);

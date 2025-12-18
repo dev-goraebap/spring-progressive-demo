@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.CommentEntity;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.CommentRepository;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.PostRepository;
-import xyz.goraebap.spring_progressive_demo.app.client.dto.CreateCommentRequest;
+import xyz.goraebap.spring_progressive_demo.contract.comment.CreateCommentDto;
 import xyz.goraebap.spring_progressive_demo.contract.comment.CommentCreator;
 import xyz.goraebap.spring_progressive_demo.shared.exception.BadRequestException;
 import xyz.goraebap.spring_progressive_demo.shared.exception.NotFoundException;
@@ -19,7 +19,7 @@ public class CommentService implements CommentCreator {
     private final PostRepository postRepository;
 
     @Transactional
-    public void create(String requestId, String postSlug, CreateCommentRequest request) {
+    public void create(String requestId, String postSlug, CreateCommentDto dto) {
         // 중복 요청 체크
         if (commentRepository.existsByRequestId(requestId)) {
             throw new BadRequestException("이미 처리된 요청입니다.");
@@ -32,9 +32,9 @@ public class CommentService implements CommentCreator {
         CommentEntity commentEntity = CommentEntity.create(
                 requestId,
                 post.getId(),
-                request.nickname(),
-                request.comment(),
-                request.avatarNo()
+                dto.nickname(),
+                dto.comment(),
+                dto.avatarNo()
         );
 
         commentRepository.save(commentEntity);
