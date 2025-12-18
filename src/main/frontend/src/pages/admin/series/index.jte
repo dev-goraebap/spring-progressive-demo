@@ -1,6 +1,6 @@
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
-@import xyz.goraebap.spring_progressive_demo.app.series.dto.AdminSeriesIndexRequest
+@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesIndexRequest
 @import java.time.format.DateTimeFormatter
 @import java.util.List
 

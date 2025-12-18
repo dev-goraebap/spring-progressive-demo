@@ -1,6 +1,6 @@
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.CurationViewModel
-@import xyz.goraebap.spring_progressive_demo.app.curation.dto.CurationIndexRequest
+@import xyz.goraebap.spring_progressive_demo.app.client.dto.CurationIndexRequest
 
 @param Pagination<CurationViewModel> curationData
 @param CurationIndexRequest req
