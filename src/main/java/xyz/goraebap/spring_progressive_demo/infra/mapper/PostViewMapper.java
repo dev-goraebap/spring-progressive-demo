@@ -37,4 +37,6 @@ public interface PostViewMapper {
         @Param("isPublishedYn") String isPublishedYn,
         @Param("title") String title
     );
+
+    AdminPostViewModel findAdminPostById(@Param("id") Long id);
 }

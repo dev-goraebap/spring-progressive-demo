@@ -63,4 +63,12 @@ public class PostQueryService {
         posts.forEach(thumbnailEnricher::enrich);
         return Pagination.of(posts, page, totalCount, null, size);
     }
+
+    public AdminPostViewModel getPostById(Long id) {
+        var post = postViewMapper.findAdminPostById(id);
+        if (post != null) {
+            thumbnailEnricher.enrich(post);
+        }
+        return post;
+    }
 }

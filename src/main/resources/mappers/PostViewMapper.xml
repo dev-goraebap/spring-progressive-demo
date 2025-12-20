@@ -219,4 +219,29 @@
         order by p.created_at desc
     </select>
 
+    <select id="findAdminPostById" resultType="AdminPostViewModel">
+        select p.id
+             , p.slug
+             , p.title
+             , p.summary
+             , p.content
+             , p.post_type
+             , p.is_published_yn
+             , p.view_count
+             , p.published_at
+             , p.created_at
+             , b.key as thumbnail_key
+             , b.metadata as thumbnail_metadata
+             , (select string_agg(t.name, ',')
+                from tags t
+                inner join post_tags pt on pt.tag_id = t.id
+                where pt.post_id = p.id) as tags
+        from posts p
+        left join attachments a on a.record_id = p.id::text
+            and a.record_type = 'post'
+            and a.name = 'thumbnail'
+        left join blobs b on b.id = a.blob_id
+        where p.id = #{id}
+    </select>
+
 </mapper>

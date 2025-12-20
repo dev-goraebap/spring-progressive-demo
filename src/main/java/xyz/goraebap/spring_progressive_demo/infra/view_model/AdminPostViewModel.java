@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 @Data
 public class AdminPostViewModel implements ThumbnailEnrichable {
     private Long id;
+    private String slug;
     private String title;
     private String summary;
+    private String content;
     private String postType;
     private String tags;
     private String isPublishedYn;
