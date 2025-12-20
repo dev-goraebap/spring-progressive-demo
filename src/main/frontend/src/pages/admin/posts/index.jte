@@ -63,7 +63,7 @@
                 </svg>
             </button>
             <div class="hidden lg:block flex-1 order-5"></div>
-            <a href="/admin/posts/new" class="btn btn-primary btn-sm w-full lg:w-auto order-6">
+            <a href="/admin/posts/add" hx-boost="false" class="btn btn-primary btn-sm w-full lg:w-auto order-6">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="size-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -156,7 +156,7 @@
                                 </div>
                                 <ul tabindex="0"
                                     class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
-                                    <li><a href="/admin/posts/${post.getId()}/edit">수정</a></li>
+                                    <li><a href="/admin/posts/${post.getId()}/edit" hx-boost="false">수정</a></li>
                                     <li><a class="text-error">삭제</a></li>
                                 </ul>
                             </div>

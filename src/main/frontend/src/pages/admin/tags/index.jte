@@ -1,3 +1,4 @@
+@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminTagIndexRequest
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminTagViewModel
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
 @import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminTagIndexRequest
@@ -44,7 +45,7 @@
 <%--                새 태그--%>
 <%--            </a>--%>
             <div x-data>
-                <button type="button" @click="$store.modal.onOpen('/admin/tags/new')" class="btn btn-primary btn-sm w-full lg:w-auto order-4">
+                <button type="button" @click="$store.modal.onOpen('/admin/tags/add')" class="btn btn-primary btn-sm w-full lg:w-auto order-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>

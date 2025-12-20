@@ -3,5 +3,5 @@
 
 @param Pagination<CurationViewModel> curationData
 
-@template.pages.curation._list(items = curationData.getItems())
-@template.pages.curation._pagination(curationData = curationData, oob = true)
+@template.pages.curation.index.list(items = curationData.getItems())
+@template.pages.curation.index.pagination(curationData = curationData, oob = true)

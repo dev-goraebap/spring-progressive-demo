@@ -28,7 +28,7 @@ public class CurationController {
         model.addAttribute("curationData", curationData);
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/curation/_htmxList";
+            return "pages/curation/index/htmxList";
         }
         return "pages/curation/index";
     }
@@ -37,6 +37,6 @@ public class CurationController {
     public String getLatestList(Model model) {
         var items = curationQueryService.getLatestItems(3);
         model.addAttribute("items", items);
-        return "pages/feed/_curationNews";
+        return "pages/feed/index/curationNews";
     }
 }

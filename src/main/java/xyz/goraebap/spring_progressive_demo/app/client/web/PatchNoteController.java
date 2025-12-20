@@ -31,9 +31,9 @@ public class PatchNoteController {
         model.addAttribute("postData", postData);
 
         if (htmxRequest && !htmxBoosted) {
-            return "pages/patch-note/_htmxList";
+            return "pages/patchNote/index/htmxList";
         }
-        return "pages/patch-note/index";
+        return "pages/patchNote/index";
     }
 
     @GetMapping("/{slug}")
@@ -52,6 +52,6 @@ public class PatchNoteController {
         viewCountHelper.process(post.getId(), viewedPosts, response);
 
         model.addAttribute("post", post);
-        return "pages/patch-note/show";
+        return "pages/patchNote/show";
     }
 }

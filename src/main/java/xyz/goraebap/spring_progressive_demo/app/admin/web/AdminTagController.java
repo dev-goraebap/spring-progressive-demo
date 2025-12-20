@@ -27,8 +27,8 @@ public class AdminTagController {
         return "pages/admin/tags/index";
     }
 
-    @GetMapping("/new")
-    public String newForm() {
-        return "pages/admin/tags/new";
+    @GetMapping("/add")
+    public String addForm() {
+        return "pages/admin/tags/add";
     }
 }
