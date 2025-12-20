@@ -93,6 +93,6 @@
     </div>
 </div>
 
-@template.shared.layout.admin.modal()
+@template.shared.components.modal()
 </body>
 </html>

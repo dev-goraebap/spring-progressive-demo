@@ -21,7 +21,7 @@ const getNotyf = () => {
     return notyf;
 };
 
-window.toast = {
+export const toast = {
     success(message) {
         getNotyf().success(message);
     },
@@ -32,3 +32,5 @@ window.toast = {
         getNotyf().error(message);
     }
 };
+
+window.toast = toast;
