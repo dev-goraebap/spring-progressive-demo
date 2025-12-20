@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesIndexRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.service.SeriesQueryService;
 
 @Controller

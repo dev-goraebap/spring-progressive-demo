@@ -1,3 +1,4 @@
+@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesIndexRequest
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel
 @import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
 @import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesIndexRequest
