@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         app: resolve(__dirname, 'src/app/app.js'),
         admin: resolve(__dirname, 'src/app/admin.js'),
+        editor: resolve(__dirname, 'src/app/editor.js'),
         style: resolve(__dirname, 'src/app/style.css'),
       },
       output: {
