@@ -33,7 +33,7 @@
     )
 
     <div class="border-b border-base-300">
-        @template.pages.feed._curationNews(items = curationItems)
+        @template.pages.feed.index.curationNews(items = curationItems)
     </div>
 
     <%-- 최근 패치노트 --%>
