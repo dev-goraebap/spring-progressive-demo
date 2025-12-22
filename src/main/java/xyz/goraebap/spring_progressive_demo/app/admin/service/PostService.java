@@ -41,7 +41,7 @@ public class PostService implements ViewCounter {
         return post;
     }
 
-    public PostEntity update(Long postId, AdminPostUpdateRequest req) {
+    public void update(Long postId, AdminPostUpdateRequest req) {
         var post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
 
@@ -60,20 +60,6 @@ public class PostService implements ViewCounter {
             attachThumbnail(postId, req.getThumbnailBlobId());
         }
 
-        return post;
-    }
-
-    private void attachThumbnail(Long postId, Long blobId) {
-        String recordType = "post";
-        String recordId = postId.toString();
-        String name = "thumbnail";
-
-        // 기존 썸네일 삭제
-        attachmentRepository.deleteByRecordTypeAndRecordIdAndName(recordType, recordId, name);
-
-        // 새 썸네일 첨부
-        var attachment = AttachmentEntity.create(name, recordType, recordId, blobId);
-        attachmentRepository.save(attachment);
     }
 
     public void delete(Long postId) {
@@ -88,5 +74,18 @@ public class PostService implements ViewCounter {
             post.incrementViewCount();
             postRepository.save(post);
         });
+    }
+
+    private void attachThumbnail(Long postId, Long blobId) {
+        String recordType = "post";
+        String recordId = postId.toString();
+        String name = "thumbnail";
+
+        // 기존 썸네일 삭제
+        attachmentRepository.deleteByRecordTypeAndRecordIdAndName(recordType, recordId, name);
+
+        // 새 썸네일 첨부
+        var attachment = AttachmentEntity.create(name, recordType, recordId, blobId);
+        attachmentRepository.save(attachment);
     }
 }
