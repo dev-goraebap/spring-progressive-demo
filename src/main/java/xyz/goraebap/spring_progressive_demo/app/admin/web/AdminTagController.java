@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminTagIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.service.TagQueryService;
@@ -28,7 +29,21 @@ public class AdminTagController {
     }
 
     @GetMapping("/add")
-    public String addForm() {
+    public String add() {
         return "pages/admin/tags/add";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        var tag = tagQueryService.getTagById(id);
+        model.addAttribute("tag", tag);
+        return "pages/admin/tags/edit";
+    }
+
+    @GetMapping("/{id}/remove")
+    public String remove(@PathVariable Long id, Model model) {
+        var tag = tagQueryService.getTagById(id);
+        model.addAttribute("tag", tag);
+        return "pages/admin/tags/remove";
     }
 }

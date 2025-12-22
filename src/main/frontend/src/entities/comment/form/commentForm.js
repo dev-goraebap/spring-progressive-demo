@@ -16,7 +16,7 @@ const avatars = [
 
 // 랜덤 닉네임 생성용 단어
 const prefixWords = [
-    '귀여운', '멋진', '똑똑한', '재미있는', '훌륭한', '뛰어난', '창의적인', '열정적인',
+    '귀여운', '멋진', '똑똒한', '재미있는', '훌륭한', '뛰어난', '창의적인', '열정적인',
     '친근한', '활발한', '신비한', '우아한', '당당한', '유쾌한', '차분한', '온화한',
     '진지한', '성실한', '빠른', '느긋한', '꼼꼼한', '대담한', '겸손한', '자신감있는',
     '포근한', '시원한', '따뜻한', '밝은', '조용한', '활기찬'
@@ -48,6 +48,14 @@ Alpine.data('commentForm', () => {
         nickname: getRandomNickname(),
         comment: '',
         isValid: false,
+
+        init() {
+            this.$el.querySelector('form').addEventListener('htmx:afterRequest', (e) => {
+                if (e.detail.successful) {
+                    toast.defer('success', '댓글 달아주셔서 감사합니다!');
+                }
+            });
+        },
 
         randomAvatar() {
             const av = getRandomAvatar();

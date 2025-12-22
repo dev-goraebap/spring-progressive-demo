@@ -1,39 +1,42 @@
 package xyz.goraebap.spring_progressive_demo.app.admin.web;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import xyz.goraebap.spring_progressive_demo.app.admin.service.TagService;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostCreateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.service.PostService;
 
 @RestController
-@RequestMapping("/api/v1/admin/tags")
+@RequestMapping("/api/v1/admin/posts")
 @RequiredArgsConstructor
-public class AdminTagApiController {
+public class AdminPostApiController {
 
-    private final TagService tagService;
+    private final PostService postService;
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @RequestBody TagCreateRequest request,
+            @Valid @RequestBody AdminPostCreateRequest req,
             @AuthenticationPrincipal Long userId
     ) {
-        tagService.create(request.name(), userId);
+        postService.create(req, userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody TagUpdateRequest request) {
-        tagService.update(id, request.name());
+    public ResponseEntity<Void> update(
+            @PathVariable Long id,
+            @Valid @RequestBody AdminPostUpdateRequest req
+    ) {
+        postService.update(id, req);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
-        tagService.delete(id);
+        postService.delete(id);
         return ResponseEntity.ok().build();
     }
-
-    public record TagCreateRequest(String name) {}
-    public record TagUpdateRequest(String name) {}
 }

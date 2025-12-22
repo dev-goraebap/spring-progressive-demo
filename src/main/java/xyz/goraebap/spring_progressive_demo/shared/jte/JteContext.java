@@ -1,5 +1,9 @@
 package xyz.goraebap.spring_progressive_demo.shared.jte;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,6 +14,10 @@ import xyz.goraebap.spring_progressive_demo.shared.vite.ViteManifest;
 @Component
 @Slf4j
 public class JteContext {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     private static ViteManifest viteManifest;
     private static String activeProfile;
@@ -92,5 +100,14 @@ public class JteContext {
             }
         }
         return DEFAULT_THEME;
+    }
+
+    public static String toJson(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            log.error("JSON 직렬화 실패", e);
+            return "{}";
+        }
     }
 }

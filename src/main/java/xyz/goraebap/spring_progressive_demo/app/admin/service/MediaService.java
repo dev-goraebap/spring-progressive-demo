@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.admin.app;
+package xyz.goraebap.spring_progressive_demo.app.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

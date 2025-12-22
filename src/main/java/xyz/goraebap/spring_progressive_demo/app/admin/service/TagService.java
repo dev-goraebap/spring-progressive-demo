@@ -1,4 +1,4 @@
-package xyz.goraebap.spring_progressive_demo.app.admin.app;
+package xyz.goraebap.spring_progressive_demo.app.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public TagEntity create(String name) {
+    public TagEntity create(String name, Long userId) {
         if (tagRepository.existsByName(name)) {
             throw new BadRequestException("이미 존재하는 태그입니다.");
         }
-        var tag = TagEntity.create(name);
+        var tag = TagEntity.create(name, userId);
         return tagRepository.save(tag);
     }
 

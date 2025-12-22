@@ -4,7 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import xyz.goraebap.spring_progressive_demo.app.admin.app.PostService;
+import xyz.goraebap.spring_progressive_demo.contract.post.ViewCounter;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ public class ViewCountHelper {
     private static final String VIEWED_POSTS_COOKIE = "viewed_posts";
     private static final int COOKIE_MAX_AGE = 60 * 10; // 10분
 
-    private final PostService postService;
+    private final ViewCounter viewCounter;
 
     public void process(Long postId, String viewedPosts, HttpServletResponse response) {
         Set<String> viewedSet = viewedPosts.isEmpty()
@@ -27,7 +27,7 @@ public class ViewCountHelper {
 
         String postIdStr = String.valueOf(postId);
         if (!viewedSet.contains(postIdStr)) {
-            postService.incrementViewCount(postId);
+            viewCounter.incrementViewCount(postId);
             viewedSet.add(postIdStr);
 
             Cookie cookie = new Cookie(VIEWED_POSTS_COOKIE, String.join("|", viewedSet));
