@@ -2,6 +2,7 @@ package xyz.goraebap.spring_progressive_demo.app.admin.web;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,8 @@ public class AdminPostController {
     private final PostService postService;
 
     @GetMapping
-    public String index(@ModelAttribute("req") AdminPostIndexRequest req, Model model) {
+    public String index(@ModelAttribute("req") AdminPostIndexRequest req,
+                        Model model) {
         var postData = postQueryService.getAdminPostsWithPagination(
                 req.getPostType(),
                 req.getIsPublishedYn(),
@@ -34,14 +36,14 @@ public class AdminPostController {
     }
 
     @GetMapping("/add")
-    public String addForm() {
+    public String add() {
         return "pages/admin/posts/add";
     }
 
     @PostMapping
-    public String create(@Valid AdminPostCreateRequest req, RedirectAttributes redirectAttributes) {
-        // TODO: 실제 인증된 사용자 ID로 교체
-        Long userId = 1L;
+    public String create(@Valid AdminPostCreateRequest req,
+                         @AuthenticationPrincipal Long userId,
+                         RedirectAttributes redirectAttributes) {
         postService.create(req, userId);
         redirectAttributes.addFlashAttribute("success", "게시물이 등록되었습니다.");
         return "redirect:/admin/posts";
@@ -55,14 +57,17 @@ public class AdminPostController {
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @Valid AdminPostUpdateRequest req, RedirectAttributes redirectAttributes) {
+    public String update(@PathVariable Long id,
+                         @Valid AdminPostUpdateRequest req,
+                         RedirectAttributes redirectAttributes) {
         postService.update(id, req);
         redirectAttributes.addFlashAttribute("success", "게시물이 수정되었습니다.");
         return "redirect:/admin/posts";
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable Long id,
+                         RedirectAttributes redirectAttributes) {
         postService.delete(id);
         redirectAttributes.addFlashAttribute("success", "게시물이 삭제되었습니다.");
         return "redirect:/admin/posts";
