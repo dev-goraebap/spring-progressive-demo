@@ -30,6 +30,15 @@ export const toast = {
     },
     error(message) {
         getNotyf().error(message);
+    },
+    /**
+     * htmx 페이지 스왑 완료 후 토스트 표시
+     * body outerHTML 스왑 시 JS 컨텍스트가 초기화되므로 document 이벤트 사용
+     */
+    defer(type, message) {
+        document.addEventListener('htmx:afterSettle', () => {
+            this[type](message);
+        }, { once: true });
     }
 };
 
