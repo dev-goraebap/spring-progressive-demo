@@ -16,4 +16,6 @@ public interface TagViewMapper {
     );
 
     int countAdminTags(@Param("name") String name);
+
+    AdminTagViewModel findTagById(@Param("id") Long id);
 }

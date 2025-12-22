@@ -20,12 +20,19 @@ public class TagEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false)
+    private String description = "";
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public static TagEntity create(String name) {
+    public static TagEntity create(String name, Long userId) {
         var entity = new TagEntity();
         entity.name = name;
+        entity.userId = userId;
         entity.createdAt = LocalDateTime.now();
         return entity;
     }

@@ -39,4 +39,13 @@
         </if>
     </select>
 
+    <select id="findTagById" resultType="AdminTagViewModel">
+        select t.id
+             , t.name
+             , t.created_at
+             , (select count(*) from post_tags pt where pt.tag_id = t.id) as post_count
+        from tags t
+        where t.id = #{id}
+    </select>
+
 </mapper>

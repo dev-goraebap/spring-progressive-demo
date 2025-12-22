@@ -1,33 +1,30 @@
 import Alpine from 'alpinejs';
 import htmx from 'htmx.org';
 
-Alpine.data('tagForm', () => ({
+Alpine.data('tagRemoveForm', (el) => ({
     submitting: false,
-    form: {
-        name: ''
-    },
+    confirmText: '',
+    id: el.dataset.id,
 
     async submit() {
-        if (!this.form.name.trim()) return;
+        if (this.confirmText !== '삭제') return;
 
         this.submitting = true;
         try {
-            const res = await fetch('/api/v1/admin/tags', {
-                method: 'POST',
+            const res = await fetch(`/api/v1/admin/tags/${this.id}`, {
+                method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                },
-                body: JSON.stringify(this.form)
+                }
             });
 
             if (!res.ok) {
                 const error = await res.json();
-                throw new Error(error.detail || '태그 생성에 실패했습니다.');
+                throw new Error(error.detail || '태그 삭제에 실패했습니다.');
             }
 
             Alpine.store('modal').onClose();
-            toast.defer('success', '태그가 생성되었습니다.');
+            toast.defer('success', '태그가 삭제되었습니다.');
             htmx.ajax('GET', '/admin/tags', { target: 'body', swap: 'outerHTML' });
         } catch (e) {
             toast.error(e.message);
