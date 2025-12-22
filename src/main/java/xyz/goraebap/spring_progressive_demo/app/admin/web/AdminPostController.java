@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import xyz.goraebap.spring_progressive_demo.app.admin.app.PostService;
+import xyz.goraebap.spring_progressive_demo.app.admin.service.PostService;
 import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostCreateRequest;
 import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostUpdateRequest;
 import xyz.goraebap.spring_progressive_demo.app.client.dto.AdminPostIndexRequest;

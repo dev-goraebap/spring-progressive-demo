@@ -3,7 +3,7 @@ package xyz.goraebap.spring_progressive_demo.app.admin.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.goraebap.spring_progressive_demo.app.admin.app.TagService;
+import xyz.goraebap.spring_progressive_demo.app.admin.service.TagService;
 
 @RestController
 @RequestMapping("/api/v1/admin/tags")

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.goraebap.spring_progressive_demo.app.admin.app.MediaService;
+import xyz.goraebap.spring_progressive_demo.app.admin.service.MediaService;
 
 @RestController
 @RequestMapping("/api/v1/admin/media")

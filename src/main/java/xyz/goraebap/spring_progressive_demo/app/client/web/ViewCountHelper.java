@@ -4,7 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import xyz.goraebap.spring_progressive_demo.app.admin.app.PostService;
+import xyz.goraebap.spring_progressive_demo.app.admin.service.PostService;
 
 import java.util.Arrays;
 import java.util.HashSet;
