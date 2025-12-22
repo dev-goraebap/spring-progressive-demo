@@ -145,7 +145,7 @@
                             @endif
                         </td>
                         <td class="text-sm text-base-content/70">${post.getCreatedAt().format(dateFormat)}</td>
-                        <td>
+                        <td x-data>
                             <div class="dropdown dropdown-end">
                                 <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -157,7 +157,7 @@
                                 <ul tabindex="0"
                                     class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
                                     <li><a href="/admin/posts/${post.getId()}/edit" hx-boost="false">수정</a></li>
-                                    <li><a class="text-error">삭제</a></li>
+                                    <li><a @click="$store.modal.onOpen('/admin/posts/${post.getId()}/remove')" class="text-error">삭제</a></li>
                                 </ul>
                             </div>
                         </td>

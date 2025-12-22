@@ -1,6 +1,11 @@
 import './common.js';
 import { createFilePond, destroyFilePond } from '../shared/utils/filepond.js';
 
+// editor 전용 JS 로드
+import.meta.glob([
+    '../**/*.editor.js',
+], {eager: true});
+
 // TinyMCE
 import tinymce from 'tinymce';
 import 'tinymce/icons/default';
