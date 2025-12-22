@@ -13,7 +13,8 @@
         </li>
     @else
         @for(var item : comments)
-            <li x-data="commentItem(${item.getAvatarNo()})">
+            <li data-avatar-no="${item.getAvatarNo()}"
+                x-data="commentItem($el.dataset.avatarNo)">
                 <div class="bg-base-200/70 rounded-xl p-4 space-y-3">
                     <div class="flex justify-between items-start">
                         <div class="flex gap-2 items-center">
