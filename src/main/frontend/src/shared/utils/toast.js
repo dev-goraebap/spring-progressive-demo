@@ -66,3 +66,6 @@ window.toast = toast;
 
 // 페이지 로드 시 pending toast 확인
 showPendingToast();
+
+// htmx로 페이지 교체 후에도 pending toast 확인
+document.addEventListener('htmx:afterSettle', showPendingToast);

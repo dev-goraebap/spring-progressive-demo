@@ -1,17 +1,12 @@
 @param String title
 @param String targetName
 @param String targetType
-@param String apiUrl
-@param String successMessage
-@param String errorMessage
-@param String redirectUrl
+@param String actionUrl
 
-<div x-data="destroyConfirm($el)"
-     data-api-url="${apiUrl}"
-     data-success-message="${successMessage}"
-     data-error-message="${errorMessage}"
-     data-redirect-url="${redirectUrl}"
-     class="flex flex-col flex-1 min-h-0">
+<form hx-delete="${actionUrl}"
+      hx-disabled-elt="button[type=submit]"
+      x-data="{ confirmText: '' }"
+      class="flex flex-col flex-1 min-h-0">
     @template.shared.components.modalHeader(title = title)
 
     <div class="p-4 flex-1 overflow-y-auto">
@@ -23,16 +18,15 @@
             <label class="text-xs text-base-content/60">확인을 위해 <strong class="text-error">삭제</strong>를 입력하세요</label>
             <input type="text"
                    x-model="confirmText"
-                   @keydown.enter.prevent="submit()"
                    class="w-full py-2 border-b border-base-300 focus:border-error focus:outline-none bg-transparent"
                    placeholder="삭제" />
         </div>
     </div>
 
     @template.shared.components.modalFooter(content = @`
-        <button type="button" @click="submit()" :disabled="submitting || confirmText !== '삭제'" class="btn btn-error btn-block">
-            <span x-show="!submitting">삭제</span>
-            <span x-show="submitting" class="loading loading-spinner loading-sm"></span>
+        <button type="submit" :disabled="confirmText !== '삭제'" class="btn btn-error btn-block">
+            <span class="htmx-indicator loading loading-spinner loading-sm"></span>
+            <span>삭제</span>
         </button>
     `)
-</div>
+</form>

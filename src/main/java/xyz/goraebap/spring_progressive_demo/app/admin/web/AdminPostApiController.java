@@ -33,10 +33,4 @@ public class AdminPostApiController {
         postService.update(id, req);
         return ResponseEntity.ok().build();
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> destroy(@PathVariable Long id) {
-        postService.delete(id);
-        return ResponseEntity.ok().build();
-    }
 }

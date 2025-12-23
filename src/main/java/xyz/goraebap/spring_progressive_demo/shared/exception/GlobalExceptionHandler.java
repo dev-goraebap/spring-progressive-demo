@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
+import xyz.goraebap.spring_progressive_demo.shared.htmx.HxTrigger;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -22,9 +24,9 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
-    public ProblemDetail handleValidationException(
+    public Object handleValidationException(
             MethodArgumentNotValidException ex,
+            HttpServletRequest httpRequest,
             WebRequest request
     ) {
         String errorMessage = ex.getBindingResult().getFieldErrors().stream()
@@ -34,7 +36,13 @@ public class GlobalExceptionHandler {
         log.warn("Validation failed - path: {}, errors: {}",
                 request.getDescription(false), errorMessage);
 
-        return createProblemDetail(HttpStatus.BAD_REQUEST, errorMessage, request);
+        if (isHtmxRequest(httpRequest)) {
+            return htmxErrorResponse(HttpStatus.BAD_REQUEST, errorMessage);
+        }
+        if (wantsJson(httpRequest)) {
+            return createProblemDetail(HttpStatus.BAD_REQUEST, errorMessage, request);
+        }
+        return errorView(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -46,6 +54,9 @@ public class GlobalExceptionHandler {
         log.warn("Resource not found - path: {}, message: {}",
                 request.getDescription(false), ex.getMessage());
 
+        if (isHtmxRequest(httpRequest)) {
+            return htmxErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
         if (wantsJson(httpRequest)) {
             return createProblemDetail(HttpStatus.NOT_FOUND, ex.getMessage(), request);
         }
@@ -61,6 +72,9 @@ public class GlobalExceptionHandler {
         log.warn("Bad request - path: {}, message: {}",
                 request.getDescription(false), ex.getMessage());
 
+        if (isHtmxRequest(httpRequest)) {
+            return htmxErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
         if (wantsJson(httpRequest)) {
             return createProblemDetail(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
         }
@@ -79,6 +93,9 @@ public class GlobalExceptionHandler {
         HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
         String message = ex.getReason() != null ? ex.getReason() : status.getReasonPhrase();
 
+        if (isHtmxRequest(httpRequest)) {
+            return htmxErrorResponse(status, message);
+        }
         if (wantsJson(httpRequest)) {
             return createProblemDetail(status, message, request);
         }
@@ -94,15 +111,30 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error occurred - path: {}",
                 request.getDescription(false), ex);
 
+        if (isHtmxRequest(httpRequest)) {
+            return htmxErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
+        }
         if (wantsJson(httpRequest)) {
             return createProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", request);
         }
         return errorView(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
     }
 
+    private boolean isHtmxRequest(HttpServletRequest request) {
+        return "true".equals(request.getHeader("HX-Request"));
+    }
+
     private boolean wantsJson(HttpServletRequest request) {
         String accept = request.getHeader("Accept");
         return accept != null && accept.contains(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    private ResponseEntity<String> htmxErrorResponse(HttpStatus status, String message) {
+        return ResponseEntity.status(status)
+                .header("HX-Trigger", HxTrigger.builder()
+                        .toast("error", message)
+                        .build())
+                .body("");
     }
 
     private ModelAndView errorView(HttpStatus status, String message) {

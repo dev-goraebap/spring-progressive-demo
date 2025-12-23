@@ -1,11 +1,14 @@
 package xyz.goraebap.spring_progressive_demo.app.admin.web;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import xyz.goraebap.spring_progressive_demo.app.admin.service.PostService;
 import xyz.goraebap.spring_progressive_demo.app.client.dto.AdminPostIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
+import xyz.goraebap.spring_progressive_demo.shared.htmx.HxTrigger;
 
 @Controller("adminPostController")
 @RequestMapping("/admin/posts")
@@ -13,6 +16,7 @@ import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
 public class AdminPostController {
 
     private final PostQueryService postQueryService;
+    private final PostService postService;
 
     @GetMapping
     public String index(@ModelAttribute("req") AdminPostIndexRequest req, Model model) {
@@ -44,5 +48,17 @@ public class AdminPostController {
         var post = postQueryService.getPostById(id);
         model.addAttribute("post", post);
         return "pages/admin/posts/remove";
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> destroy(@PathVariable Long id) {
+        postService.delete(id);
+        return ResponseEntity.ok()
+                .header("HX-Trigger", HxTrigger.builder()
+                        .closeModal()
+                        .toast("success", "게시물이 삭제되었습니다.")
+                        .build())
+                .header("HX-Location", "/admin/posts")
+                .build();
     }
 }
