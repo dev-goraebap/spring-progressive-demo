@@ -1,6 +1,6 @@
 import htmx from 'htmx.org';
 import Alpine from 'alpinejs';
-import './htmx-global-events.js';
+import './htmxGlobalEvents.js';
 
 // HTMX 전역 등록
 window.htmx = htmx;

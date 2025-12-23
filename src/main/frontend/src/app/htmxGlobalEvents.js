@@ -1,5 +1,4 @@
 import Alpine from "alpinejs";
-import htmx from "htmx.org";
 
 /**
  * 프로그레스바 UI

@@ -38,9 +38,6 @@ import 'tinymce/plugins/save';
 import 'tinymce/plugins/autosave';
 import 'tinymce/plugins/directionality';
 
-// 스킨
-import 'tinymce/skins/ui/oxide/skin.min.css';
-
 function initEditor() {
     const editorElement = document.getElementById('tinymceEditor');
     if (!editorElement) return;
