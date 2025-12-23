@@ -19,7 +19,13 @@ window.addEventListener('htmx:afterRequest', () => {
 });
 
 /**
- * 에러 응답에서 HX-Trigger가 없을 때 기본 에러 메시지 표시
+ * [Fallback] HX-Trigger가 없는 에러 응답 처리
+ *
+ * 케이스:
+ * - Spring 기본 404 (존재하지 않는 URL)
+ * - GlobalExceptionHandler를 거치지 않는 에러
+ *
+ * 동작: 응답 body에서 에러 메시지 추출하여 toast 표시
  */
 document.body.addEventListener('htmx:afterRequest', (e) => {
     const xhr = e.detail.xhr;
@@ -39,17 +45,28 @@ document.body.addEventListener('htmx:afterRequest', (e) => {
 });
 
 /**
- * HX-Trigger 이벤트 핸들러
- * 서버에서 HX-Trigger 헤더로 전달한 이벤트 처리
+ * [HX-Trigger] toast 이벤트 핸들러
+ *
+ * 케이스:
+ * - 성공 응답 (CRUD 완료)
+ * - DTO validation 실패 (400)
+ * - Service 예외 (NotFoundException, BadRequestException 등)
+ *
+ * 동작: htmx가 HX-Trigger 헤더를 파싱하여 toast 이벤트 발생 → 즉시 표시
  */
 document.body.addEventListener('toast', (e) => {
-    const { type, message } = e.detail;
+    const {type, message} = e.detail;
     window.toast[type](decodeURIComponent(message));
 });
 
 /**
- * HX-Location/HX-Redirect + HX-Trigger 동시 처리
- * 페이지가 교체되므로 toast를 flash로 저장
+ * [HX-Trigger + 페이지 전환] toast를 flash로 저장
+ *
+ * 케이스:
+ * - HX-Location 응답 (모달 CRUD 후 목록 갱신)
+ * - HX-Redirect 응답 (레이아웃이 다른 페이지로 이동)
+ *
+ * 동작: 페이지가 교체되므로 sessionStorage에 저장, 새 페이지에서 표시
  */
 document.body.addEventListener('htmx:afterRequest', (e) => {
     const xhr = e.detail.xhr;
@@ -64,7 +81,7 @@ document.body.addEventListener('htmx:afterRequest', (e) => {
         try {
             const events = JSON.parse(trigger);
             if (events.toast) {
-                const { type, message } = events.toast;
+                const {type, message} = events.toast;
                 console.debug('[htmx] toast.flash:', type, decodeURIComponent(message));
                 window.toast.flash(type, decodeURIComponent(message));
             }
@@ -74,6 +91,14 @@ document.body.addEventListener('htmx:afterRequest', (e) => {
     }
 });
 
+/**
+ * [HX-Trigger] closeModal 이벤트 핸들러
+ *
+ * 케이스:
+ * - 모달 내 CRUD 성공 후 모달 닫기
+ *
+ * 동작: Alpine.js 모달 스토어의 onClose 호출
+ */
 document.body.addEventListener('closeModal', () => {
-    setTimeout(() => Alpine.store('modal').onClose(), 0);
+    Alpine.store('modal').onClose();
 });
