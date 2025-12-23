@@ -1,14 +1,11 @@
 import Alpine from 'alpinejs';
-import htmx from "htmx.org";
 
 Alpine.store('modal', {
     isOpen: false,
-    url: null,
     closeable: true,
     onResult: null,
 
-    onOpen(url, options = {}) {
-        this.url = url;
+    open(options = {}) {
         this.closeable = options.closeable !== false;
         this.onResult = options.onResult || null;
         this.isOpen = true;
@@ -18,14 +15,11 @@ Alpine.store('modal', {
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
 
-        // 콘텐츠 로드
-        setTimeout(() => {
-            const container = document.getElementById('modal-content');
-            if (container) {
-                container.innerHTML = document.getElementById('modal-loading').innerHTML;
-                htmx.ajax('GET', url, '#modal-content');
-            }
-        }, 0);
+        // 로딩 표시
+        const container = document.getElementById('HX_MODAL_CONTENT');
+        if (container) {
+            container.innerHTML = document.getElementById('modal-loading').innerHTML;
+        }
     },
 
     onClose(result) {
@@ -40,7 +34,6 @@ Alpine.store('modal', {
         setTimeout(() => {
             document.documentElement.style.paddingRight = '';
             document.documentElement.style.overflow = '';
-            this.url = null;
             this.onResult = null;
         }, 200);
     }

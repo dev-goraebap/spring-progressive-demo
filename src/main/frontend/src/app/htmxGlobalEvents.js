@@ -101,3 +101,18 @@ document.body.addEventListener('htmx:afterRequest', (e) => {
 document.body.addEventListener('closeModal', () => {
     Alpine.store('modal').onClose();
 });
+
+/**
+ * [htmx] 모달 자동 열기
+ *
+ * 케이스:
+ * - hx-target="#HX_MODAL_CONTENT"인 요청 감지
+ *
+ * 동작: 요청 전에 모달을 먼저 열고 로딩 표시
+ */
+document.body.addEventListener('htmx:beforeRequest', (e) => {
+    const target = e.detail.target;
+    if (target?.id === 'HX_MODAL_CONTENT') {
+        Alpine.store('modal').open();
+    }
+});
