@@ -15,7 +15,7 @@
     <form action="/comments/${postSlug}"
           method="post"
           hx-post="/comments/${postSlug}"
-          hx-target="#comment-section"
+          hx-target="#HX_COMMENT_SECTION"
           hx-swap="outerHTML"
           class="space-y-4">
 

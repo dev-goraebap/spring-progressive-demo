@@ -26,7 +26,7 @@
     )
 
     @if(!postData.getItems().isEmpty())
-        <div id="post-list">
+        <div id="HX_POST_LIST">
             @template.entities.post.list(items = postData.getItems(), linkPrefix = "/patch-notes", showTags = false)
         </div>
         @template.entities.post.pagination(postData = postData, loadMoreUrl = "/patch-notes")

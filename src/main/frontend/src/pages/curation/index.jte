@@ -26,7 +26,7 @@
     )
 
     @if(!curationData.getItems().isEmpty())
-        <div id="curation-list">
+        <div id="HX_CURATION_LIST">
             @template.pages.curation.index.list(items = curationData.getItems())
         </div>
         @template.pages.curation.index.pagination(curationData = curationData)

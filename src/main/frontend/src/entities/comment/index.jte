@@ -6,7 +6,7 @@
 @param int commentCount
 @param String requestId
 
-<div id="comment-section">
+<div id="HX_COMMENT_SECTION">
     <%-- 댓글 폼 --%>
     @template.entities.comment.form(postSlug = postSlug, commentCount = commentCount, requestId = requestId)
 
