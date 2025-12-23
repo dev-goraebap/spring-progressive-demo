@@ -48,18 +48,19 @@ document.body.addEventListener('toast', (e) => {
 });
 
 /**
- * HX-Location + HX-Trigger 동시 처리
- * HX-Location이 있으면 페이지가 교체되므로 toast를 flash로 저장
+ * HX-Location/HX-Redirect + HX-Trigger 동시 처리
+ * 페이지가 교체되므로 toast를 flash로 저장
  */
 document.body.addEventListener('htmx:afterRequest', (e) => {
     const xhr = e.detail.xhr;
     if (!xhr) return;
 
     const location = xhr.getResponseHeader('HX-Location');
+    const redirect = xhr.getResponseHeader('HX-Redirect');
     const trigger = xhr.getResponseHeader('HX-Trigger');
-    console.debug('[htmx] HX-Location:', location, 'HX-Trigger:', trigger);
+    console.debug('[htmx] HX-Location:', location, 'HX-Redirect:', redirect, 'HX-Trigger:', trigger);
 
-    if (location && trigger) {
+    if ((location || redirect) && trigger) {
         try {
             const events = JSON.parse(trigger);
             if (events.toast) {

@@ -98,5 +98,6 @@ public class AdminTagController {
             @NotBlank
             @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "영문, 숫자, 하이픈(-)만 입력 가능합니다")
             String name
-    ) {}
+    ) {
+    }
 }
