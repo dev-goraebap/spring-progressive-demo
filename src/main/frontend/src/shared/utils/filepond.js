@@ -3,6 +3,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
+import FilePondPluginFilePoster from 'filepond-plugin-file-poster';
 
 // 플러그인 등록 (한 번만 실행)
 let pluginsRegistered = false;
@@ -14,7 +15,8 @@ function registerPlugins() {
         FilePondPluginFileValidateSize,
         FilePondPluginFileValidateType,
         FilePondPluginImagePreview,
-        FilePondPluginImageValidateSize
+        FilePondPluginImageValidateSize,
+        FilePondPluginFilePoster
     );
 
     pluginsRegistered = true;
@@ -48,7 +50,11 @@ export function createFilePond(element, options = {}) {
                 },
             },
             revert: null,
-            restore: null,
+            restore: (uniqueFileId, load, error, progress, abort) => {
+                // 기존 파일은 실제 로드 없이 완료 처리 (poster로 미리보기만 표시)
+                load(uniqueFileId);
+                return { abort: () => {} };
+            },
             load: null,
         },
         name: 'file',

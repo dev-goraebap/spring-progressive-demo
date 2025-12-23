@@ -20,6 +20,7 @@
     "alpinejs": "^3.15.2",
     "daisyui": "^5.5.5",
     "filepond": "^4.32.10",
+    "filepond-plugin-file-poster": "^2.5.2",
     "filepond-plugin-file-validate-size": "^2.2.8",
     "filepond-plugin-file-validate-type": "^1.2.9",
     "filepond-plugin-image-preview": "^4.6.12",
