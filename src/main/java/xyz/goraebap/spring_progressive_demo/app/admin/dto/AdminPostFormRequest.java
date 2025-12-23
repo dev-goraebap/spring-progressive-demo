@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Data
-public class AdminPostCreateRequest {
+public class AdminPostFormRequest {
     @Pattern(regexp = "^[a-zA-Z0-9-]*$", message = "슬러그는 영문자, 숫자, 하이픈(-)만 사용할 수 있습니다")
     private String slug;
 

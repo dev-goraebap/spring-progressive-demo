@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import htmx from 'htmx.org';
 
 Alpine.data('postForm', (el) => {
     const data = el.dataset.form ? JSON.parse(el.dataset.form) : {};
@@ -16,7 +17,7 @@ Alpine.data('postForm', (el) => {
             thumbnailBlobId: null
         },
 
-        async submit() {
+        submit() {
             const editor = window.tinymce?.get('tinymceEditor');
             if (editor) {
                 this.form.content = editor.getContent();
@@ -24,7 +25,10 @@ Alpine.data('postForm', (el) => {
 
             const thumbnailInput = document.getElementById('thumbnailBlobId');
             if (thumbnailInput?.value) {
-                this.form.thumbnailBlobId = parseInt(thumbnailInput.value);
+                const parsed = parseInt(thumbnailInput.value);
+                if (!isNaN(parsed)) {
+                    this.form.thumbnailBlobId = parsed;
+                }
             }
 
             if (!this.form.content.trim()) {
@@ -33,31 +37,21 @@ Alpine.data('postForm', (el) => {
             }
 
             this.submitting = true;
-            try {
-                const url = isEdit ? `/api/v1/admin/posts/${data.id}` : '/api/v1/admin/posts';
-                const method = isEdit ? 'PUT' : 'POST';
 
-                const res = await fetch(url, {
-                    method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(this.form)
-                });
+            const url = isEdit ? `/admin/posts/${data.id}` : '/admin/posts';
+            const method = isEdit ? 'PUT' : 'POST';
 
-                if (!res.ok) {
-                    const error = await res.json();
-                    throw new Error(error.detail || (isEdit ? '게시물 수정에 실패했습니다.' : '게시물 등록에 실패했습니다.'));
-                }
+            // null 값 제거
+            const values = Object.fromEntries(
+                Object.entries(this.form).filter(([_, v]) => v != null)
+            );
 
-                toast.flash('success', isEdit ? '게시물이 수정되었습니다.' : '게시물이 등록되었습니다.');
-                window.location.href = '/admin/posts';
-            } catch (e) {
-                toast.error(e.message);
-            } finally {
+            htmx.ajax(method, url, {
+                values,
+                swap: 'none'
+            }).finally(() => {
                 this.submitting = false;
-            }
+            });
         }
     };
 });

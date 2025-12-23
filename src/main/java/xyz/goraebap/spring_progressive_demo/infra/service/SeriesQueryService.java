@@ -9,6 +9,8 @@ import xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewMo
 import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel;
 import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesViewModel;
 
+import xyz.goraebap.spring_progressive_demo.shared.exception.NotFoundException;
+
 import java.util.List;
 
 @Service
@@ -56,5 +58,14 @@ public class SeriesQueryService {
         items.forEach(thumbnailEnricher::enrich);
         int totalCount = seriesViewMapper.countAdminSeries(name, status, isPublishedYn);
         return Pagination.of(items, page, totalCount, null, size);
+    }
+
+    public AdminSeriesViewModel getSeriesById(Long id) {
+        var series = seriesViewMapper.findSeriesById(id);
+        if (series == null) {
+            throw new NotFoundException("시리즈를 찾을 수 없습니다.");
+        }
+        thumbnailEnricher.enrich(series);
+        return series;
     }
 }

@@ -1,5 +1,6 @@
 package xyz.goraebap.spring_progressive_demo.app.admin.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,10 +10,12 @@ import xyz.goraebap.spring_progressive_demo.app.admin.domain.BlobEntity;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.BlobRepository;
 import xyz.goraebap.spring_progressive_demo.shared.exception.BadRequestException;
 import xyz.goraebap.spring_progressive_demo.shared.r2.R2StorageService;
+import xyz.goraebap.spring_progressive_demo.shared.vision.GoogleVisionService;
 
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +28,8 @@ public class MediaService {
 
     private final BlobRepository blobRepository;
     private final R2StorageService r2StorageService;
+    private final GoogleVisionService googleVisionService;
+    private final ObjectMapper objectMapper;
 
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
     private static final List<String> ALLOWED_MIME_TYPES = List.of(
@@ -49,6 +54,9 @@ public class MediaService {
             String key = generateKey();
             r2StorageService.uploadFile(key, data, file.getContentType());
 
+            // 메타데이터 추출 (이미지인 경우 색상 추출)
+            String metadata = extractMetadata(data, file.getContentType());
+
             // DB 저장
             var blob = BlobEntity.create(
                     key,
@@ -57,7 +65,7 @@ public class MediaService {
                     (int) file.getSize(),
                     checksum,
                     userId.toString(),
-                    "{}"
+                    metadata
             );
             blobRepository.save(blob);
 
@@ -94,6 +102,30 @@ public class MediaService {
             return HexFormat.of().formatHex(digest);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("MD5 algorithm not found", e);
+        }
+    }
+
+    private String extractMetadata(byte[] data, String contentType) {
+        var metadata = new HashMap<String, Object>();
+
+        // 이미지인 경우 지배적 색상 추출
+        if (contentType != null && contentType.startsWith("image/")) {
+            metadata.put("type", "image");
+
+            var colors = googleVisionService.extractColors(data);
+            if (!colors.isEmpty()) {
+                metadata.put("dominantColor", colors.get(0).hex());
+                if (colors.size() > 1) {
+                    metadata.put("dominantColor2", colors.get(1).hex());
+                }
+            }
+        }
+
+        try {
+            return objectMapper.writeValueAsString(metadata);
+        } catch (Exception e) {
+            log.warn("메타데이터 직렬화 실패", e);
+            return "{}";
         }
     }
 

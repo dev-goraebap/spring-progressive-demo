@@ -8,8 +8,7 @@ import xyz.goraebap.spring_progressive_demo.app.admin.domain.AttachmentEntity;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.AttachmentRepository;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.PostEntity;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.PostRepository;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostCreateRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostFormRequest;
 import xyz.goraebap.spring_progressive_demo.contract.post.ViewCounter;
 import xyz.goraebap.spring_progressive_demo.shared.exception.BadRequestException;
 import xyz.goraebap.spring_progressive_demo.shared.exception.NotFoundException;
@@ -22,7 +21,7 @@ public class PostService implements ViewCounter {
     private final PostRepository postRepository;
     private final AttachmentRepository attachmentRepository;
 
-    public PostEntity create(AdminPostCreateRequest req, Long userId) {
+    public PostEntity create(AdminPostFormRequest req, Long userId) {
         // slug 중복 검증
         if (req.getSlug() != null && !req.getSlug().isBlank()) {
             if (postRepository.findBySlug(req.getSlug()).isPresent()) {
@@ -41,7 +40,7 @@ public class PostService implements ViewCounter {
         return post;
     }
 
-    public void update(Long postId, AdminPostUpdateRequest req) {
+    public void update(Long postId, AdminPostFormRequest req) {
         var post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
 

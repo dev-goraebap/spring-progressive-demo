@@ -47,3 +47,4 @@ jte-classes
 node_modules
 
 test.sql
+.config

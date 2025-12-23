@@ -38,9 +38,6 @@ import 'tinymce/plugins/save';
 import 'tinymce/plugins/autosave';
 import 'tinymce/plugins/directionality';
 
-// 스킨
-import 'tinymce/skins/ui/oxide/skin.min.css';
-
 function initEditor() {
     const editorElement = document.getElementById('tinymceEditor');
     if (!editorElement) return;
@@ -186,18 +183,37 @@ function initThumbnailUploader() {
         destroyFilePond(thumbnailPond);
     }
 
-    thumbnailPond = createFilePond(thumbnailInput, {
+    // 기존 썸네일 URL
+    const thumbnailUrl = thumbnailInput.dataset.thumbnailUrl;
+
+    const options = {
         maxFiles: 1,
         labelIdle: '썸네일 이미지를 드래그하거나 <span class="filepond--label-action">클릭</span>하세요',
         onprocessfile: (error, fileItem) => {
-            if (!error && fileItem.serverId) {
+            // 새 파일 업로드 완료 시 blobId 설정 (숫자인 경우만)
+            if (!error && fileItem.serverId && !isNaN(parseInt(fileItem.serverId))) {
                 document.getElementById('thumbnailBlobId').value = fileItem.serverId;
             }
         },
         onremovefile: () => {
             document.getElementById('thumbnailBlobId').value = '';
         }
-    });
+    };
+
+    // 기존 썸네일이 있으면 poster로 미리보기 표시 (fetch 없이)
+    if (thumbnailUrl) {
+        options.files = [{
+            source: thumbnailUrl,
+            options: {
+                type: 'limbo',
+                metadata: {
+                    poster: thumbnailUrl
+                }
+            }
+        }];
+    }
+
+    thumbnailPond = createFilePond(thumbnailInput, options);
 }
 
 // 초기화

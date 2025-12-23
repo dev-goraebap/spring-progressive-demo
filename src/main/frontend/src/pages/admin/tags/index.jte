@@ -44,15 +44,16 @@
 <%--                </svg>--%>
 <%--                새 태그--%>
 <%--            </a>--%>
-            <div x-data>
-                <button type="button" @click="$store.modal.onOpen('/admin/tags/add')" class="btn btn-primary btn-sm w-full lg:w-auto order-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                         stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                    </svg>
-                    새 태그
-                </button>
-            </div>
+            <button type="button"
+                    hx-get="/admin/tags/add"
+                    hx-target="#HX_MODAL_CONTENT"
+                    class="btn btn-primary btn-sm w-full lg:w-auto order-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                </svg>
+                새 태그
+            </button>
         `)
 
         @template.shared.layout.admin.table(
@@ -70,7 +71,7 @@
                     <td class="font-medium">${tag.getName()}</td>
                     <td class="text-center">${tag.getPostCount()}</td>
                     <td class="text-sm text-base-content/70">${tag.getCreatedAt().format(dateFormat)}</td>
-                    <td x-data>
+                    <td>
                         <div class="dropdown dropdown-end">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -81,8 +82,8 @@
                             </div>
                             <ul tabindex="0"
                                 class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
-                                <li><a @click="$store.modal.onOpen('/admin/tags/${tag.getId()}/edit')">수정</a></li>
-                                <li><a @click="$store.modal.onOpen('/admin/tags/${tag.getId()}/remove')" class="text-error">삭제</a></li>
+                                <li><a hx-get="/admin/tags/${tag.getId()}/edit" hx-target="#HX_MODAL_CONTENT">수정</a></li>
+                                <li><a hx-get="/admin/tags/${tag.getId()}/remove" hx-target="#HX_MODAL_CONTENT" class="text-error">삭제</a></li>
                             </ul>
                         </div>
                     </td>

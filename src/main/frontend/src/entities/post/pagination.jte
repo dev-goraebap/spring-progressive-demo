@@ -5,11 +5,11 @@
 @param String loadMoreUrl = "/"
 @param boolean oob = false
 
-<div id="load-more" class="flex justify-center p-4" hx-swap-oob="${oob}">
+<div id="HX_LOAD_MORE" class="flex justify-center p-4" hx-swap-oob="${oob}">
     @if(postData.isHasMore())
         <button class="btn"
                 hx-get="${loadMoreUrl}?page=${postData.getNextPage()}&sort=${postData.getOrderType()}"
-                hx-target="#post-list"
+                hx-target="#HX_POST_LIST"
                 hx-swap="beforeend"
         >
             <span class="loading loading-spinner loading-sm hidden [.htmx-request_&]:inline"></span>

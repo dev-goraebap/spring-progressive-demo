@@ -20,14 +20,9 @@
                     <label class="label">
                         <span class="label-text">썸네일</span>
                     </label>
-                    <input type="file" id="thumbnailInput" accept="image/*"/>
+                    <input type="file" id="thumbnailInput" accept="image/*"
+                           data-thumbnail-url="${post.getThumbnailUrl()}"/>
                     <input type="hidden" id="thumbnailBlobId"/>
-                    @if(post.getThumbnailUrl() != null)
-                        <div id="currentThumbnail" class="mt-2">
-                            <img src="${post.getThumbnailUrl()}" alt="현재 썸네일" class="w-full max-h-40 object-cover rounded"/>
-                            <p class="text-xs text-base-content/50 mt-1">새 이미지를 업로드하면 교체됩니다</p>
-                        </div>
-                    @endif
                 </div>
 
                 <%-- 슬러그 --%>
