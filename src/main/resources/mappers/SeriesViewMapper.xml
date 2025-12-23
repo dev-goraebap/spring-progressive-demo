@@ -282,4 +282,37 @@
         </if>
     </select>
 
+    <select id="findSeriesById" resultType="AdminSeriesViewModel">
+        with with_post_counts as (
+            select sp.series_id, count(*) as post_count
+            from series_posts sp
+            inner join posts p on p.id = sp.post_id
+            where sp.series_id = #{id}
+            group by sp.series_id
+        ),
+        with_thumbnail as (
+            select a.record_id, b.key, b.metadata
+            from attachments a
+            left join blobs b on b.id = a.blob_id
+            where a.record_type = 'series'
+              and a.name = 'thumbnail'
+              and a.record_id = #{id}::text
+        )
+        select s.id
+             , s.name
+             , s.slug
+             , s.description
+             , s.status
+             , s.is_published_yn
+             , s.published_at
+             , s.created_at
+             , coalesce(wpc.post_count, 0) as post_count
+             , thum.key as thumbnail_key
+             , thum.metadata as thumbnail_metadata
+        from series s
+        left join with_post_counts wpc on wpc.series_id = s.id
+        left join with_thumbnail thum on thum.record_id = s.id::text
+        where s.id = #{id}
+    </select>
+
 </mapper>

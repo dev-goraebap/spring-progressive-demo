@@ -30,4 +30,6 @@ public interface SeriesViewMapper {
             @Param("status") String status,
             @Param("isPublishedYn") String isPublishedYn
     );
+
+    AdminSeriesViewModel findSeriesById(@Param("id") Long id);
 }
