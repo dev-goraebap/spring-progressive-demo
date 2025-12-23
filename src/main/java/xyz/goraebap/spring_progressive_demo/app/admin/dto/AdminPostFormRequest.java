@@ -8,16 +8,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Data
-public class SeriesCreateRequest {
-    @NotBlank(message = "시리즈 이름을 입력해주세요")
-    private String name;
-
+public class AdminPostFormRequest {
     @Pattern(regexp = "^[a-zA-Z0-9-]*$", message = "슬러그는 영문자, 숫자, 하이픈(-)만 사용할 수 있습니다")
     private String slug;
 
-    private String description;
+    @NotBlank(message = "내용을 입력해주세요")
+    private String content;
 
-    private String status; // PLAN, PROGRESS, COMPLETE
+    private String postType;
 
     private String isPublishedYn;
 

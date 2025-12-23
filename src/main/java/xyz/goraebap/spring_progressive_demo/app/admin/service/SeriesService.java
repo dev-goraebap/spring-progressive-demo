@@ -7,8 +7,7 @@ import xyz.goraebap.spring_progressive_demo.app.admin.domain.AttachmentEntity;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.AttachmentRepository;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.SeriesEntity;
 import xyz.goraebap.spring_progressive_demo.app.admin.domain.SeriesRepository;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.SeriesCreateRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.SeriesUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesFormRequest;
 import xyz.goraebap.spring_progressive_demo.shared.exception.BadRequestException;
 import xyz.goraebap.spring_progressive_demo.shared.exception.NotFoundException;
 
@@ -20,7 +19,7 @@ public class SeriesService {
     private final SeriesRepository seriesRepository;
     private final AttachmentRepository attachmentRepository;
 
-    public SeriesEntity create(SeriesCreateRequest req, Long userId) {
+    public SeriesEntity create(AdminSeriesFormRequest req, Long userId) {
         // 이름 중복 검증
         if (seriesRepository.findByName(req.getName()).isPresent()) {
             throw new BadRequestException("이미 사용 중인 시리즈 이름입니다.");
@@ -44,7 +43,7 @@ public class SeriesService {
         return series;
     }
 
-    public void update(Long seriesId, SeriesUpdateRequest req) {
+    public void update(Long seriesId, AdminSeriesFormRequest req) {
         var series = seriesRepository.findById(seriesId)
                 .orElseThrow(() -> new NotFoundException("시리즈를 찾을 수 없습니다."));
 

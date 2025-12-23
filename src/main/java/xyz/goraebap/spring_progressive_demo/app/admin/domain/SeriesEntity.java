@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.SeriesCreateRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.SeriesUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesFormRequest;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -47,7 +46,7 @@ public class SeriesEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public static SeriesEntity create(SeriesCreateRequest req, Long userId) {
+    public static SeriesEntity create(AdminSeriesFormRequest req, Long userId) {
         var entity = new SeriesEntity();
         entity.name = req.getName();
         entity.slug = (req.getSlug() != null && !req.getSlug().isBlank())
@@ -63,7 +62,7 @@ public class SeriesEntity {
         return entity;
     }
 
-    public void update(SeriesUpdateRequest req) {
+    public void update(AdminSeriesFormRequest req) {
         this.name = req.getName();
         if (req.getSlug() != null && !req.getSlug().isBlank()) {
             this.slug = req.getSlug();

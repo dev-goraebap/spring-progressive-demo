@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostCreateRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostFormRequest;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -59,7 +58,7 @@ public class PostEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public static PostEntity create(AdminPostCreateRequest req, Long userId) {
+    public static PostEntity create(AdminPostFormRequest req, Long userId) {
         var entity = new PostEntity();
         entity.slug = (req.getSlug() != null && !req.getSlug().isBlank()) ? req.getSlug() : UUID.randomUUID().toString();
         entity.content = req.getContent();
@@ -75,7 +74,7 @@ public class PostEntity {
         return entity;
     }
 
-    public void update(AdminPostUpdateRequest req) {
+    public void update(AdminPostFormRequest req) {
         if (req.getSlug() != null && !req.getSlug().isBlank()) {
             this.slug = req.getSlug();
         }

@@ -7,8 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostCreateRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminPostFormRequest;
 import xyz.goraebap.spring_progressive_demo.app.admin.service.PostService;
 import xyz.goraebap.spring_progressive_demo.app.client.dto.AdminPostIndexRequest;
 import xyz.goraebap.spring_progressive_demo.infra.service.PostQueryService;
@@ -42,7 +41,7 @@ public class AdminPostController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @Valid AdminPostCreateRequest req,
+            @Valid AdminPostFormRequest req,
             @AuthenticationPrincipal Long userId
     ) {
         postService.create(req, userId);
@@ -64,7 +63,7 @@ public class AdminPostController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(
             @PathVariable Long id,
-            @Valid AdminPostUpdateRequest req
+            @Valid AdminPostFormRequest req
     ) {
         postService.update(id, req);
         return ResponseEntity.ok()

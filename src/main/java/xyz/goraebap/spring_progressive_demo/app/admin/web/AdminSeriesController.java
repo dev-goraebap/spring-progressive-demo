@@ -8,8 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesIndexRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.SeriesCreateRequest;
-import xyz.goraebap.spring_progressive_demo.app.admin.dto.SeriesUpdateRequest;
+import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminSeriesFormRequest;
 import xyz.goraebap.spring_progressive_demo.app.admin.service.SeriesService;
 import xyz.goraebap.spring_progressive_demo.infra.service.SeriesQueryService;
 import xyz.goraebap.spring_progressive_demo.shared.htmx.HxTrigger;
@@ -42,7 +41,7 @@ public class AdminSeriesController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @Valid SeriesCreateRequest req,
+            @Valid AdminSeriesFormRequest req,
             @AuthenticationPrincipal Long userId
     ) {
         seriesService.create(req, userId);
@@ -65,7 +64,7 @@ public class AdminSeriesController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(
             @PathVariable Long id,
-            @Valid SeriesUpdateRequest req
+            @Valid AdminSeriesFormRequest req
     ) {
         seriesService.update(id, req);
         return ResponseEntity.ok()
