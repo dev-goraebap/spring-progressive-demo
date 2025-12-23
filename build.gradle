@@ -45,6 +45,9 @@ dependencies {
     // AWS S3 SDK (for Cloudflare R2)
     implementation 'software.amazon.awssdk:s3:2.29.51'
 
+    // Google Cloud Vision
+    implementation 'com.google.cloud:google-cloud-vision:3.55.0'
+
     // JTE
     implementation 'gg.jte:jte:3.1.16'
     implementation 'gg.jte:jte-spring-boot-starter-3:3.1.16'

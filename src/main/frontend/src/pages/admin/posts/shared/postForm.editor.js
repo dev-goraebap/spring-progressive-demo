@@ -25,7 +25,10 @@ Alpine.data('postForm', (el) => {
 
             const thumbnailInput = document.getElementById('thumbnailBlobId');
             if (thumbnailInput?.value) {
-                this.form.thumbnailBlobId = parseInt(thumbnailInput.value);
+                const parsed = parseInt(thumbnailInput.value);
+                if (!isNaN(parsed)) {
+                    this.form.thumbnailBlobId = parsed;
+                }
             }
 
             if (!this.form.content.trim()) {

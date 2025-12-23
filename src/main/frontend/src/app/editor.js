@@ -190,8 +190,8 @@ function initThumbnailUploader() {
         maxFiles: 1,
         labelIdle: '썸네일 이미지를 드래그하거나 <span class="filepond--label-action">클릭</span>하세요',
         onprocessfile: (error, fileItem) => {
-            // 새 파일 업로드 완료 시 blobId 설정
-            if (!error && fileItem.serverId) {
+            // 새 파일 업로드 완료 시 blobId 설정 (숫자인 경우만)
+            if (!error && fileItem.serverId && !isNaN(parseInt(fileItem.serverId))) {
                 document.getElementById('thumbnailBlobId').value = fileItem.serverId;
             }
         },
