@@ -53,6 +53,13 @@ public class AdminPostController {
                 .build();
     }
 
+    @GetMapping("/{id}")
+    public String show(@PathVariable Long id, Model model) {
+        var post = postQueryService.getPostById(id);
+        model.addAttribute("post", post);
+        return "pages/admin/posts/show";
+    }
+
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
         var post = postQueryService.getPostById(id);
