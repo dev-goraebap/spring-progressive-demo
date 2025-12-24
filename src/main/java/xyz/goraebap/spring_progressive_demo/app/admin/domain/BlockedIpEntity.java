@@ -17,7 +17,7 @@ public class BlockedIpEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ip_address", nullable = false, unique = true, columnDefinition = "inet")
+    @Column(name = "ip_address", nullable = false, unique = true, length = 45)
     private String ipAddress;
 
     @Column(columnDefinition = "text")

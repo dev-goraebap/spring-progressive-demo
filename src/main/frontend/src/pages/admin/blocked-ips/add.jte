@@ -1,5 +1,4 @@
 <form hx-post="/admin/blocked-ips"
-      hx-swap="none"
       hx-disabled-elt="button[type=submit]"
       class="flex flex-col flex-1 min-h-0 group">
     @template.shared.components.modalHeader(title = "IP 차단 등록")

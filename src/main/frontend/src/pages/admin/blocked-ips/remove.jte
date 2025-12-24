@@ -3,7 +3,6 @@
 @param BlockedIpViewModel blockedIp
 
 <form hx-delete="/admin/blocked-ips/${blockedIp.getId()}"
-      hx-swap="none"
       hx-disabled-elt="button[type=submit]"
       class="flex flex-col flex-1 min-h-0 group">
     @template.shared.components.modalHeader(title = "차단 IP 삭제")

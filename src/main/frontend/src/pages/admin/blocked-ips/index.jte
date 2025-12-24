@@ -14,12 +14,7 @@
 );}
 
 @template.shared.layout.admin(title = "접근관리", content = @`
-    <div class="flex flex-col h-full"
-         hx-get="/admin/blocked-ips"
-         hx-trigger="blockedIpChanged from:body"
-         hx-select="#BLOCKED_IP_TABLE"
-         hx-target="#BLOCKED_IP_TABLE"
-         hx-swap="outerHTML">
+    <div class="flex flex-col h-full">
 
         <div class="border-b border-base-300">
             @template.shared.layout.admin.header(title = "보안")

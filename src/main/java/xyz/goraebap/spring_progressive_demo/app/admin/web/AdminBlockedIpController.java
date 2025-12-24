@@ -1,5 +1,6 @@
 package xyz.goraebap.spring_progressive_demo.app.admin.web;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminBlockedIpIndexReq
 import xyz.goraebap.spring_progressive_demo.app.admin.dto.BlockedIpFormRequest;
 import xyz.goraebap.spring_progressive_demo.app.admin.service.BlockedIpService;
 import xyz.goraebap.spring_progressive_demo.infra.service.BlockedIpQueryService;
+import xyz.goraebap.spring_progressive_demo.shared.htmx.HxTrigger;
 
 @Controller
 @RequestMapping("/admin/blocked-ips")
@@ -44,11 +46,14 @@ public class AdminBlockedIpController {
      * IP 차단 등록
      */
     @PostMapping
-    public ResponseEntity<Void> store(@ModelAttribute BlockedIpFormRequest req) {
+    public ResponseEntity<Void> store(@Valid @ModelAttribute BlockedIpFormRequest req) {
         blockedIpService.block(req);
         return ResponseEntity.ok()
-                .header("HX-Trigger", "blockedIpChanged")
-                .header("HX-Trigger-After-Swap", "modalClose")
+                .header("HX-Trigger", HxTrigger.builder()
+                        .closeModal()
+                        .toast("success", "IP가 차단되었습니다.")
+                        .build())
+                .header("HX-Location", "/admin/blocked-ips")
                 .build();
     }
 
@@ -69,7 +74,11 @@ public class AdminBlockedIpController {
     public ResponseEntity<Void> unblock(@PathVariable Long id) {
         blockedIpService.unblock(id);
         return ResponseEntity.ok()
-                .header("HX-Trigger", "blockedIpChanged")
+                .header("HX-Trigger", HxTrigger.builder()
+                        .closeModal()
+                        .toast("success", "차단이 해제되었습니다.")
+                        .build())
+                .header("HX-Location", "/admin/blocked-ips")
                 .build();
     }
 
@@ -80,7 +89,11 @@ public class AdminBlockedIpController {
     public ResponseEntity<Void> permanent(@PathVariable Long id) {
         blockedIpService.makePermanent(id);
         return ResponseEntity.ok()
-                .header("HX-Trigger", "blockedIpChanged")
+                .header("HX-Trigger", HxTrigger.builder()
+                        .closeModal()
+                        .toast("success", "영구 차단으로 변경되었습니다.")
+                        .build())
+                .header("HX-Location", "/admin/blocked-ips")
                 .build();
     }
 
@@ -91,8 +104,11 @@ public class AdminBlockedIpController {
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         blockedIpService.delete(id);
         return ResponseEntity.ok()
-                .header("HX-Trigger", "blockedIpChanged")
-                .header("HX-Trigger-After-Swap", "modalClose")
+                .header("HX-Trigger", HxTrigger.builder()
+                        .closeModal()
+                        .toast("success", "차단 기록이 삭제되었습니다.")
+                        .build())
+                .header("HX-Location", "/admin/blocked-ips")
                 .build();
     }
 }

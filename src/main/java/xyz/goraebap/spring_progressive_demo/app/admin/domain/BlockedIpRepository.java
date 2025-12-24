@@ -9,19 +9,18 @@ import java.util.Optional;
 
 public interface BlockedIpRepository extends JpaRepository<BlockedIpEntity, Long> {
 
-    @Query(value = "SELECT * FROM blocked_ips WHERE ip_address = CAST(:ipAddress AS inet)", nativeQuery = true)
-    Optional<BlockedIpEntity> findByIpAddress(@Param("ipAddress") String ipAddress);
+    Optional<BlockedIpEntity> findByIpAddress(String ipAddress);
 
     /**
      * 활성 상태이고 미만료인 IP 조회 (WAF용)
      */
-    @Query(value = """
-        SELECT * FROM blocked_ips
-        WHERE ip_address = CAST(:ipAddress AS inet)
-          AND is_active_yn = 'Y'
-          AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP)
-    """, nativeQuery = true)
-    Optional<BlockedIpEntity> findActiveByIpAddress(String ipAddress);
+    @Query("""
+        SELECT b FROM BlockedIpEntity b
+        WHERE b.ipAddress = :ipAddress
+          AND b.isActiveYn = 'Y'
+          AND (b.expiresAt IS NULL OR b.expiresAt > CURRENT_TIMESTAMP)
+    """)
+    Optional<BlockedIpEntity> findActiveByIpAddress(@Param("ipAddress") String ipAddress);
 
     /**
      * 만료된 IP 일괄 비활성화
