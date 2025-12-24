@@ -2,10 +2,7 @@ package xyz.goraebap.spring_progressive_demo.infra.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesViewModel;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.*;
 
 import java.util.List;
 
@@ -32,4 +29,11 @@ public interface SeriesViewMapper {
     );
 
     AdminSeriesViewModel findSeriesById(@Param("id") Long id);
+
+    List<SeriesPostViewModel> findSeriesPosts(@Param("seriesId") Long seriesId);
+
+    List<AvailablePostViewModel> findPostsNotInSeries(
+            @Param("seriesId") Long seriesId,
+            @Param("keyword") String keyword
+    );
 }
