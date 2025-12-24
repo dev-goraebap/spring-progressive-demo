@@ -1,18 +1,5 @@
 import Alpine from 'alpinejs';
-
-// 아바타 이모지 목록
-const avatars = [
-    { icon: '😊', no: 1 },
-    { icon: '😂', no: 2 },
-    { icon: '😀', no: 3 },
-    { icon: '😍', no: 4 },
-    { icon: '👾', no: 5 },
-    { icon: '😎', no: 6 },
-    { icon: '😃', no: 7 },
-    { icon: '🤩', no: 8 },
-    { icon: '😭', no: 9 },
-    { icon: '🥸', no: 10 },
-];
+import { getAvatarEmoji, getRandomAvatar } from '../../../shared/utils/avatar.js';
 
 // 랜덤 닉네임 생성용 단어
 const prefixWords = [
@@ -28,10 +15,6 @@ const suffixWords = [
     '사자', '호랑이', '늑대', '독수리', '부엉이', '펭귄', '돌고래', '거북이',
     '바리스타', '요리사', '작가', '화가', '음악가', '탐험가', '모험가', '여행자'
 ];
-
-function getRandomAvatar() {
-    return avatars[Math.floor(Math.random() * avatars.length)];
-}
 
 function getRandomNickname() {
     const prefix = prefixWords[Math.floor(Math.random() * prefixWords.length)];
@@ -75,5 +58,5 @@ Alpine.data('commentForm', () => {
 
 // 댓글 아이템 컴포넌트
 Alpine.data('commentItem', (avatarNo) => ({
-    avatar: avatars.find(a => a.no === avatarNo)?.icon || '😊'
+    avatar: getAvatarEmoji(avatarNo)
 }));
