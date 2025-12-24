@@ -24,4 +24,40 @@
           and c.deleted_at is null
     </select>
 
+    <select id="findAdminComments" resultType="AdminCommentViewModel">
+        select c.id
+             , c.nickname
+             , c.comment
+             , c.avatar_no
+             , c.created_at
+             , c.deleted_at
+             , c.post_id
+             , p.title as post_title
+             , p.slug as post_slug
+             , p.post_type as post_type
+        from comments c
+        left join posts p on p.id = c.post_id
+        where c.deleted_at is null
+        <if test="search != null and search != ''">
+            and (
+                c.nickname ilike '%' || #{search} || '%'
+                or c.comment ilike '%' || #{search} || '%'
+            )
+        </if>
+        order by c.created_at desc
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="countAdminComments" resultType="int">
+        select count(*)
+        from comments c
+        where c.deleted_at is null
+        <if test="search != null and search != ''">
+            and (
+                c.nickname ilike '%' || #{search} || '%'
+                or c.comment ilike '%' || #{search} || '%'
+            )
+        </if>
+    </select>
+
 </mapper>
