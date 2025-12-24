@@ -116,10 +116,12 @@
                             @endif
                         </td>
                         <td>
-                            <div class="font-medium">${series.getName()}</div>
-                            @if(series.getDescription() != null && !series.getDescription().isEmpty())
-                                <div class="text-xs text-base-content/60 truncate max-w-60" title="${series.getDescription()}">${series.getDescription()}</div>
-                            @endif
+                            <a href="/admin/series/${series.getId()}/posts" class="hover:text-primary">
+                                <div class="font-medium">${series.getName()}</div>
+                                @if(series.getDescription() != null && !series.getDescription().isEmpty())
+                                    <div class="text-xs text-base-content/60 truncate max-w-60" title="${series.getDescription()}">${series.getDescription()}</div>
+                                @endif
+                            </a>
                         </td>
                         <td>
                             @if(series.getStatus().equals("COMPLETED"))
@@ -150,6 +152,7 @@
                                 </div>
                                 <ul tabindex="0"
                                     class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
+                                    <li><a href="/admin/series/${series.getId()}/posts">포스트</a></li>
                                     <li><a hx-get="/admin/series/${series.getId()}/edit" hx-target="#HX_MODAL_CONTENT">수정</a></li>
                                     <li><a hx-get="/admin/series/${series.getId()}/remove" hx-target="#HX_MODAL_CONTENT" class="text-error">삭제</a></li>
                                 </ul>

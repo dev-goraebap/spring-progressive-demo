@@ -112,7 +112,7 @@
         left join post_list p on p.id = sp.post_id
         where s.slug = #{slug}
           and s.is_published_yn = 'Y'
-        order by sp."order" desc
+        order by sp.sort_order asc
     </select>
 
     <resultMap id="postSeriesNavResultMap" type="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel">
@@ -142,7 +142,7 @@
                  , s.slug as series_slug
                  , s.name as series_name
                  , s.status as series_status
-                 , sp."order" as raw_order
+                 , sp.sort_order as raw_order
             from series_posts sp
             inner join series s on s.id = sp.series_id
             where sp.post_id = #{postId}
@@ -151,10 +151,10 @@
         ),
         series_posts_ordered as (
             select sp.post_id
-                 , sp."order"
+                 , sp.sort_order
                  , p.slug
                  , p.title
-                 , row_number() over (order by sp."order" desc) as display_order
+                 , row_number() over (order by sp.sort_order asc) as display_order
             from series_posts sp
             inner join posts p on p.id = sp.post_id
             inner join series_base sb on sp.series_id = sb.series_id
@@ -177,16 +177,16 @@
             select spo.post_id as id, spo.slug, spo.title
             from series_posts_ordered spo
             inner join series_info si on true
-            where spo."order" &gt; si.raw_order
-            order by spo."order" asc
+            where spo.sort_order &lt; si.raw_order
+            order by spo.sort_order desc
             limit 1
         ),
         next_post as (
             select spo.post_id as id, spo.slug, spo.title
             from series_posts_ordered spo
             inner join series_info si on true
-            where spo."order" &lt; si.raw_order
-            order by spo."order" desc
+            where spo.sort_order &gt; si.raw_order
+            order by spo.sort_order asc
             limit 1
         ),
         media as (
@@ -313,6 +313,47 @@
         left join with_post_counts wpc on wpc.series_id = s.id
         left join with_thumbnail thum on thum.record_id = s.id::text
         where s.id = #{id}
+    </select>
+
+    <select id="findSeriesPosts" resultType="SeriesPostViewModel">
+        with with_thumbnail as (
+            select a.record_id, b.key, b.metadata
+            from attachments a
+            left join blobs b on b.id = a.blob_id
+            where a.record_type = 'post'
+              and a.name = 'thumbnail'
+        )
+        select sp.id
+             , sp.post_id
+             , p.title as post_title
+             , p.slug as post_slug
+             , sp.sort_order
+             , sp.created_at
+             , thum.key as thumbnail_key
+             , thum.metadata as thumbnail_metadata
+        from series_posts sp
+        inner join posts p on p.id = sp.post_id
+        left join with_thumbnail thum on thum.record_id = p.id::text
+        where sp.series_id = #{seriesId}
+        order by sp.sort_order asc
+    </select>
+
+    <select id="findPostsNotInSeries" resultType="AvailablePostViewModel">
+        select p.id
+             , p.title
+             , p.slug
+             , p.published_at
+        from posts p
+        where p.id not in (
+            select sp.post_id
+            from series_posts sp
+            where sp.series_id = #{seriesId}
+        )
+        <if test="keyword != null and keyword != ''">
+            and p.title ilike '%' || #{keyword} || '%'
+        </if>
+        order by p.created_at desc
+        limit 20
     </select>
 
 </mapper>

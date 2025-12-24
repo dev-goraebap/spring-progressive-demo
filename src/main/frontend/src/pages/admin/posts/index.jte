@@ -9,6 +9,7 @@
 @param AdminPostIndexRequest req
 
 !{var dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");}
+!{var dateTimeFormat = DateTimeFormatter.ofPattern("MM-dd HH:mm");}
 !{var tabs = List.of(
     new String[]{"posts", "포스트", "/admin/posts"},
     new String[]{"series", "시리즈", "/admin/series"},
@@ -110,10 +111,14 @@
                             @endif
                         </td>
                         <td>
-                            <div class="font-medium">${post.getTitle()}</div>
-                            @if(post.getSummary() != null && !post.getSummary().isEmpty())
-                                <div class="text-xs text-base-content/60 truncate max-w-60" title="${post.getSummary()}">${post.getSummary()}</div>
-                            @endif
+                            <a hx-get="/admin/posts/${post.getId()}"
+                               hx-target="#HX_MODAL_CONTENT"
+                               class="cursor-pointer hover:text-primary">
+                                <div class="font-medium">${post.getTitle()}</div>
+                                @if(post.getSummary() != null && !post.getSummary().isEmpty())
+                                    <div class="text-xs text-base-content/60 truncate max-w-60" title="${post.getSummary()}">${post.getSummary()}</div>
+                                @endif
+                            </a>
                         </td>
                         <td>
                             @if(post.getPostType().equals("post"))
@@ -139,7 +144,7 @@
                         <td class="text-center">${post.getViewCount()}</td>
                         <td class="text-sm text-base-content/70">
                             @if(post.getPublishedAt() != null)
-                                ${post.getPublishedAt().format(dateFormat)}
+                                ${post.getPublishedAt().format(dateTimeFormat)}
                             @else
                                 <span class="text-base-content/40">-</span>
                             @endif

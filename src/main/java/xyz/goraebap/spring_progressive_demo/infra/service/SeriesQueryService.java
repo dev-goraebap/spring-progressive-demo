@@ -3,11 +3,7 @@ package xyz.goraebap.spring_progressive_demo.infra.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.spring_progressive_demo.infra.mapper.SeriesViewMapper;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesDetailViewModel;
-import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesViewModel;
+import xyz.goraebap.spring_progressive_demo.infra.view_model.*;
 
 import xyz.goraebap.spring_progressive_demo.shared.exception.NotFoundException;
 
@@ -67,5 +63,15 @@ public class SeriesQueryService {
         }
         thumbnailEnricher.enrich(series);
         return series;
+    }
+
+    public List<SeriesPostViewModel> getSeriesPostsById(Long seriesId) {
+        var posts = seriesViewMapper.findSeriesPosts(seriesId);
+        posts.forEach(thumbnailEnricher::enrich);
+        return posts;
+    }
+
+    public List<AvailablePostViewModel> getPostsNotInSeries(Long seriesId, String keyword) {
+        return seriesViewMapper.findPostsNotInSeries(seriesId, keyword);
     }
 }

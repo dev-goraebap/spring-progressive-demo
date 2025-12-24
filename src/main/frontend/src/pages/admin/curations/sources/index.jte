@@ -38,8 +38,8 @@
             <button type="button"
                     hx-post="/admin/curations/sources/fetch-all"
                     hx-disabled-elt="this"
-                    class="btn btn-ghost btn-sm">
-                <span class="htmx-indicator loading loading-spinner loading-sm"></span>
+                    class="btn btn-ghost btn-sm group">
+                <span class="loading loading-spinner loading-sm hidden group-[.htmx-request]:inline-flex"></span>
                 <span>전체 수집</span>
             </button>
             <button type="button"
@@ -84,8 +84,8 @@
                             <button type="button"
                                     hx-post="/admin/curations/sources/${source.getId()}/fetch"
                                     hx-disabled-elt="this"
-                                    class="btn btn-ghost btn-xs">
-                                <span class="htmx-indicator loading loading-spinner loading-xs"></span>
+                                    class="btn btn-ghost btn-xs group">
+                                <span class="loading loading-spinner loading-xs hidden group-[.htmx-request]:inline-flex"></span>
                                 <span>수집</span>
                             </button>
                         </td>

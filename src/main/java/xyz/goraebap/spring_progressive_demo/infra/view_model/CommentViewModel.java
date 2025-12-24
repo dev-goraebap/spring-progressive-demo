@@ -13,4 +13,5 @@ public class CommentViewModel {
     private String comment;
     private Integer avatarNo;
     private LocalDateTime createdAt;
+
 }
