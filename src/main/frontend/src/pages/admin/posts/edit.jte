@@ -1,5 +1,5 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminPostViewModel
-@import xyz.goraebap.spring_progressive_demo.shared.jte.JteContext
+@import xyz.goraebap.blog.infra.view_model.AdminPostViewModel
+@import xyz.goraebap.blog.shared.jte.JteContext
 
 @param AdminPostViewModel post
 

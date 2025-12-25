@@ -1,4 +1,4 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.CurationViewModel
+@import xyz.goraebap.blog.infra.view_model.CurationViewModel
 @import java.util.List
 
 @param List<CurationViewModel> items

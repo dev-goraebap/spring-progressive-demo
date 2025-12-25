@@ -1,6 +1,6 @@
-@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminBlockedIpIndexRequest
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.BlockedIpViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
+@import xyz.goraebap.blog.app.admin.dto.AdminBlockedIpIndexRequest
+@import xyz.goraebap.blog.infra.view_model.BlockedIpViewModel
+@import xyz.goraebap.blog.infra.view_model.Pagination
 @import java.time.format.DateTimeFormatter
 @import java.util.Arrays
 @import java.util.List

@@ -27,14 +27,14 @@ jobs:
             mkdir -p PROJECTS
             cd PROJECTS
 
-            if [ ! -d "spring-progressive-demo" ]; then
+            if [ ! -d "dev-goraebap-blog" ]; then
               echo "📥 저장소 클론 중..."
-              git clone https://github.com/${{ github.repository }} spring-progressive-demo
-              cd spring-progressive-demo
+              git clone https://github.com/${{ github.repository }} dev-goraebap-blog
+              cd dev-goraebap-blog
               git checkout ${{ github.ref_name }}
             else
               echo "📥 기존 저장소 업데이트 중..."
-              cd spring-progressive-demo
+              cd dev-goraebap-blog
               git fetch origin
               git checkout ${{ github.ref_name }} || git checkout -b ${{ github.ref_name }} origin/${{ github.ref_name }}
               git reset --hard origin/${{ github.ref_name }}
@@ -56,13 +56,13 @@ jobs:
             echo "📦 배포 버전: ${VERSION}"
 
             echo "🔨 Docker 이미지 빌드 중..."
-            /snap/bin/docker build -t spring-progressive-demo:${VERSION} .
+            /snap/bin/docker build -t dev-goraebap-blog:${VERSION} .
             if [ $? -ne 0 ]; then
               echo "❌ Docker 빌드 실패!"
               exit 1
             fi
 
-            /snap/bin/docker tag spring-progressive-demo:${VERSION} spring-progressive-demo:latest
+            /snap/bin/docker tag dev-goraebap-blog:${VERSION} dev-goraebap-blog:latest
             if [ $? -ne 0 ]; then
               echo "❌ Docker 태그 실패!"
               exit 1
@@ -84,7 +84,7 @@ jobs:
 
             echo "✅ 배포 완료!"
             echo "📋 실행 중인 컨테이너:"
-            /snap/bin/docker ps | grep spring-progressive-demo
+            /snap/bin/docker ps | grep dev-goraebap-blog
 
             echo ""
             echo "🎉 배포 성공!"

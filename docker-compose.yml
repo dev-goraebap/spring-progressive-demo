@@ -1,7 +1,7 @@
 services:
-  spring-progressive-demo:
-    image: spring-progressive-demo:${APP_VERSION:-latest}
-    container_name: spring-progressive-demo
+  dev-goraebap-blog:
+    image: dev-goraebap-blog:${APP_VERSION:-latest}
+    container_name: dev-goraebap-blog
     ports:
       - "8005:8080"
     volumes:

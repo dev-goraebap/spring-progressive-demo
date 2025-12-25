@@ -1,4 +1,4 @@
-@import static xyz.goraebap.spring_progressive_demo.shared.jte.JteContext.*
+@import static xyz.goraebap.blog.shared.jte.JteContext.*
 
 @param String title = "Error"
 @param gg.jte.Content content

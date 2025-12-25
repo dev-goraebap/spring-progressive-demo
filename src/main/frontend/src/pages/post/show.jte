@@ -1,5 +1,5 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel
+@import xyz.goraebap.blog.infra.view_model.PostViewModel
+@import xyz.goraebap.blog.infra.view_model.PostSeriesNavViewModel
 
 @param PostViewModel post
 @param PostSeriesNavViewModel seriesNav = null

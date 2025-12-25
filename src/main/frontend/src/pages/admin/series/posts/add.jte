@@ -1,4 +1,4 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AvailablePostViewModel
+@import xyz.goraebap.blog.infra.view_model.AvailablePostViewModel
 @import java.time.format.DateTimeFormatter
 @import java.util.List
 

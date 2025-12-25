@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="xyz.goraebap.spring_progressive_demo.infra.mapper.CommentViewMapper">
+<mapper namespace="xyz.goraebap.blog.infra.mapper.CommentViewMapper">
 
-    <select id="findByPostSlug" resultType="xyz.goraebap.spring_progressive_demo.infra.view_model.CommentViewModel">
+    <select id="findByPostSlug" resultType="xyz.goraebap.blog.infra.view_model.CommentViewModel">
         select c.id
              , c.nickname
              , c.comment

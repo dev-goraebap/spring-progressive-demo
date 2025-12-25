@@ -1,4 +1,4 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.CommentViewModel
+@import xyz.goraebap.blog.infra.view_model.CommentViewModel
 @import java.util.List
 
 @param String postSlug

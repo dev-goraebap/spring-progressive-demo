@@ -1,4 +1,4 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel
+@import xyz.goraebap.blog.infra.view_model.AdminSeriesViewModel
 
 @param AdminSeriesViewModel series
 
