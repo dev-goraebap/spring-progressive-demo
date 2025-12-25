@@ -7,7 +7,7 @@ plugins {
 
 group = 'xyz.goraebap'
 version = '0.0.1-SNAPSHOT'
-description = 'spring progressive demo'
+description = 'dev-goraebap-blog'
 
 java {
     toolchain {

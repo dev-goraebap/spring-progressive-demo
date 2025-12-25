@@ -1,6 +1,6 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminCuratedItemViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminCuratedSourceViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
+@import xyz.goraebap.blog.infra.view_model.AdminCuratedItemViewModel
+@import xyz.goraebap.blog.infra.view_model.AdminCuratedSourceViewModel
+@import xyz.goraebap.blog.infra.view_model.Pagination
 @import java.time.format.DateTimeFormatter
 @import java.util.List
 

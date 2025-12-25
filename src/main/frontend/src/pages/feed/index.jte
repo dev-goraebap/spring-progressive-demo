@@ -1,7 +1,7 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.PostViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.CurationViewModel
-@import xyz.goraebap.spring_progressive_demo.app.client.dto.FeedIndexRequest
+@import xyz.goraebap.blog.infra.view_model.Pagination
+@import xyz.goraebap.blog.infra.view_model.PostViewModel
+@import xyz.goraebap.blog.infra.view_model.CurationViewModel
+@import xyz.goraebap.blog.app.client.dto.FeedIndexRequest
 @import java.util.List
 
 @param Pagination<PostViewModel> postData

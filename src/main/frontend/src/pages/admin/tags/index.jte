@@ -1,7 +1,7 @@
-@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminTagIndexRequest
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminTagViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
-@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminTagIndexRequest
+@import xyz.goraebap.blog.app.admin.dto.AdminTagIndexRequest
+@import xyz.goraebap.blog.infra.view_model.AdminTagViewModel
+@import xyz.goraebap.blog.infra.view_model.Pagination
+@import xyz.goraebap.blog.app.admin.dto.AdminTagIndexRequest
 @import java.time.format.DateTimeFormatter
 @import java.util.List
 

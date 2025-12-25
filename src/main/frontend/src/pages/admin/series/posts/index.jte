@@ -1,5 +1,5 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminSeriesViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.SeriesPostViewModel
+@import xyz.goraebap.blog.infra.view_model.AdminSeriesViewModel
+@import xyz.goraebap.blog.infra.view_model.SeriesPostViewModel
 @import java.util.List
 
 @param AdminSeriesViewModel series

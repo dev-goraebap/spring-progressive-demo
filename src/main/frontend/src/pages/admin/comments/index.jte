@@ -1,6 +1,6 @@
-@import xyz.goraebap.spring_progressive_demo.app.admin.dto.AdminCommentIndexRequest
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminCommentViewModel
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
+@import xyz.goraebap.blog.app.admin.dto.AdminCommentIndexRequest
+@import xyz.goraebap.blog.infra.view_model.AdminCommentViewModel
+@import xyz.goraebap.blog.infra.view_model.Pagination
 @import java.time.format.DateTimeFormatter
 @import java.util.Arrays
 @import java.util.List

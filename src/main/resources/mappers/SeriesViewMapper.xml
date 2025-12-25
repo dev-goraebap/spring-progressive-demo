@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="xyz.goraebap.spring_progressive_demo.infra.mapper.SeriesViewMapper">
+<mapper namespace="xyz.goraebap.blog.infra.mapper.SeriesViewMapper">
 
     <select id="findAllSeries" resultType="SeriesViewModel">
         with post_counts as (
@@ -115,7 +115,7 @@
         order by sp.sort_order asc
     </select>
 
-    <resultMap id="postSeriesNavResultMap" type="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel">
+    <resultMap id="postSeriesNavResultMap" type="xyz.goraebap.blog.infra.view_model.PostSeriesNavViewModel">
         <result property="seriesId" column="series_id"/>
         <result property="seriesSlug" column="series_slug"/>
         <result property="seriesName" column="series_name"/>
@@ -124,12 +124,12 @@
         <result property="thumbnailMetadata" column="thumbnail_metadata"/>
         <result property="totalCount" column="total_count"/>
         <result property="currentOrder" column="current_order"/>
-        <association property="prev" javaType="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel$NavItem">
+        <association property="prev" javaType="xyz.goraebap.blog.infra.view_model.PostSeriesNavViewModel$NavItem">
             <result property="id" column="prev_id"/>
             <result property="slug" column="prev_slug"/>
             <result property="title" column="prev_title"/>
         </association>
-        <association property="next" javaType="xyz.goraebap.spring_progressive_demo.infra.view_model.PostSeriesNavViewModel$NavItem">
+        <association property="next" javaType="xyz.goraebap.blog.infra.view_model.PostSeriesNavViewModel$NavItem">
             <result property="id" column="next_id"/>
             <result property="slug" column="next_slug"/>
             <result property="title" column="next_title"/>

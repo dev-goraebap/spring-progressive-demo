@@ -1,4 +1,4 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.AdminCuratedSourceViewModel
+@import xyz.goraebap.blog.infra.view_model.AdminCuratedSourceViewModel
 @import java.time.format.DateTimeFormatter
 @import java.util.List
 @import java.util.Map

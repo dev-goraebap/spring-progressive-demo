@@ -1,5 +1,5 @@
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.Pagination
-@import xyz.goraebap.spring_progressive_demo.infra.view_model.CurationViewModel
+@import xyz.goraebap.blog.infra.view_model.Pagination
+@import xyz.goraebap.blog.infra.view_model.CurationViewModel
 
 @param Pagination<CurationViewModel> curationData
 @param boolean oob = false
