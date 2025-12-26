@@ -1,4 +1,4 @@
-import './common.js';
+import './app.common.js';
 import { createFilePond, destroyFilePond } from '../shared/utils/filepond.js';
 
 // editor 전용 JS 로드

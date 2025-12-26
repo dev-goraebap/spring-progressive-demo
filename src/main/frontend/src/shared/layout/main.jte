@@ -62,11 +62,11 @@
     <!-- 개발 환경: Vite dev server -->
     <link rel="stylesheet" href="http://localhost:5173/src/app/style.css">
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <script type="module" src="http://localhost:5173/src/app/app.js"></script>
+    <script type="module" src="http://localhost:5173/src/app/app.main.js"></script>
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">
-    <script type="module" src="/${viteJs("app")}"></script>
+    <script type="module" src="/${viteJs("main")}"></script>
     @endif
 </head>
 <body hx-boost="true" x-data="{ drawer: false }">

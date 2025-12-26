@@ -1,4 +1,4 @@
-import './common.js';
+import './app.common.js';
 
 // admin 전용 JS 로드
 import.meta.glob([

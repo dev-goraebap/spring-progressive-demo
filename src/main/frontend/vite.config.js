@@ -10,9 +10,9 @@ export default defineConfig({
     emptyOutDir: false,
     rollupOptions: {
       input: {
-        app: resolve(__dirname, 'src/app/app.js'),
-        admin: resolve(__dirname, 'src/app/admin.js'),
-        editor: resolve(__dirname, 'src/app/editor.js'),
+        main: resolve(__dirname, 'src/app/app.main.js'),
+        admin: resolve(__dirname, 'src/app/app.admin.js'),
+        editor: resolve(__dirname, 'src/app/app.editor.js'),
         style: resolve(__dirname, 'src/app/style.css'),
       },
       output: {

@@ -13,10 +13,11 @@ window.Alpine = Alpine;
 window.createFilePond = createFilePond;
 window.destroyFilePond = destroyFilePond;
 
-// 공통 JS 로드 (*.app.js, *.admin.js 제외)
+// 공통 JS 로드 (*.main.js, *.admin.js, *.editor.js 제외)
 import.meta.glob([
     '../**/*.js',
     '!../app/**',
-    '!../**/*.app.js',
+    '!../**/*.main.js',
     '!../**/*.admin.js',
+    '!../**/*.editor.js',
 ], {eager: true});
