@@ -1,10 +1,10 @@
 <%-- Bio --%>
 <div class="mb-4">
     <div class="flex items-center gap-3">
-        <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 cursor-pointer"
+        <div class="w-14 h-14 rounded-xl bg-base-200 overflow-hidden shrink-0 cursor-pointer"
              x-data="easterEgg"
              @click="handleClick()">
-            <img src="/images/about-profile.jpg" alt="프로필" class="w-full h-full object-cover"/>
+            <img src="/images/logo.png" alt="프로필" class="w-full h-full object-cover"/>
         </div>
         <div>
             <h2 class="text-lg font-bold">데브고래밥</h2>
@@ -34,18 +34,19 @@
     @template.shared.components.bgm()
 </div>
 
-<%-- Discord 초대 --%>
-<a href="https://discord.gg/RcrXX9cWyU" target="_blank" rel="noopener noreferrer"
-   class="mt-4 block rounded-xl overflow-hidden hover:scale-[1.02] transition-transform">
+<%-- 알림 구독 유도 --%>
+<div class="mt-4 block rounded-xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
+     x-data="{ subscribed: false }"
+     @click="if(!subscribed && 'Notification' in window) { Notification.requestPermission().then(p => { if(p === 'granted') { subscribed = true; window.toast?.success('알림을 구독했습니다'); } }); }">
     <div class="relative">
-        <img src="/images/discord.webp" alt="Discord" class="w-full h-24 object-cover"/>
+        <img src="/images/pwa-banner.jpg" alt="알림 구독" class="w-full h-24 object-cover"/>
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="absolute inset-0 p-4 flex flex-col justify-center">
-            <p class="font-bold text-white">고래밥 디스코드</p>
-            <p class="text-xs text-white/80">개발 관련 이야기는 언제나 환영해요</p>
+            <p class="font-bold text-white">새 글 알림 받기</p>
+            <p class="text-xs text-white/80">새로운 게시물이 올라오면 알려드려요</p>
         </div>
     </div>
-</a>
+</div>
 
 <%-- 요즘 관심있는 --%>
 <div class="mt-4">

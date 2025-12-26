@@ -10,6 +10,7 @@
 
 !{var dateTimeFormat = DateTimeFormatter.ofPattern("MM-dd HH:mm");}
 !{List<String[]> tabs = Arrays.<String[]>asList(
+    new String[]{"fcm", "푸시 알림", "/admin/fcm"},
     new String[]{"comments", "댓글", "/admin/comments"}
 );}
 

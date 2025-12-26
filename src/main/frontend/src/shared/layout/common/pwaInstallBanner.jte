@@ -1,7 +1,7 @@
 <%-- PWA 설치 배너 --%>
 <div x-data x-show="$store.pwa.canInstall" x-cloak
      class="fixed bottom-20 sm:bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 z-[9999]
-            bg-primary text-primary-content rounded-xl shadow-xl p-4">
+            bg-[#334155] text-white rounded-xl shadow-xl p-4">
     <div class="flex items-start gap-3">
         <img src="/images/logo.png" alt="데브고래밥" class="w-12 h-12 rounded-lg">
         <div class="flex-1">
@@ -14,5 +14,5 @@
             </svg>
         </button>
     </div>
-    <button @click="$store.pwa.install()" class="btn btn-sm w-full mt-3 bg-white text-primary hover:bg-white/90 border-none">설치하기</button>
+    <button @click="$store.pwa.install()" class="btn btn-sm w-full mt-3 bg-white text-[#334155] hover:bg-white/90 border-none">설치하기</button>
 </div>

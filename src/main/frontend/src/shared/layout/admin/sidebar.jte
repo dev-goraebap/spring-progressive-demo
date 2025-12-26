@@ -2,17 +2,12 @@
 
 <div class="relative flex flex-col h-full w-72">
 
-<%-- 테마 토글 (상단 좌측 고정) --%>
-<div class="absolute top-4 left-4 z-10">
-    @template.shared.components.themeToggle()
-</div>
-
 <ul class="menu p-4 flex-1 w-full">
 
     <%-- 상단: 로고 --%>
     <li class="flex flex-row items-center justify-center p-4">
         <a href="/admin/posts" class="flex items-center gap-3">
-            <div class="w-16 h-16">
+            <div class="w-16 h-16 rounded-xl overflow-hidden">
                 <img src="/images/logo.png" alt="로고" class="w-full h-full object-contain"/>
             </div>
             <div class="leading-4 font-bold text-lg">
@@ -49,8 +44,8 @@
         </a>
     </li>
     <li>
-        <a href="/admin/comments"
-           class="p-3 ${isPathStartsWith("/admin/comments") ? "bg-neutral text-neutral-content" : ""}">
+        <a href="/admin/fcm"
+           class="p-3 ${isPathStartsWith("/admin/fcm") || isPathStartsWith("/admin/comments") ? "bg-neutral text-neutral-content" : ""}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" class="size-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
