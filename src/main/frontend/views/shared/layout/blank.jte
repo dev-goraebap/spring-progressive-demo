@@ -41,9 +41,9 @@
 
     @if(isDev())
     <!-- 개발 환경: Vite dev server -->
-    <link rel="stylesheet" href="http://localhost:5173/src/app/style.css">
+    <link rel="stylesheet" href="http://localhost:5173/src/style.css">
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <script type="module" src="http://localhost:5173/src/app/app.admin.js"></script>
+    <script type="module" src="http://localhost:5173/src/app.admin.js"></script>
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">

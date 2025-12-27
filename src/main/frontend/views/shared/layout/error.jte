@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="/css/font.css">
 
     @if(isDev())
-    <link rel="stylesheet" href="http://localhost:5173/src/app/style.css">
+    <link rel="stylesheet" href="http://localhost:5173/src/style.css">
     <script type="module" src="http://localhost:5173/@vite/client"></script>
     @else
     <link rel="stylesheet" href="/${viteCss()}">
