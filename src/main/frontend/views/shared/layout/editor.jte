@@ -33,7 +33,7 @@
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">
-    <script type="module" src="/${viteJs("editor")}"></script>
+    <script type="module" src="/${viteJs("app.editor")}"></script>
     @endif
 </head>
 <body class="bg-base-100">

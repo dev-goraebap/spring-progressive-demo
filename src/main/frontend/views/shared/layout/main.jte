@@ -66,7 +66,7 @@
     @else
     <!-- 프로덕션: manifest 기반 빌드 파일 -->
     <link rel="stylesheet" href="/${viteCss()}">
-    <script type="module" src="/${viteJs("main")}"></script>
+    <script type="module" src="/${viteJs("app.main")}"></script>
     @endif
 </head>
 <body hx-boost="true" x-data="{ drawer: false }">
