@@ -31,13 +31,13 @@ public class ViteManifest {
                         String path = field.getKey();
                         JsonNode entry = field.getValue();
                         // JS 엔트리포인트 파싱
-                        if (path.startsWith("src/app/") && path.endsWith(".js")) {
-                            String name = path.replace("src/app/", "").replace(".js", "");
+                        if (path.startsWith("src/") && path.endsWith(".js")) {
+                            String name = path.replace("src/", "").replace(".js", "");
                             String js = entry.get("file").asText();
                             entries.put(name, new EntryAssets(js));
                         }
                         // CSS 엔트리포인트 파싱
-                        if (path.equals("src/app/style.css")) {
+                        if (path.equals("src/style.css")) {
                             cssFile = entry.get("file").asText();
                         }
                     });

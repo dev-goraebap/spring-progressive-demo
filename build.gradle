@@ -74,7 +74,7 @@ bootRun {
 
 // JTE 설정
 jte {
-    sourceDirectory = file("src/main/frontend/src").toPath()
+    sourceDirectory = file("src/main/frontend/views").toPath()
     generate()
 }
 
