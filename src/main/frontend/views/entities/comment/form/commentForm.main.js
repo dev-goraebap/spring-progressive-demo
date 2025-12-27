@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import { getAvatarEmoji, getRandomAvatar } from '../../../shared/utils/avatar.js';
+import {getRandomAvatar} from '@/shared/utils/avatar';
 
 // 랜덤 닉네임 생성용 단어
 const prefixWords = [
@@ -55,8 +55,3 @@ Alpine.data('commentForm', () => {
         }
     };
 });
-
-// 댓글 아이템 컴포넌트
-Alpine.data('commentItem', (avatarNo) => ({
-    avatar: getAvatarEmoji(avatarNo)
-}));
