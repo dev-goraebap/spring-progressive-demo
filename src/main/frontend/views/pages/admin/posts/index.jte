@@ -162,7 +162,7 @@
                                 <ul tabindex="0"
                                     class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
                                     <li><a href="/admin/posts/${post.getId()}/edit" hx-boost="false">수정</a></li>
-                                    <li><a @click="$store.modal.onOpen('/admin/posts/${post.getId()}/remove')" class="text-error">삭제</a></li>
+                                    <li><a hx-get="/admin/posts/${post.getId()}/remove" hx-target="#HX_MODAL_CONTENT" class="text-error">삭제</a></li>
                                 </ul>
                             </div>
                         </td>

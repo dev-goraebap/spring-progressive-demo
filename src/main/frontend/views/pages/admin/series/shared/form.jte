@@ -22,11 +22,9 @@
         <%-- 썸네일 --%>
         <div>
             <label class="text-xs text-base-content/60">썸네일</label>
-            <input type="file"
-                   id="seriesThumbnailInput"
-                   accept="image/*"
-                   data-thumbnail-url="${thumbnailUrl}"
-                   class="mt-1"/>
+            <div x-data="filepond('#seriesThumbnailBlobId')" data-thumbnail-url="${thumbnailUrl}" class="mt-1">
+                <input type="file" accept="image/*"/>
+            </div>
             <input type="hidden" name="thumbnailBlobId" id="seriesThumbnailBlobId"/>
         </div>
 
@@ -116,38 +114,3 @@
         </button>
     `)
 </form>
-
-<script>
-(function() {
-    const input = document.getElementById('seriesThumbnailInput');
-    if (!input || input._filepondInitialized) return;
-    input._filepondInitialized = true;
-
-    const thumbnailUrl = input.dataset.thumbnailUrl;
-
-    const options = {
-        maxFiles: 1,
-        labelIdle: '썸네일을 드래그하거나 <span class="filepond--label-action">클릭</span>',
-        onprocessfile: (error, fileItem) => {
-            if (!error && fileItem.serverId && !isNaN(parseInt(fileItem.serverId))) {
-                document.getElementById('seriesThumbnailBlobId').value = fileItem.serverId;
-            }
-        },
-        onremovefile: () => {
-            document.getElementById('seriesThumbnailBlobId').value = '';
-        }
-    };
-
-    if (thumbnailUrl) {
-        options.files = [{
-            source: thumbnailUrl,
-            options: {
-                type: 'limbo',
-                metadata: { poster: thumbnailUrl }
-            }
-        }];
-    }
-
-    window.createFilePond(input, options);
-})();
-</script>

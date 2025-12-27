@@ -20,8 +20,9 @@
                     <label class="label">
                         <span class="label-text">썸네일</span>
                     </label>
-                    <input type="file" id="thumbnailInput" accept="image/*"
-                           data-thumbnail-url="${post.getThumbnailUrl()}"/>
+                    <div x-data="filepond('#thumbnailBlobId')" data-thumbnail-url="${post.getThumbnailUrl()}">
+                        <input type="file" accept="image/*"/>
+                    </div>
                     <input type="hidden" id="thumbnailBlobId"/>
                 </div>
 
