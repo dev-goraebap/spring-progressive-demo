@@ -34,7 +34,7 @@ const showPendingToast = () => {
     }
 };
 
-export const toast = {
+const toast = {
     success(message) {
         getNotyf().success(message);
     },

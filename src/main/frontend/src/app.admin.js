@@ -1,8 +1,9 @@
 import './app.common.js';
+import './app/states/filepond.data';
 
 // admin 전용 JS 로드
 import.meta.glob([
-    '../**/*.admin.js',
+    '../views/**/*.admin.js',
 ], {eager: true});
 
 // Alpine 시작

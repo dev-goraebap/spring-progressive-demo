@@ -79,7 +79,7 @@
     --noise: 1;
 }
 
-@source "../**/*.jte";
+@source "../views/**/*.jte";
 
 /* 고해상도 화면에서 전체 크기 확대 */
 @media (min-width: 1920px) {

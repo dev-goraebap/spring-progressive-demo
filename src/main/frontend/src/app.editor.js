@@ -1,9 +1,9 @@
 import './app.common.js';
-import { createFilePond, destroyFilePond } from '../shared/utils/filepond.js';
+import './app/states/filepond.data';
 
 // editor 전용 JS 로드
 import.meta.glob([
-    '../**/*.editor.js',
+    '../views/**/*.editor.js',
 ], {eager: true});
 
 // TinyMCE
@@ -171,54 +171,8 @@ function initEditor() {
     });
 }
 
-// FilePond 썸네일 업로더 초기화
-let thumbnailPond = null;
-
-function initThumbnailUploader() {
-    const thumbnailInput = document.getElementById('thumbnailInput');
-    if (!thumbnailInput) return;
-
-    // 기존 인스턴스 제거
-    if (thumbnailPond) {
-        destroyFilePond(thumbnailPond);
-    }
-
-    // 기존 썸네일 URL
-    const thumbnailUrl = thumbnailInput.dataset.thumbnailUrl;
-
-    const options = {
-        maxFiles: 1,
-        labelIdle: '썸네일 이미지를 드래그하거나 <span class="filepond--label-action">클릭</span>하세요',
-        onprocessfile: (error, fileItem) => {
-            // 새 파일 업로드 완료 시 blobId 설정 (숫자인 경우만)
-            if (!error && fileItem.serverId && !isNaN(parseInt(fileItem.serverId))) {
-                document.getElementById('thumbnailBlobId').value = fileItem.serverId;
-            }
-        },
-        onremovefile: () => {
-            document.getElementById('thumbnailBlobId').value = '';
-        }
-    };
-
-    // 기존 썸네일이 있으면 poster로 미리보기 표시 (fetch 없이)
-    if (thumbnailUrl) {
-        options.files = [{
-            source: thumbnailUrl,
-            options: {
-                type: 'limbo',
-                metadata: {
-                    poster: thumbnailUrl
-                }
-            }
-        }];
-    }
-
-    thumbnailPond = createFilePond(thumbnailInput, options);
-}
-
 // 초기화
 initEditor();
-initThumbnailUploader();
 
 // Alpine 시작
 Alpine.start();
