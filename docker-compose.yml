@@ -9,8 +9,8 @@ services:
       - ./src/main/resources/application-prod.properties:/app/BOOT-INF/classes/application-prod.properties
       # 로그 파일 볼륨 마운트
       - ./logs:/app/logs
-      # Google Vision credentials
-      - /etc/goraebap:/etc/goraebap:ro
+      # Credentials (Google Vision, Firebase)
+      - ./.config:/app/.config:ro
     environment:
       - SPRING_PROFILES_ACTIVE=prod
     restart: unless-stopped
