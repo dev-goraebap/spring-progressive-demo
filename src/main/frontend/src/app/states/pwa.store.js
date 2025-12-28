@@ -46,15 +46,19 @@ if (isStandalone) {
         if (permission === 'default') {
             permission = await Notification.requestPermission();
         }
+        if (permission !== 'granted') return;
 
-        if (permission === 'granted') {
-            const token = await getFcmToken();
-            if (token) {
-                const registered = await registerFcmToken(token);
-                if (registered) {
-                    window.toast?.info('알림이 활성화되었습니다.');
-                }
-            }
-        }
+        const token = await getFcmToken();
+        if (!token) return;
+
+        // 이미 등록된 토큰이면 스킵
+        const savedToken = localStorage.getItem('fcm_token');
+        if (savedToken === token) return;
+
+        const registered = await registerFcmToken(token);
+        if (!registered) return;
+
+        localStorage.setItem('fcm_token', token);
+        window.toast?.info('알림이 활성화되었습니다.');
     })();
 }
