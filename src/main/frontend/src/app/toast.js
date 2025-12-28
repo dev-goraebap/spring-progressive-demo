@@ -15,6 +15,11 @@ const getNotyf = () => {
                     type: 'warning',
                     background: '#f59e0b',
                     icon: false
+                },
+                {
+                    type: 'info',
+                    background: '#3b82f6',
+                    icon: false
                 }
             ]
         });
@@ -40,6 +45,9 @@ const toast = {
     },
     warning(message) {
         getNotyf().open({ type: 'warning', message });
+    },
+    info(message) {
+        getNotyf().open({ type: 'info', message });
     },
     error(message) {
         getNotyf().error(message);

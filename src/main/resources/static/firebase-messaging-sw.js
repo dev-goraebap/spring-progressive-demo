@@ -1,4 +1,4 @@
-// Service Worker - PWA + FCM 푸시 알림
+// Firebase Messaging Service Worker
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
 
@@ -16,16 +16,16 @@ const messaging = firebase.messaging();
 
 // 백그라운드 메시지 수신
 messaging.onBackgroundMessage((payload) => {
-    console.log('[SW] 백그라운드 메시지 수신:', payload);
+    console.log('[FCM SW] 백그라운드 메시지 수신:', payload);
 
-    const { title, body, icon, click_action } = payload.notification || {};
+    const { title, body, icon } = payload.notification || {};
     const { url } = payload.data || {};
 
     self.registration.showNotification(title || '새 알림', {
         body: body || '',
         icon: icon || '/images/logo.png',
         badge: '/images/logo.png',
-        data: { url: click_action || url || '/' }
+        data: { url: url || '/' }
     });
 });
 
@@ -38,23 +38,13 @@ self.addEventListener('notificationclick', (event) => {
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true })
             .then((clientList) => {
-                // 이미 열린 탭이 있으면 포커스
                 for (const client of clientList) {
                     if (client.url.includes(self.location.origin) && 'focus' in client) {
                         client.navigate(url);
                         return client.focus();
                     }
                 }
-                // 없으면 새 탭 열기
                 return clients.openWindow(url);
             })
     );
-});
-
-self.addEventListener('install', () => {
-    self.skipWaiting();
-});
-
-self.addEventListener('activate', () => {
-    self.clients.claim();
 });
