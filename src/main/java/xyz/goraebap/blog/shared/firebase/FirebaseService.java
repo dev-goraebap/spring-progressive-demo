@@ -73,6 +73,22 @@ public class FirebaseService {
             log.info("[FCM] 멀티캐스트 발송 완료 - 성공: {}, 실패: {}",
                     response.getSuccessCount(), response.getFailureCount());
 
+            // 실패한 토큰 상세 로깅
+            if (response.getFailureCount() > 0) {
+                List<SendResponse> responses = response.getResponses();
+                for (int i = 0; i < responses.size(); i++) {
+                    SendResponse sendResponse = responses.get(i);
+                    if (!sendResponse.isSuccessful()) {
+                        String failedToken = tokens.get(i);
+                        String errorCode = sendResponse.getException() != null
+                                ? sendResponse.getException().getMessagingErrorCode().name()
+                                : "UNKNOWN";
+                        log.warn("[FCM] 발송 실패 - token: {}..., error: {}",
+                                failedToken.substring(0, 20), errorCode);
+                    }
+                }
+            }
+
             return response.getSuccessCount();
         } catch (FirebaseMessagingException e) {
             log.error("[FCM] 멀티캐스트 발송 실패", e);
