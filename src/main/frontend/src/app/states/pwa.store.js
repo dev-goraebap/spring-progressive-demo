@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { getFcmToken, registerFcmToken } from '@/shared/libs/firebase';
 
 let deferredPrompt = null;
 
@@ -25,10 +26,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
     Alpine.store('pwa').available = true;
 });
 
-// 설치 완료 → 알림 권한 요청
+// 설치 완료 → 알림 권한 요청 → FCM 토큰 등록
 window.addEventListener('appinstalled', async () => {
     Alpine.store('pwa').available = false;
-    Alpine.store('pwa').showPrompt = false;
     deferredPrompt = null;
 
     window.toast?.success('앱이 설치되었습니다!');
@@ -36,12 +36,21 @@ window.addEventListener('appinstalled', async () => {
     // 알림 권한 요청 (약간의 딜레이 후)
     setTimeout(async () => {
         if (!('Notification' in window)) return;
-        if (Notification.permission === 'granted') return;
 
-        const permission = await Notification.requestPermission();
+        let permission = Notification.permission;
+        if (permission === 'default') {
+            permission = await Notification.requestPermission();
+        }
+
         if (permission === 'granted') {
-            window.toast?.success('알림을 받을 수 있습니다!');
-            // TODO: FCM 토큰 등록 API 호출
+            // FCM 토큰 발급 및 서버 등록
+            const token = await getFcmToken();
+            if (token) {
+                const registered = await registerFcmToken(token);
+                if (registered) {
+                    window.toast?.success('새 글 알림을 받을 수 있습니다!');
+                }
+            }
         }
     }, 1500);
 });
