@@ -53,7 +53,7 @@ public class SecurityConfig {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints - Static resources
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/builds/**", "/.vite/**", "/favicon.ico", "/bgm/**", "/manifest.json", "/sw.js").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/builds/**", "/.vite/**", "/favicon.ico", "/bgm/**", "/manifest.json", "/sw.js", "/firebase-messaging-sw.js").permitAll()
 
                         // Public endpoints - Pages
                         .requestMatchers("/", "/posts/**", "/series/**", "/curations/**", "/patch-notes/**", "/login", "/error").permitAll()
