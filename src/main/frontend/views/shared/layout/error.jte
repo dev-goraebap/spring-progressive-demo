@@ -11,21 +11,8 @@
     <title>데브고래밥 | ${title}</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
 
-    @if(getTheme() == null)
-        <script>
-            document.documentElement.setAttribute('data-theme',
-                window.matchMedia('(prefers-color-scheme: light)').matches ? 'cupcake' : 'dark');
-        </script>
-    @endif
-
-    <link rel="stylesheet" href="/css/font.css">
-
-    @if(isDev())
-    <link rel="stylesheet" href="http://localhost:5173/src/style.css">
-    <script type="module" src="http://localhost:5173/@vite/client"></script>
-    @else
-    <link rel="stylesheet" href="/${viteCss()}">
-    @endif
+    @template.shared.layout.common.fouc()
+    @template.shared.layout.common.headAssets()
 </head>
 <body class="min-h-screen flex items-center justify-center">
     ${content}
