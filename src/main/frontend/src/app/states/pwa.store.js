@@ -3,6 +3,10 @@ import { getFcmToken, registerFcmToken } from '@/shared/libs/firebase';
 
 let deferredPrompt = null;
 
+// PWA standalone 모드인지 확인
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+
 Alpine.store('pwa', {
     // 설치 가능 여부 (beforeinstallprompt 이벤트 발생 시 true)
     available: false,
@@ -26,15 +30,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
     Alpine.store('pwa').available = true;
 });
 
-// 설치 완료 → 알림 권한 요청 → FCM 토큰 등록
-window.addEventListener('appinstalled', async () => {
+// 설치 완료 → 토스트만 표시 (토큰 발급은 PWA 실행 시)
+window.addEventListener('appinstalled', () => {
     Alpine.store('pwa').available = false;
     deferredPrompt = null;
-
     window.toast?.success('앱이 설치되었습니다!');
+});
 
-    // 알림 권한 요청 (약간의 딜레이 후)
-    setTimeout(async () => {
+// PWA 모드로 실행 시 → 알림 권한 요청 → FCM 토큰 등록
+if (isStandalone) {
+    (async () => {
         if (!('Notification' in window)) return;
 
         let permission = Notification.permission;
@@ -43,14 +48,13 @@ window.addEventListener('appinstalled', async () => {
         }
 
         if (permission === 'granted') {
-            // FCM 토큰 발급 및 서버 등록
             const token = await getFcmToken();
             if (token) {
                 const registered = await registerFcmToken(token);
                 if (registered) {
-                    window.toast?.success('새 글 알림을 받을 수 있습니다!');
+                    window.toast?.info('알림이 활성화되었습니다.');
                 }
             }
         }
-    }, 1500);
-});
+    })();
+}
