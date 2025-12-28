@@ -34,16 +34,15 @@
     @template.shared.components.bgm()
 </div>
 
-<%-- 알림 구독 유도 --%>
+<%-- PWA 앱 설치 유도 --%>
 <div class="mt-4 block rounded-xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
-     x-data="{ subscribed: false }"
-     @click="if(!subscribed && 'Notification' in window) { Notification.requestPermission().then(p => { if(p === 'granted') { subscribed = true; window.toast?.success('알림을 구독했습니다'); } }); }">
+     @click="$store.pwa.available ? $store.pwa.install() : window.toast?.info('이미 설치되어 있습니다. 홈 화면에서 앱을 실행해주세요!')">
     <div class="relative">
-        <img src="/images/pwa-banner.jpg" alt="알림 구독" class="w-full h-24 object-cover"/>
+        <img src="/images/pwa-banner.jpg" alt="앱 설치" class="w-full h-24 object-cover"/>
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="absolute inset-0 p-4 flex flex-col justify-center">
-            <p class="font-bold text-white">새 글 알림 받기</p>
-            <p class="text-xs text-white/80">새로운 게시물이 올라오면 알려드려요</p>
+            <p class="font-bold text-white">앱 설치하기</p>
+            <p class="text-xs text-white/80">홈 화면에 추가하고 새 글 알림도 받아보세요</p>
         </div>
     </div>
 </div>

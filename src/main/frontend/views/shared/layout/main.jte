@@ -39,7 +39,6 @@
 </head>
 <body hx-boost="true" x-data="{ drawer: false }">
 <div id="htmx-progress"></div>
-@template.shared.layout.common.pwaInstallBanner()
 
 <!-- MOBILE DRAWER OVERLAY -->
 <div x-show="drawer" x-cloak

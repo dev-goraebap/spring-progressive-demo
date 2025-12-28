@@ -21,7 +21,6 @@
 </head>
 <body hx-boost="true">
 <div id="htmx-progress"></div>
-@template.shared.layout.common.pwaInstallBanner()
 
 <div class="drawer lg:drawer-open">
     <input id="admin-drawer" type="checkbox" class="drawer-toggle"/>

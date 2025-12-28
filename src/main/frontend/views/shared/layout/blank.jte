@@ -19,7 +19,6 @@
     @template.shared.layout.common.headAssets(entry = "app.admin")
 </head>
 <body>
-    @template.shared.layout.common.pwaInstallBanner()
     ${content}
 </body>
 </html>
