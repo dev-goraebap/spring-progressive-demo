@@ -32,7 +32,7 @@ COPY --from=frontend-build /app/src/main/resources/static/.vite ./src/main/resou
 RUN gradle build --no-daemon -x test
 
 # Stage 3: Runtime
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # JAR 파일만 복사
