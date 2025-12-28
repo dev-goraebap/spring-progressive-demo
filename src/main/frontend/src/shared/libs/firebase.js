@@ -24,14 +24,8 @@ const VAPID_KEY = 'BDfnzNwxgDZRHNZLDhMS3JSCPZ8HBfCGZxLTqH-eB_6GroINq9Aq3hF_-Ku0r
  */
 export async function getFcmToken() {
     try {
-        // 현재 활성화된 서비스 워커 사용
-        const swRegistration = await navigator.serviceWorker.ready;
-        console.log('[FCM] 서비스 워커 scope:', swRegistration.scope);
-
-        const token = await getToken(messaging, {
-            vapidKey: VAPID_KEY,
-            serviceWorkerRegistration: swRegistration
-        });
+        // FCM 기본 서비스 워커 사용 (/firebase-messaging-sw.js)
+        const token = await getToken(messaging, { vapidKey: VAPID_KEY });
         if (token) {
             console.log('[FCM] 토큰 발급 성공:', token.substring(0, 20) + '...');
             return token;
