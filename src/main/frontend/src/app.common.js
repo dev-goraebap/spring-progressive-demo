@@ -6,6 +6,15 @@ import './app/toast';
 import './app/states/pwa.store';
 import './app/states/modal.store';
 import './app/states/themeToggle.store';
+import { onForegroundMessage } from './shared/libs/firebase';
+
+// FCM 포그라운드 메시지 핸들러
+onForegroundMessage((payload) => {
+    const { title, body } = payload.notification || {};
+    if (title) {
+        window.toast?.info(`${title}: ${body || ''}`);
+    }
+});
 
 // HTMX 전역 등록
 window.htmx = htmx;
