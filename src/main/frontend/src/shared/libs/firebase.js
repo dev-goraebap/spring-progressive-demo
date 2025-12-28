@@ -24,12 +24,9 @@ const VAPID_KEY = 'BDfnzNwxgDZRHNZLDhMS3JSCPZ8HBfCGZxLTqH-eB_6GroINq9Aq3hF_-Ku0r
  */
 export async function getFcmToken() {
     try {
-        // 이미 등록된 서비스 워커(/sw.js) 사용
-        const swRegistration = await navigator.serviceWorker.getRegistration('/');
-        if (!swRegistration) {
-            console.warn('[FCM] 서비스 워커가 등록되어 있지 않습니다.');
-            return null;
-        }
+        // 현재 활성화된 서비스 워커 사용
+        const swRegistration = await navigator.serviceWorker.ready;
+        console.log('[FCM] 서비스 워커 scope:', swRegistration.scope);
 
         const token = await getToken(messaging, {
             vapidKey: VAPID_KEY,
