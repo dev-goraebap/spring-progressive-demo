@@ -9,24 +9,21 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
-  optimizeDeps: {
-    exclude: ['@tailwindcss/oxide', 'lightningcss'],
-  },
   build: {
-    manifest: true,
-    outDir: '../resources/static',
+    manifest: false,
+    outDir: '../resources/vite',
     emptyOutDir: false,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/app.main.js'),
-        admin: resolve(__dirname, 'src/app.admin.js'),
-        editor: resolve(__dirname, 'src/app.editor.js'),
+        'app.main': resolve(__dirname, 'src/app.main.js'),
+        'app.admin': resolve(__dirname, 'src/app.admin.js'),
+        'app.editor': resolve(__dirname, 'src/app.editor.js'),
         style: resolve(__dirname, 'src/style.css'),
       },
       output: {
-        entryFileNames: 'builds/[name]-[hash].js',
-        chunkFileNames: 'builds/[name]-[hash].js',
-        assetFileNames: 'builds/[name]-[hash].[ext]',
+        entryFileNames: 'builds/[name].js',
+        chunkFileNames: 'builds/[name].js',
+        assetFileNames: 'builds/[name].[ext]',
       },
     },
   },

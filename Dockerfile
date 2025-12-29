@@ -24,9 +24,8 @@ RUN gradle dependencies --no-daemon || true
 # 소스 코드 복사
 COPY src ./src
 
-# Frontend 빌드 결과물 복사 (builds + .vite manifest)
-COPY --from=frontend-build /app/src/main/resources/static/builds ./src/main/resources/static/builds
-COPY --from=frontend-build /app/src/main/resources/static/.vite ./src/main/resources/static/.vite
+# Frontend 빌드 결과물 복사 (vite 폴더 전체)
+COPY --from=frontend-build /app/src/main/resources/vite ./src/main/resources/vite
 
 # 빌드
 RUN gradle build --no-daemon -x test
