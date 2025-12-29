@@ -55,7 +55,7 @@ public class WafFilter implements Filter {
 
     // WAF 검사에서 제외할 경로 prefix
     private static final Set<String> EXCLUDED_PREFIXES = Set.of(
-            "/builds/", "/css/", "/js/", "/images/", "/fonts/", "/bgm/", "/.vite/",
+            "/builds/", "/css/", "/js/", "/images/", "/fonts/", "/bgm/",
             "/admin/" // 관리자 페이지는 제외 (로그인 필요)
     );
 

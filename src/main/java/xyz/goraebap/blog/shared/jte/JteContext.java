@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import xyz.goraebap.blog.shared.vite.ViteManifest;
 
 @Component
 @Slf4j
@@ -19,26 +18,10 @@ public class JteContext {
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-    private static ViteManifest viteManifest;
-    private static String activeProfile;
+    private static final long BUILD_VERSION = System.currentTimeMillis();
 
-    public JteContext(ViteManifest viteManifest, org.springframework.core.env.Environment environment) {
-        JteContext.viteManifest = viteManifest;
-        JteContext.activeProfile = environment.getActiveProfiles().length > 0
-            ? environment.getActiveProfiles()[0]
-            : "default";
-    }
-
-    public static boolean isDev() {
-        return "local".equals(activeProfile);
-    }
-
-    public static String viteCss() {
-        return viteManifest != null ? viteManifest.getCss() : "builds/style.css";
-    }
-
-    public static String viteJs(String entry) {
-        return viteManifest != null ? viteManifest.getJs(entry) : "builds/" + entry + ".js";
+    public static long version() {
+        return BUILD_VERSION;
     }
 
     public static String currentPath() {

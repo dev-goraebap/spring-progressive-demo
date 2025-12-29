@@ -29,7 +29,7 @@ public class LoggingFilter implements Filter {
 
     // 로깅에서 제외할 경로 prefix
     private static final Set<String> EXCLUDED_PREFIXES = Set.of(
-            "/builds/", "/css/", "/js/", "/images/", "/fonts/", "/bgm/", "/.vite/"
+            "/builds/", "/css/", "/js/", "/images/", "/fonts/", "/bgm/"
     );
 
     @Override
