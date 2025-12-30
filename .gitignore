@@ -41,7 +41,7 @@ logs
 
 .env
 settings.local.json
-src/main/resources/vite
+src/main/resources/vite/builds
 jte-classes
 node_modules
 

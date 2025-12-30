@@ -36,7 +36,8 @@
 
 <%-- PWA 앱 설치 유도 --%>
 <div class="mt-4 block rounded-xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
-     @click="$store.pwa.available ? $store.pwa.install() : window.toast?.info('이미 설치되어 있습니다. 홈 화면에서 앱을 실행해주세요!')">
+     x-show="!$store.pwa.isInstalled"
+     @click="$store.pwa.install()">
     <div class="relative">
         <img src="/images/pwa-banner.jpg" alt="앱 설치" class="w-full h-24 object-cover"/>
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>

@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [tailwindcss()],
+  publicDir: false,
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

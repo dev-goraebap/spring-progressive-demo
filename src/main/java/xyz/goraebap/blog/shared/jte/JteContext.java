@@ -19,6 +19,17 @@ public class JteContext {
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     private static final long BUILD_VERSION = System.currentTimeMillis();
+    private static String activeProfile;
+
+    public JteContext(org.springframework.core.env.Environment environment) {
+        activeProfile = environment.getActiveProfiles().length > 0
+            ? environment.getActiveProfiles()[0]
+            : "default";
+    }
+
+    public static boolean isDev() {
+        return "local".equals(activeProfile);
+    }
 
     public static long version() {
         return BUILD_VERSION;
