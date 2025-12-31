@@ -43,7 +43,8 @@
         <div>
             <label class="text-xs text-base-content/60">설명</label>
             <textarea name="description"
-                      class="w-full py-2 border-b border-base-300 focus:border-primary focus:outline-none bg-transparent resize-none h-20"
+                      rows="3"
+                      class="textarea textarea-bordered w-full mt-1"
                       placeholder="시리즈에 대한 설명을 입력하세요">${description}</textarea>
         </div>
 
