@@ -34,15 +34,38 @@
     @template.shared.components.bgm()
 </div>
 
-<%-- PWA 앱 설치 유도 --%>
+<%-- 방문자 정보 배너 --%>
 <div class="mt-4 block rounded-xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
-     @click="$store.pwa.available ? $store.pwa.install() : window.toast?.info('이미 설치되어 있습니다. 홈 화면에서 앱을 실행해주세요!')">
+     x-data x-init="$store.notification.init()"
+     @click="htmx.ajax('GET', '/guest/info?permission=' + $store.notification.permission, '#HX_MODAL_CONTENT')">
     <div class="relative">
-        <img src="/images/pwa-banner.jpg" alt="앱 설치" class="w-full h-24 object-cover"/>
+        <img src="/images/pwa-banner.jpg" alt="방문자 정보" class="w-full h-24 object-cover"/>
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="absolute inset-0 p-4 flex flex-col justify-center">
-            <p class="font-bold text-white">앱 설치하기</p>
-            <p class="text-xs text-white/80">홈 화면에 추가하고 새 글 알림도 받아보세요</p>
+            <%-- 알림 설정됨 --%>
+            <template x-if="$store.notification.permission === 'granted'">
+                <div>
+                    <p class="font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        알림 설정됨
+                    </p>
+                    <p class="text-xs text-white/80">새로운 글이 올라오면 알려드릴게요</p>
+                </div>
+            </template>
+            <%-- 알림 미설정 --%>
+            <template x-if="$store.notification.permission !== 'granted'">
+                <div>
+                    <p class="font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        새 글 알림 받기
+                    </p>
+                    <p class="text-xs text-white/80">새로운 글이 올라오면 알려드릴게요</p>
+                </div>
+            </template>
         </div>
     </div>
 </div>

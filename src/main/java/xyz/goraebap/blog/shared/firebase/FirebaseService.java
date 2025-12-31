@@ -5,17 +5,23 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import xyz.goraebap.blog.contract.fcm.FcmSubscriber;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class FirebaseService {
+
+    private final FcmSubscriber fcmSubscriber;
 
     @Value("${firebase.credentials-path:}")
     private String credentialsPath;
@@ -73,20 +79,30 @@ public class FirebaseService {
             log.info("[FCM] 멀티캐스트 발송 완료 - 성공: {}, 실패: {}",
                     response.getSuccessCount(), response.getFailureCount());
 
-            // 실패한 토큰 상세 로깅
+            // 실패한 토큰 처리 (무효 토큰 삭제)
             if (response.getFailureCount() > 0) {
+                List<String> tokensToDelete = new ArrayList<>();
                 List<SendResponse> responses = response.getResponses();
+
                 for (int i = 0; i < responses.size(); i++) {
                     SendResponse sendResponse = responses.get(i);
-                    if (!sendResponse.isSuccessful()) {
+                    if (!sendResponse.isSuccessful() && sendResponse.getException() != null) {
                         String failedToken = tokens.get(i);
-                        String errorCode = sendResponse.getException() != null
-                                ? sendResponse.getException().getMessagingErrorCode().name()
-                                : "UNKNOWN";
+                        MessagingErrorCode errorCode = sendResponse.getException().getMessagingErrorCode();
+
                         log.warn("[FCM] 발송 실패 - token: {}..., error: {}",
                                 failedToken.substring(0, 20), errorCode);
+
+                        // 무효한 토큰은 삭제 대상에 추가
+                        if (errorCode == MessagingErrorCode.UNREGISTERED ||
+                            errorCode == MessagingErrorCode.INVALID_ARGUMENT) {
+                            tokensToDelete.add(failedToken);
+                        }
                     }
                 }
+
+                // 무효 토큰 일괄 삭제
+                fcmSubscriber.deleteInvalidTokens(tokensToDelete);
             }
 
             return response.getSuccessCount();

@@ -11,8 +11,23 @@ import { onForegroundMessage } from './shared/libs/firebase';
 // FCM 포그라운드 메시지 핸들러
 onForegroundMessage((payload) => {
     const { title, body } = payload.notification || {};
-    if (title) {
-        window.toast?.info(`${title}: ${body || ''}`);
+    const { url } = payload.data || {};
+
+    if (title && Notification.permission === 'granted') {
+        const notification = new Notification(title, {
+            body: body || '',
+            icon: '/images/logo.png',
+            badge: '/images/logo.png',
+            data: { url: url || '/' }
+        });
+
+        notification.onclick = () => {
+            window.focus();
+            if (url) {
+                window.location.href = url;
+            }
+            notification.close();
+        };
     }
 });
 

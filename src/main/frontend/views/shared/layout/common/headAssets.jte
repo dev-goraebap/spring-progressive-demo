@@ -5,8 +5,17 @@
 <%-- 폰트 --%>
 <link rel="stylesheet" href="/css/font.css">
 
-<%-- Vite 빌드 파일 --%>
-<link rel="stylesheet" href="/builds/style.css?v=${version()}">
-@if(entry != null)
-    <script type="module" src="/builds/${entry}.js?v=${version()}"></script>
+@if(isDev())
+    <%-- 개발: Vite dev server --%>
+    <link rel="stylesheet" href="http://localhost:5173/src/style.css">
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    @if(entry != null)
+        <script type="module" src="http://localhost:5173/src/${entry}.js"></script>
+    @endif
+@else
+    <%-- 운영: Vite 빌드 파일 --%>
+    <link rel="stylesheet" href="/builds/style.css?v=${version()}">
+    @if(entry != null)
+        <script type="module" src="/builds/${entry}.js?v=${version()}"></script>
+    @endif
 @endif

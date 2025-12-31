@@ -1,5 +1,4 @@
 import Alpine from 'alpinejs';
-import { getFcmToken, registerFcmToken } from '@/shared/libs/firebase';
 
 let deferredPrompt = null;
 
@@ -7,19 +6,45 @@ let deferredPrompt = null;
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches
     || window.navigator.standalone === true;
 
+// iOS Safari 감지
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const isIOSSafari = isIOS && isSafari;
+
 Alpine.store('pwa', {
     // 설치 가능 여부 (beforeinstallprompt 이벤트 발생 시 true)
     available: false,
+    // iOS Safari 여부
+    isIOSSafari: isIOSSafari,
+    // 이미 설치됨 (standalone 모드)
+    isInstalled: isStandalone,
 
     // 설치 실행
     install() {
-        if (!deferredPrompt) return;
+        // 이미 설치됨
+        if (isStandalone) {
+            window.toast?.info('이미 설치되어 있습니다. 홈 화면에서 앱을 실행해주세요!');
+            return;
+        }
 
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-            deferredPrompt = null;
-            this.available = false;
-        });
+        // iOS Safari: 수동 설치 안내
+        if (isIOSSafari) {
+            window.toast?.info('하단의 공유 버튼 → "홈 화면에 추가"를 눌러주세요!');
+            return;
+        }
+
+        // Chrome 등: 자동 설치 프롬프트
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => {
+                deferredPrompt = null;
+                this.available = false;
+            });
+            return;
+        }
+
+        // 설치 불가능한 환경
+        window.toast?.info('이 브라우저에서는 앱 설치를 지원하지 않습니다.');
     }
 });
 
@@ -30,35 +55,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
     Alpine.store('pwa').available = true;
 });
 
-// 설치 완료 → 토스트만 표시 (토큰 발급은 PWA 실행 시)
+// 설치 완료 → 토스트
 window.addEventListener('appinstalled', () => {
     Alpine.store('pwa').available = false;
     deferredPrompt = null;
     window.toast?.success('앱이 설치되었습니다!');
 });
-
-// PWA 모드로 실행 시 → 알림 권한 요청 → FCM 토큰 등록
-if (isStandalone) {
-    (async () => {
-        if (!('Notification' in window)) return;
-
-        let permission = Notification.permission;
-        if (permission === 'default') {
-            permission = await Notification.requestPermission();
-        }
-        if (permission !== 'granted') return;
-
-        const token = await getFcmToken();
-        if (!token) return;
-
-        // 이미 등록된 토큰이면 스킵
-        const savedToken = localStorage.getItem('fcm_token');
-        if (savedToken === token) return;
-
-        const registered = await registerFcmToken(token);
-        if (!registered) return;
-
-        localStorage.setItem('fcm_token', token);
-        window.toast?.info('알림이 활성화되었습니다.');
-    })();
-}

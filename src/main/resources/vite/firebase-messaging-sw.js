@@ -15,18 +15,26 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 // 백그라운드 메시지 수신
+// NOTE: notification 페이로드가 있으면 FCM이 자동으로 알림을 표시함
+// data-only 메시지일 때만 수동으로 표시 필요
 messaging.onBackgroundMessage((payload) => {
     console.log('[FCM SW] 백그라운드 메시지 수신:', payload);
 
-    const { title, body, icon } = payload.notification || {};
-    const { url } = payload.data || {};
+    // notification 페이로드가 있으면 FCM이 자동 표시하므로 스킵
+    if (payload.notification) {
+        return;
+    }
 
-    self.registration.showNotification(title || '새 알림', {
-        body: body || '',
-        icon: icon || '/images/logo.png',
-        badge: '/images/logo.png',
-        data: { url: url || '/' }
-    });
+    // data-only 메시지일 때만 수동 표시
+    const { title, body, url } = payload.data || {};
+    if (title) {
+        self.registration.showNotification(title, {
+            body: body || '',
+            icon: '/images/logo.png',
+            badge: '/images/logo.png',
+            data: { url: url || '/' }
+        });
+    }
 });
 
 // 알림 클릭 시 해당 URL로 이동

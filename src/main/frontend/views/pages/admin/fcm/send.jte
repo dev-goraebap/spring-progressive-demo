@@ -26,7 +26,7 @@
             <label class="text-xs text-base-content/60">내용 <span class="text-error">*</span></label>
             <textarea name="body"
                       rows="3"
-                      class="w-full py-2 border-b border-base-300 focus:border-primary focus:outline-none bg-transparent resize-none"
+                      class="textarea textarea-bordered w-full mt-1"
                       placeholder="알림 내용"
                       required></textarea>
         </div>
