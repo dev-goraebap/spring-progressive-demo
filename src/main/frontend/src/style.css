@@ -81,6 +81,11 @@
 
 @source "../views/**/*.jte";
 
+/* iOS 오버스크롤 방지 (젤리 효과) */
+html, body {
+    overscroll-behavior: none;
+}
+
 /* 고해상도 화면에서 전체 크기 확대 */
 @media (min-width: 1920px) {
     html {

@@ -3,7 +3,7 @@
   "short_name": "데브고래밥",
   "description": "데브고래밥 개발 블로그",
   "theme_color": "#334155",
-  "background_color": "#1d4ed8",
+  "background_color": "#0f172a",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
