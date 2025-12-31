@@ -185,5 +185,8 @@
         </ul>
     </nav>
 </div>
+
+<%-- HTMX 모달 --%>
+@template.shared.components.modal()
 </body>
 </html>

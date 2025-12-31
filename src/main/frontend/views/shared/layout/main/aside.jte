@@ -34,13 +34,12 @@
     @template.shared.components.bgm()
 </div>
 
-<%-- 알림 설정 배너 --%>
-<div class="mt-4 block rounded-xl overflow-hidden transition-transform"
+<%-- 방문자 정보 배너 --%>
+<div class="mt-4 block rounded-xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
      x-data x-init="$store.notification.init()"
-     :class="$store.notification.permission === 'granted' ? 'opacity-60' : 'cursor-pointer hover:scale-[1.02]'"
-     @click="$store.notification.handleClick()">
+     @click="htmx.ajax('GET', '/guest/info?permission=' + $store.notification.permission, '#HX_MODAL_CONTENT')">
     <div class="relative">
-        <img src="/images/pwa-banner.jpg" alt="알림 설정" class="w-full h-24 object-cover"/>
+        <img src="/images/pwa-banner.jpg" alt="방문자 정보" class="w-full h-24 object-cover"/>
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="absolute inset-0 p-4 flex flex-col justify-center">
             <%-- 알림 설정됨 --%>
@@ -70,9 +69,6 @@
         </div>
     </div>
 </div>
-
-<%-- 알림 모달 --%>
-@template.shared.components.notificationModal()
 
 <%-- 요즘 관심있는 --%>
 <div class="mt-4">
