@@ -16,8 +16,32 @@ Alpine.store('notification', {
     // 로딩 상태
     loading: false,
 
-    init() {
+    async init() {
         this.updatePermission();
+
+        // 권한이 granted면 토큰 상태 동기화
+        if (this.permission === 'granted') {
+            await this.syncToken();
+        }
+    },
+
+    // 서버와 토큰 동기화 (조용히 처리)
+    async syncToken() {
+        try {
+            const token = await getFcmToken();
+            if (!token) return;
+
+            // 서버에 등록 여부 확인
+            const response = await fetch(`/api/fcm/check?token=${encodeURIComponent(token)}`);
+            const isRegistered = await response.json();
+
+            // 미등록이면 조용히 재등록
+            if (!isRegistered) {
+                await registerFcmToken(token);
+            }
+        } catch (error) {
+            console.error('[Notification] 토큰 동기화 실패:', error);
+        }
     },
 
     updatePermission() {
@@ -67,14 +91,28 @@ Alpine.store('notification', {
 
     // 토큰 등록 확인 및 처리
     async ensureTokenRegistered() {
-        const savedToken = localStorage.getItem('fcm_token');
-        if (savedToken) {
-            window.toast?.info('알림이 이미 설정되어 있습니다.');
-            return true;
-        }
+        try {
+            const token = await getFcmToken();
+            if (!token) {
+                window.toast?.error('토큰을 가져올 수 없습니다.');
+                return false;
+            }
 
-        // 토큰 없으면 등록 시도
-        return await this.registerToken();
+            // 서버에 등록 여부 확인
+            const response = await fetch(`/api/fcm/check?token=${encodeURIComponent(token)}`);
+            const isRegistered = await response.json();
+
+            if (isRegistered) {
+                window.toast?.info('알림이 이미 설정되어 있습니다.');
+                return true;
+            }
+
+            // 미등록이면 등록 시도
+            return await this.registerToken();
+        } catch (error) {
+            console.error('[Notification] 토큰 확인 실패:', error);
+            return false;
+        }
     },
 
     // 모달에서 확인 클릭 시
@@ -122,7 +160,6 @@ Alpine.store('notification', {
             return false;
         }
 
-        localStorage.setItem('fcm_token', token);
         return true;
     },
 

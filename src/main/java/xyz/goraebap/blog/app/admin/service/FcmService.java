@@ -40,4 +40,10 @@ public class FcmService implements FcmSubscriber {
         log.info("[FCM] 새 구독 등록 - IP: {}, Browser: {}, OS: {}",
                 dto.getIpAddress(), dto.getBrowser(), dto.getOs());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isSubscribed(String token) {
+        return fcmSubscriptionRepository.existsByToken(token);
+    }
 }
