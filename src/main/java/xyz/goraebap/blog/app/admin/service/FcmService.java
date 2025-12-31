@@ -9,6 +9,8 @@ import xyz.goraebap.blog.app.admin.domain.FcmSubscriptionRepository;
 import xyz.goraebap.blog.contract.fcm.FcmSubscriber;
 import xyz.goraebap.blog.contract.fcm.SubscribeFcmDto;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -45,5 +47,14 @@ public class FcmService implements FcmSubscriber {
     @Transactional(readOnly = true)
     public boolean isSubscribed(String token) {
         return fcmSubscriptionRepository.existsByToken(token);
+    }
+
+    @Override
+    @Transactional
+    public void deleteInvalidTokens(List<String> tokens) {
+        if (tokens.isEmpty()) return;
+
+        tokens.forEach(fcmSubscriptionRepository::deleteByToken);
+        log.info("[FCM] 무효 토큰 {}개 삭제 완료", tokens.size());
     }
 }

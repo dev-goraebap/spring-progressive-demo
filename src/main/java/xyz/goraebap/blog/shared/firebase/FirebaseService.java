@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.blog.app.admin.domain.FcmSubscriptionRepository;
+import xyz.goraebap.blog.contract.fcm.FcmSubscriber;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FirebaseService {
 
-    private final FcmSubscriptionRepository fcmSubscriptionRepository;
+    private final FcmSubscriber fcmSubscriber;
 
     @Value("${firebase.credentials-path:}")
     private String credentialsPath;
@@ -102,10 +102,7 @@ public class FirebaseService {
                 }
 
                 // 무효 토큰 일괄 삭제
-                if (!tokensToDelete.isEmpty()) {
-                    tokensToDelete.forEach(fcmSubscriptionRepository::deleteByToken);
-                    log.info("[FCM] 무효 토큰 {} 개 삭제 완료", tokensToDelete.size());
-                }
+                fcmSubscriber.deleteInvalidTokens(tokensToDelete);
             }
 
             return response.getSuccessCount();
