@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import xyz.goraebap.blog.infra.view_model.AdminPostViewModel;
 import xyz.goraebap.blog.infra.view_model.PostViewModel;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -39,4 +40,6 @@ public interface PostViewMapper {
     );
 
     AdminPostViewModel findAdminPostById(@Param("id") Long id);
+
+    boolean existsPublishedAfter(@Param("postType") String postType, @Param("after") LocalDateTime after);
 }
