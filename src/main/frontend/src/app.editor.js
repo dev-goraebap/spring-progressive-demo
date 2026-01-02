@@ -72,11 +72,11 @@ function initEditor() {
             table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' }
         },
         skin_url: isDark
-            ? 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/ui/oxide-dark'
-            : 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/ui/oxide',
+            ? '/tinymce/skins/ui/oxide-dark'
+            : '/tinymce/skins/ui/oxide',
         content_css: isDark
-            ? 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/content/dark/content.min.css'
-            : 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/content/default/content.min.css',
+            ? '/tinymce/skins/content/dark/content.min.css'
+            : '/tinymce/skins/content/default/content.min.css',
         codesample_languages: [
             { text: 'HTML/XML', value: 'markup' },
             { text: 'JavaScript', value: 'javascript' },

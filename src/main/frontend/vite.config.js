@@ -1,9 +1,20 @@
 import tailwindcss from '@tailwindcss/vite';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  plugins: [tailwindcss()],
+  plugins: [
+    tailwindcss(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'node_modules/tinymce/skins/*',
+          dest: 'tinymce/skins'
+        }
+      ]
+    })
+  ],
   publicDir: false,
   resolve: {
     alias: {
