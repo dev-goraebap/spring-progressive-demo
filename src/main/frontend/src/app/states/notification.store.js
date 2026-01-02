@@ -9,8 +9,12 @@ const isStandalone = window.matchMedia('(display-mode: standalone)').matches
 Alpine.store('notification', {
     // 알림 권한 상태: 'default' | 'granted' | 'denied' | 'unsupported' | 'ios-browser'
     permission: 'default',
+    _initialized: false,
 
     async init() {
+        if (this._initialized) return;
+        this._initialized = true;
+
         this.updatePermission();
 
         // 권한이 granted면 토큰 상태 동기화
