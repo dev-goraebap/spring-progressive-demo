@@ -84,15 +84,10 @@ function initEditor() {
             { text: 'CSS', value: 'css' },
             { text: 'Java', value: 'java' },
             { text: 'Kotlin', value: 'kotlin' },
-            { text: 'Python', value: 'python' },
             { text: 'Bash', value: 'bash' },
             { text: 'SQL', value: 'sql' },
             { text: 'JSON', value: 'json' },
-            { text: 'YAML', value: 'yaml' },
-            { text: 'Go', value: 'go' },
-            { text: 'Rust', value: 'rust' },
-            { text: 'C#', value: 'csharp' },
-            { text: 'C++', value: 'cpp' }
+            { text: 'YAML', value: 'yaml' }
         ],
         // 이미지 업로드 설정
         images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
