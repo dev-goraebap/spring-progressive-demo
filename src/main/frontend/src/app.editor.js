@@ -38,20 +38,15 @@ import 'tinymce/plugins/save';
 import 'tinymce/plugins/autosave';
 import 'tinymce/plugins/directionality';
 
-async function initEditor() {
+function initEditor() {
     const editorElement = document.getElementById('tinymceEditor');
     if (!editorElement) return;
 
     // 기존 에디터 제거
     tinymce.remove('#tinymceEditor');
 
-    // 다크모드 감지 및 스킨 동적 로드
+    // 다크모드 감지
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-        await import('tinymce/skins/ui/oxide-dark/skin.min.css');
-    } else {
-        await import('tinymce/skins/ui/oxide/skin.min.css');
-    }
 
     tinymce.init({
         selector: '#tinymceEditor',
@@ -76,18 +71,12 @@ async function initEditor() {
             tools: { title: 'Tools', items: 'code wordcount' },
             table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' }
         },
-        skin: false,
-        content_css: '/css/font.css',
-        content_style: `
-            body {
-                font-family: 'Open Sans', 'Gothic A1', sans-serif;
-                font-size: 1rem;
-                line-height: 1.6;
-                padding: 0rem 0.5rem;
-                background: ${isDark ? '#1d232a' : '#ffffff'};
-                color: ${isDark ? '#a6adba' : '#1f2937'};
-            }
-        `,
+        skin_url: isDark
+            ? 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/ui/oxide-dark'
+            : 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/ui/oxide',
+        content_css: isDark
+            ? 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/content/dark/content.min.css'
+            : 'https://cdn.tiny.cloud/1/no-api-key/tinymce/7/skins/content/default/content.min.css',
         codesample_languages: [
             { text: 'HTML/XML', value: 'markup' },
             { text: 'JavaScript', value: 'javascript' },
