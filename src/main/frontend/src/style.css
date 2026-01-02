@@ -159,3 +159,36 @@ html.htmx-request-complete #htmx-progress {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
+/* FilePond 다크 모드 */
+[data-theme="dark"] .filepond--panel-root {
+    background-color: #1d232a;
+}
+
+[data-theme="dark"] .filepond--drop-label {
+    color: #a6adba;
+}
+
+[data-theme="dark"] .filepond--label-action {
+    text-decoration-color: #a6adba;
+}
+
+[data-theme="dark"] .filepond--drip-blob {
+    background-color: #374151;
+}
+
+[data-theme="dark"] .filepond--item-panel {
+    background-color: #374151;
+}
+
+[data-theme="dark"] .filepond--file-action-button {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .filepond--file-info {
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .filepond--file-info .filepond--file-info-sub {
+    color: #9ca3af;
+}
