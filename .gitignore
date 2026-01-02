@@ -42,6 +42,7 @@ logs
 .env
 settings.local.json
 src/main/resources/vite/builds
+src/main/resources/vite/tinymce
 jte-classes
 node_modules
 
