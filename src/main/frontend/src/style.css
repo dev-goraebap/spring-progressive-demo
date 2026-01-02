@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import 'notyf/notyf.min.css';
-@import 'tinymce/skins/ui/oxide/skin.min.css';
 @import 'filepond/dist/filepond.min.css';
 @import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 @import 'filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css';

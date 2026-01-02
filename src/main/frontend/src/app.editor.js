@@ -38,15 +38,20 @@ import 'tinymce/plugins/save';
 import 'tinymce/plugins/autosave';
 import 'tinymce/plugins/directionality';
 
-function initEditor() {
+async function initEditor() {
     const editorElement = document.getElementById('tinymceEditor');
     if (!editorElement) return;
 
     // 기존 에디터 제거
     tinymce.remove('#tinymceEditor');
 
-    // 다크모드 감지
+    // 다크모드 감지 및 스킨 동적 로드
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+        await import('tinymce/skins/ui/oxide-dark/skin.min.css');
+    } else {
+        await import('tinymce/skins/ui/oxide/skin.min.css');
+    }
 
     tinymce.init({
         selector: '#tinymceEditor',
@@ -76,38 +81,11 @@ function initEditor() {
         content_style: `
             body {
                 font-family: 'Open Sans', 'Gothic A1', sans-serif;
-                font-size: 16px;
+                font-size: 1rem;
                 line-height: 1.6;
-                padding: 1rem;
+                padding: 0rem 0.5rem;
                 background: ${isDark ? '#1d232a' : '#ffffff'};
                 color: ${isDark ? '#a6adba' : '#1f2937'};
-            }
-            h1 { font-size: 2em; font-weight: bold; margin-bottom: 0.5em; }
-            h2 { font-size: 1.5em; font-weight: bold; margin-bottom: 0.5em; }
-            h3 { font-size: 1.25em; font-weight: bold; margin-bottom: 0.5em; }
-            pre {
-                background: ${isDark ? '#191e24' : '#f3f4f6'};
-                padding: 1rem;
-                border-radius: 0.5rem;
-                overflow-x: auto;
-            }
-            code {
-                background: ${isDark ? '#191e24' : '#f3f4f6'};
-                padding: 0.2rem 0.4rem;
-                border-radius: 0.25rem;
-                font-size: 0.875em;
-            }
-            pre code {
-                background: transparent;
-                padding: 0;
-            }
-            img { max-width: 100%; height: auto; }
-            a { color: #3b82f6; }
-            blockquote {
-                border-left: 4px solid ${isDark ? '#374151' : '#e5e7eb'};
-                padding-left: 1rem;
-                margin-left: 0;
-                color: ${isDark ? '#9ca3af' : '#6b7280'};
             }
         `,
         codesample_languages: [
