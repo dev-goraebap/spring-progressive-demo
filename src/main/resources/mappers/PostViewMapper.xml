@@ -244,4 +244,14 @@
         where p.id = #{id}
     </select>
 
+    <select id="existsPublishedAfter" resultType="boolean">
+        select exists(
+            select 1
+            from posts
+            where post_type = #{postType}
+              and is_published_yn = 'Y'
+              and published_at >= #{after}
+        )
+    </select>
+
 </mapper>

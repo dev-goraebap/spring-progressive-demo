@@ -1,7 +1,16 @@
 import Alpine from 'alpinejs';
 
-// BGM 플레이리스트
-const playlist = [
+// BGM 플레이리스트 (페이지 로드 시 셔플)
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+const originalPlaylist = [
     { title: 'Jane Doe', artist: '요네즈 켄시 와 우타다 히카루', src: '/bgm/bgm01.mp3', cover: '/bgm/bgm01.webp' },
     { title: '34+35 slow (guitar)', artist: 'Ariana grande (cover)', src: '/bgm/bgm02.mp3', cover: '/bgm/bgm02.webp' },
     { title: 'Eternal Anamnesis', artist: 'Genshin Impact Main Theme', src: '/bgm/bgm03.mp3', cover: '/bgm/bgm03.jpg' },
@@ -10,6 +19,12 @@ const playlist = [
     { title: '나비보벳따우', artist: '동물의숲', src: '/bgm/bgm04-3.mp3', cover: '/bgm/bgm04-3.jpg' },
     { title: 'Dear', artist: 'Nanase', src: '/bgm/bgm05.mp3', cover: '/bgm/bgm05.png' },
 ];
+
+// 페이지 로드 시 한 번만 셔플 (페이지 이동해도 유지)
+if (!window.bgmPlaylist) {
+    window.bgmPlaylist = shuffleArray(originalPlaylist);
+}
+const playlist = window.bgmPlaylist;
 
 // Audio 객체 전역 유지 (페이지 이동해도 끊기지 않게)
 if (!window.bgmAudio) {

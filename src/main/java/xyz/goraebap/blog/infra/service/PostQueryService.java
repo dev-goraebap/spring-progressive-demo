@@ -7,6 +7,7 @@ import xyz.goraebap.blog.infra.view_model.AdminPostViewModel;
 import xyz.goraebap.blog.infra.view_model.PostViewModel;
 import xyz.goraebap.blog.infra.view_model.Pagination;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,6 +53,14 @@ public class PostQueryService {
             thumbnailEnricher.enrich(post);
         }
         return post;
+    }
+
+    /**
+     * 최근 1주일 내 발행된 글이 있는지 확인
+     */
+    public boolean hasPublishedWithinWeek() {
+        LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
+        return postViewMapper.existsPublishedAfter("post", oneWeekAgo);
     }
 
     // Admin

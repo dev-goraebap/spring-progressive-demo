@@ -1,0 +1,48 @@
+/* Notyf 토스트 z-index (모달보다 위) */
+.notyf {
+    z-index: 99999 !important;
+}
+
+/* 레인보우 테두리 애니메이션 */
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+}
+
+/* HTMX 로딩 프로그레스 바 */
+#htmx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    z-index: 99999;
+    opacity: 0;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef, #f43f5e);
+    background-size: 200% 100%;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.7), 0 0 20px rgba(139, 92, 246, 0.4);
+    /* 기본 상태로 돌아갈 때는 transition 없이 즉시 리셋 */
+    transition: none;
+}
+
+html.htmx-request #htmx-progress {
+    width: 90%;
+    opacity: 1;
+    animation: progress-shimmer 1.5s ease infinite;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.1s ease;
+}
+
+html.htmx-request-complete #htmx-progress {
+    width: 100%;
+    opacity: 0;
+    transition: width 0.15s ease, opacity 0.15s ease 0.1s;
+}
+
+@keyframes progress-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}

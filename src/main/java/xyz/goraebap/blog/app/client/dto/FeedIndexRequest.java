@@ -8,7 +8,7 @@ import lombok.Data;
 public class FeedIndexRequest {
 
     @Schema(description = "정렬 (예: viewCount,desc)")
-    private String sort = "viewCount,desc";
+    private String sort;
 
     @Schema(description = "페이지 번호 (1부터 시작)")
     private int page = 1;

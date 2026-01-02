@@ -6,7 +6,7 @@
 !{var siteName = "데브고래밥 스튜디오";}
 
 <!DOCTYPE html>
-<html lang="ko" data-theme="light">
+<html lang="ko" data-theme="${getTheme()}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

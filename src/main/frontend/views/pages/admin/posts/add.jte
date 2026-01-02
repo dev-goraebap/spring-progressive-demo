@@ -2,7 +2,7 @@
     <form x-data="postForm($el)" @submit.prevent="submit()" class="flex gap-4 relative">
 
         <div class="grow flex flex-col p-4 gap-4">
-            <textarea id="tinymceEditor" name="content"></textarea>
+            <textarea id="tinymceEditor" name="content" class="border"></textarea>
         </div>
 
         <div class="min-w-80 flex flex-col justify-between h-screen sticky top-0 border-l border-base-300 p-4">

@@ -26,6 +26,12 @@ public class FeedController {
             @RequestHeader(value = "HX-Request", required = false) boolean htmxRequest,
             @RequestHeader(value = "HX-Boosted", required = false) boolean htmxBoosted
     ) {
+        // 정렬 기본값: 최근 1주일 내 발행글 있으면 최신순, 없으면 인기순
+        if (req.getSort() == null) {
+            boolean hasRecentPost = postQueryService.hasPublishedWithinWeek();
+            req.setSort(hasRecentPost ? "publishedAt,desc" : "viewCount,desc");
+        }
+
         var postData = postQueryService.getPostsWithPagination(req.getPage(), req.getSort());
         model.addAttribute("postData", postData);
 

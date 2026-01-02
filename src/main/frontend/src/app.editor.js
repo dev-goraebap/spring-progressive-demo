@@ -71,45 +71,12 @@ function initEditor() {
             tools: { title: 'Tools', items: 'code wordcount' },
             table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' }
         },
-        skin: false,
-        content_css: '/css/font.css',
-        content_style: `
-            body {
-                font-family: 'Open Sans', 'Gothic A1', sans-serif;
-                font-size: 16px;
-                line-height: 1.6;
-                padding: 1rem;
-                background: ${isDark ? '#1d232a' : '#ffffff'};
-                color: ${isDark ? '#a6adba' : '#1f2937'};
-            }
-            h1 { font-size: 2em; font-weight: bold; margin-bottom: 0.5em; }
-            h2 { font-size: 1.5em; font-weight: bold; margin-bottom: 0.5em; }
-            h3 { font-size: 1.25em; font-weight: bold; margin-bottom: 0.5em; }
-            pre {
-                background: ${isDark ? '#191e24' : '#f3f4f6'};
-                padding: 1rem;
-                border-radius: 0.5rem;
-                overflow-x: auto;
-            }
-            code {
-                background: ${isDark ? '#191e24' : '#f3f4f6'};
-                padding: 0.2rem 0.4rem;
-                border-radius: 0.25rem;
-                font-size: 0.875em;
-            }
-            pre code {
-                background: transparent;
-                padding: 0;
-            }
-            img { max-width: 100%; height: auto; }
-            a { color: #3b82f6; }
-            blockquote {
-                border-left: 4px solid ${isDark ? '#374151' : '#e5e7eb'};
-                padding-left: 1rem;
-                margin-left: 0;
-                color: ${isDark ? '#9ca3af' : '#6b7280'};
-            }
-        `,
+        skin_url: isDark
+            ? '/tinymce/skins/ui/oxide-dark'
+            : '/tinymce/skins/ui/oxide',
+        content_css: isDark
+            ? '/tinymce/skins/content/dark/content.min.css'
+            : '/tinymce/skins/content/default/content.min.css',
         codesample_languages: [
             { text: 'HTML/XML', value: 'markup' },
             { text: 'JavaScript', value: 'javascript' },
@@ -117,15 +84,10 @@ function initEditor() {
             { text: 'CSS', value: 'css' },
             { text: 'Java', value: 'java' },
             { text: 'Kotlin', value: 'kotlin' },
-            { text: 'Python', value: 'python' },
             { text: 'Bash', value: 'bash' },
             { text: 'SQL', value: 'sql' },
             { text: 'JSON', value: 'json' },
-            { text: 'YAML', value: 'yaml' },
-            { text: 'Go', value: 'go' },
-            { text: 'Rust', value: 'rust' },
-            { text: 'C#', value: 'csharp' },
-            { text: 'C++', value: 'cpp' }
+            { text: 'YAML', value: 'yaml' }
         ],
         // 이미지 업로드 설정
         images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
