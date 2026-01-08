@@ -12,6 +12,7 @@ import xyz.goraebap.blog.app.admin.domain.*;
 import xyz.goraebap.blog.app.admin.dto.AdminCuratedSourceFormRequest;
 import xyz.goraebap.blog.shared.exception.BadRequestException;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
+import xyz.goraebap.blog.shared.gemini.GeminiService;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class CuratedSourceService {
 
     private final CuratedSourceRepository sourceRepository;
     private final CuratedItemRepository itemRepository;
+    private final GeminiService geminiService;
 
     public CuratedSourceEntity create(AdminCuratedSourceFormRequest req) {
         // URL 중복 검증
@@ -140,8 +142,16 @@ public class CuratedSourceService {
                             .toLocalDateTime();
                 }
 
+                // 번역 (영어로 보이면 번역)
+                String title = entry.getTitle();
+                if (isEnglish(title)) {
+                    var translated = geminiService.translate(title, snippet);
+                    title = translated.title();
+                    snippet = translated.snippet();
+                }
+
                 var item = CuratedItemEntity.create(
-                        entry.getTitle(),
+                        title,
                         link,
                         guid,
                         snippet,
@@ -179,6 +189,22 @@ public class CuratedSourceService {
         int deleted = itemRepository.deleteOldItems(threshold);
         log.info("[RSS Cleanup] Deleted {} items older than {} days", deleted, days);
         return deleted;
+    }
+
+    /**
+     * 텍스트가 영어인지 간단히 판단 (한글이 없고 알파벳 비율이 높으면 영어로 판단)
+     */
+    private boolean isEnglish(String text) {
+        if (text == null || text.isBlank()) return false;
+
+        // 한글이 포함되어 있으면 한국어
+        if (text.matches(".*[가-힣]+.*")) return false;
+
+        // 알파벳 비율이 50% 이상이면 영어로 판단
+        long alphabetCount = text.chars().filter(c -> Character.isLetter(c) && c < 128).count();
+        long totalLetters = text.chars().filter(Character::isLetter).count();
+
+        return totalLetters > 0 && (double) alphabetCount / totalLetters > 0.5;
     }
 
     public record FetchResult(int total, List<SourceFetchResult> sources) {}

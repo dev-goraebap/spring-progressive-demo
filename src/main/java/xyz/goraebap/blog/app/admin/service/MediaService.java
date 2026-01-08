@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.goraebap.blog.app.admin.domain.BlobEntity;
 import xyz.goraebap.blog.app.admin.domain.BlobRepository;
 import xyz.goraebap.blog.shared.exception.BadRequestException;
+import xyz.goraebap.blog.shared.gemini.GeminiService;
 import xyz.goraebap.blog.shared.r2.R2StorageService;
-import xyz.goraebap.blog.shared.vision.GoogleVisionService;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -28,7 +28,7 @@ public class MediaService {
 
     private final BlobRepository blobRepository;
     private final R2StorageService r2StorageService;
-    private final GoogleVisionService googleVisionService;
+    private final GeminiService geminiService;
     private final ObjectMapper objectMapper;
 
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -112,12 +112,9 @@ public class MediaService {
         if (contentType != null && contentType.startsWith("image/")) {
             metadata.put("type", "image");
 
-            var colors = googleVisionService.extractColors(data);
-            if (!colors.isEmpty()) {
-                metadata.put("dominantColor", colors.get(0).hex());
-                if (colors.size() > 1) {
-                    metadata.put("dominantColor2", colors.get(1).hex());
-                }
+            String dominantColor = geminiService.extractDominantColor(data, contentType);
+            if (dominantColor != null) {
+                metadata.put("dominantColor", dominantColor);
             }
         }
 

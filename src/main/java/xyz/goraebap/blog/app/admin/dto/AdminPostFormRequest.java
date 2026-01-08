@@ -23,4 +23,6 @@ public class AdminPostFormRequest {
     private LocalDateTime publishedAt;
 
     private Long thumbnailBlobId;
+
+    private Boolean clearThumbnail;
 }
