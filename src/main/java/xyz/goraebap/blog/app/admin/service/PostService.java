@@ -54,11 +54,12 @@ public class PostService implements ViewCounter {
         post.update(req);
         postRepository.save(post);
 
-        // 썸네일 업데이트
-        if (req.getThumbnailBlobId() != null) {
+        // 썸네일 처리
+        if (Boolean.TRUE.equals(req.getClearThumbnail())) {
+            detachThumbnail(postId);
+        } else if (req.getThumbnailBlobId() != null) {
             attachThumbnail(postId, req.getThumbnailBlobId());
         }
-
     }
 
     public void delete(Long postId) {
@@ -86,5 +87,12 @@ public class PostService implements ViewCounter {
         // 새 썸네일 첨부
         var attachment = AttachmentEntity.create(name, recordType, recordId, blobId);
         attachmentRepository.save(attachment);
+    }
+
+    private void detachThumbnail(Long postId) {
+        String recordType = "post";
+        String recordId = postId.toString();
+        String name = "thumbnail";
+        attachmentRepository.deleteByRecordTypeAndRecordIdAndName(recordType, recordId, name);
     }
 }

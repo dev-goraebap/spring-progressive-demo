@@ -14,7 +14,8 @@ Alpine.data('postForm', (el) => {
             postType: data.postType || 'post',
             isPublishedYn: data.isPublishedYn || 'N',
             publishedAt,
-            thumbnailBlobId: null
+            thumbnailBlobId: null,
+            clearThumbnail: false
         },
 
         submit() {
@@ -28,7 +29,11 @@ Alpine.data('postForm', (el) => {
                 const parsed = parseInt(thumbnailInput.value);
                 if (!isNaN(parsed)) {
                     this.form.thumbnailBlobId = parsed;
+                    this.form.clearThumbnail = false;
                 }
+            } else if (data.thumbnailUrl) {
+                // 기존에 썸네일이 있었는데 지금은 없음 = 제거 의도
+                this.form.clearThumbnail = true;
             }
 
             if (!this.form.content.trim()) {
