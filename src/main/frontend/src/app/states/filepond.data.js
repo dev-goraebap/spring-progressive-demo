@@ -26,11 +26,15 @@ Alpine.data('filepond', (targetSelector) => ({
             labelIdle: '이미지를 드래그하거나 <span class="filepond--label-action">클릭</span>',
             onprocessfile: (error, fileItem) => {
                 if (!error && fileItem.serverId && !isNaN(parseInt(fileItem.serverId))) {
-                    document.querySelector(targetSelector).value = fileItem.serverId;
+                    const targetInput = document.querySelector(targetSelector);
+                    targetInput.value = fileItem.serverId;
+                    targetInput.removeAttribute('data-removed');
                 }
             },
             onremovefile: () => {
-                document.querySelector(targetSelector).value = '';
+                const targetInput = document.querySelector(targetSelector);
+                targetInput.value = '';
+                targetInput.setAttribute('data-removed', 'true');
             }
         };
 

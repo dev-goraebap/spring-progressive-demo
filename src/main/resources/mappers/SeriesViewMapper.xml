@@ -30,6 +30,7 @@
         from series s
         left join post_counts pc on pc.series_id = s.id
         left join media m on m.record_id = text(s.id)
+        where s.is_published_yn = 'Y'
         order by case s.status
                      when 'COMPLETED' then 1
                      when 'PROGRESS' then 2

@@ -31,8 +31,8 @@ Alpine.data('postForm', (el) => {
                     this.form.thumbnailBlobId = parsed;
                     this.form.clearThumbnail = false;
                 }
-            } else if (data.thumbnailUrl) {
-                // 기존에 썸네일이 있었는데 지금은 없음 = 제거 의도
+            } else if (data.thumbnailUrl && thumbnailInput?.dataset.removed === 'true') {
+                // 기존에 썸네일이 있었는데 명시적으로 제거된 경우
                 this.form.clearThumbnail = true;
             }
 
