@@ -21,7 +21,7 @@ public class CurationScheduler {
      * 큐레이션 소스 자동 fetch
      * 매일 09:00, 12:00, 18:00, 21:00 실행
      */
-    @Scheduled(cron = "0 0 9,12,18,21 * * *")
+    @Scheduled(cron = "0 0 9,12,18,21 * * *", zone = "Asia/Seoul")
     public void fetchAllSources() {
         log.info("[Curation Scheduler] Starting scheduled fetch");
         try {
