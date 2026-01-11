@@ -70,7 +70,12 @@ export async function registerFcmToken(token) {
 /**
  * 포그라운드 메시지 수신 핸들러
  */
+let foregroundHandlerRegistered = false;
+
 export function onForegroundMessage(callback) {
+    if (foregroundHandlerRegistered) return;
+    foregroundHandlerRegistered = true;
+
     onMessage(messaging, (payload) => {
         console.log('[FCM] 포그라운드 메시지 수신:', payload);
         callback(payload);
