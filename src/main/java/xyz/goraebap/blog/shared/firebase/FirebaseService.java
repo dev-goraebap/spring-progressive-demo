@@ -71,6 +71,11 @@ public class FirebaseService {
                             .setTitle(title)
                             .setBody(body)
                             .build())
+                    .setWebpushConfig(WebpushConfig.builder()
+                            .setFcmOptions(WebpushFcmOptions.builder()
+                                    .setLink(url != null ? url : "/")
+                                    .build())
+                            .build())
                     .putData("url", url != null ? url : "/")
                     .build();
 
