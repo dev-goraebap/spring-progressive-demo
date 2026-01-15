@@ -20,67 +20,26 @@
     content = @`
     @template.shared.components.appHeader(
         title = "피드",
-        description = pageDescription,
-        right = @`
-            <div class="flex gap-2 text-sm shrink-0">
-                <div class="w-5">@template.shared.svg.filter()</div>
-                <a href="/?sort=viewCount,desc"
-                   class="${req.getSort().startsWith("viewCount") ? "text-primary" : ""}">조회수</a>
-                <a href="/?sort=publishedAt,desc"
-                   class="${req.getSort().startsWith("publishedAt") ? "text-primary" : ""}">최근</a>
-            </div>
-        `
+        description = pageDescription
     )
 
     <div class="border-b border-base-300">
-        @template.pages.feed.index.curationNews(items = curationItems)
+        @template.pages.feed.index.highlights(items = curationItems, latestPatchNote = latestPatchNote)
     </div>
 
-    <%-- 최근 패치노트 --%>
-    @if(latestPatchNote != null)
-        <a href="/patch-notes/${latestPatchNote.getSlug()}" class="block bg-info/10 border-b border-info/30 hover:bg-info/20 transition-colors">
-            <div class="px-4 pt-3 pb-1">
-                <span class="text-xs font-semibold text-info">최근 패치노트</span>
-            </div>
-            <div class="flex gap-4 p-4 pt-0">
-                <%-- 썸네일 --%>
-                <div class="w-24 sm:w-40 h-16 sm:h-24 rounded overflow-hidden flex-shrink-0 bg-base-200">
-                    @if(latestPatchNote.getThumbnailUrl() != null)
-                        @template.shared.components.img(
-                            url = latestPatchNote.getThumbnailUrl(),
-                            dominantColor = latestPatchNote.getThumbnailDominantColor(),
-                            alt = latestPatchNote.getTitle()
-                        )
-                    @else
-                        <div class="w-full h-full flex items-center justify-center text-base-content/20">
-                            <div class="w-8">@template.shared.svg.image()</div>
-                        </div>
-                    @endif
-                </div>
-
-                <%-- 포스트 정보 --%>
-                <div class="flex flex-col justify-center min-w-0 flex-1">
-                    <h2 class="font-bold text-base sm:text-lg line-clamp-1">${latestPatchNote.getTitle()}</h2>
-                    <p class="text-sm text-base-content/70 line-clamp-2 mt-1">${latestPatchNote.getSummary()}</p>
-                    <div class="flex items-center gap-4 text-xs text-base-content/50 mt-2">
-                        @if(latestPatchNote.getPublishedAt() != null)
-                            <span>${latestPatchNote.getPublishedAt().toLocalDate().toString()}</span>
-                        @endif
-                        <div class="flex items-center gap-1">
-                            <div class="w-3">@template.shared.svg.see()</div>
-                            <span>${latestPatchNote.getViewCount()}</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <div class="w-3">@template.shared.svg.comment()</div>
-                            <span>${latestPatchNote.getCommentCount()}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    @endif
-
     @if(!postData.getItems().isEmpty())
+        <%-- 정렬 탭 --%>
+        <div class="flex gap-6 px-4 border-b border-base-300">
+            <a href="/?sort=publishedAt,desc"
+               class="py-3 text-sm font-medium border-b-2 -mb-px ${req.getSort().startsWith("publishedAt") ? "border-primary text-primary" : "border-transparent text-base-content/60 hover:text-base-content"}">
+                최근
+            </a>
+            <a href="/?sort=viewCount,desc"
+               class="py-3 text-sm font-medium border-b-2 -mb-px ${req.getSort().startsWith("viewCount") ? "border-primary text-primary" : "border-transparent text-base-content/60 hover:text-base-content"}">
+                조회수
+            </a>
+        </div>
+
         <div id="HX_POST_LIST">
             @template.entities.post.list(items = postData.getItems())
         </div>
