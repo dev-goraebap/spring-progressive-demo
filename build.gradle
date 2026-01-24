@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.5.6'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'gg.jte.gradle' version '3.1.16'
+    id 'nu.studer.jooq' version '9.0'
 }
 
 group = 'xyz.goraebap'
@@ -64,6 +65,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.5'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JOOQ - 타입 안전한 SQL 쿼리 빌더
+    // spring-boot-starter-jooq: DSLContext 빈 자동 설정, 런타임에 사용
+    // jooqGenerator: 코드 생성 시 DB 연결용 드라이버 (generateJooq 태스크에서만 사용)
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    jooqGenerator 'org.postgresql:postgresql'
 }
 
 tasks.named('test') {
@@ -84,4 +91,83 @@ jte {
 // 컴파일 전에 JTE 템플릿 생성
 tasks.named('compileJava') {
     dependsOn 'generateJte'
+}
+
+// ============================================================================
+// JOOQ 코드 생성 설정
+// ============================================================================
+// JOOQ는 DB 스키마를 기반으로 타입 안전한 Java 클래스를 생성합니다.
+//
+// 생성 명령어:
+//   ./gradlew generateJooq                    (기본: local 프로필)
+//   ./gradlew generateJooq -PjooqProfile=prod (운영 DB 사용 시)
+//
+// 생성 위치: src/generated/jooq/
+//   - Tables.java: 테이블 상수 (POSTS, SERIES 등)
+//   - tables/*.java: 테이블 메타데이터 클래스
+//   - tables/records/*.java: 행(row) 매핑 클래스
+//
+// 사용 예시:
+//   import static jooq.Tables.*;
+//   dsl.select(POSTS.TITLE).from(POSTS).where(POSTS.ID.eq(1L)).fetch();
+// ============================================================================
+
+// JOOQ 생성 코드를 컴파일 대상에 포함
+sourceSets {
+    main {
+        java {
+            srcDir 'src/generated'
+        }
+    }
+}
+
+// application-{profile}.properties에서 DB 접속 정보 로드
+// -PjooqProfile=prod 옵션으로 프로필 변경 가능 (기본값: local)
+def jooqProfile = project.hasProperty('jooqProfile') ? project.property('jooqProfile') : 'local'
+def jooqProps = new Properties()
+file("src/main/resources/application-${jooqProfile}.properties").withInputStream { jooqProps.load(it) }
+
+jooq {
+    // Spring Boot가 관리하는 JOOQ 버전 사용 (버전 충돌 방지)
+    version = dependencyManagement.importedProperties['jooq.version']
+
+    configurations {
+        main {
+            // false: 빌드 시 자동 생성 안 함, 명시적으로 generateJooq 실행 필요
+            generateSchemaSourceOnCompilation = false
+
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+
+                // DB 접속 정보 (application-{profile}.properties에서 로드)
+                jdbc {
+                    driver = jooqProps.getProperty('spring.datasource.driver-class-name')
+                    url = jooqProps.getProperty('spring.datasource.url')
+                    user = jooqProps.getProperty('spring.datasource.username')
+                    password = jooqProps.getProperty('spring.datasource.password')
+                }
+
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+
+                    database {
+                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+                        inputSchema = 'public'
+                    }
+
+                    generate {
+                        records = true           // Record 클래스 생성 (PostsRecord 등)
+                        immutablePojos = false   // 변경 가능한 POJO
+                        fluentSetters = true     // setter 체이닝 지원
+                        javaTimeTypes = true     // java.time 패키지 사용 (LocalDateTime 등)
+                    }
+
+                    target {
+                        packageName = 'jooq'         // 생성될 패키지명
+                        directory = 'src/generated' // 생성 디렉토리 (src/main/java와 분리)
+                    }
+                }
+            }
+        }
+    }
 }
