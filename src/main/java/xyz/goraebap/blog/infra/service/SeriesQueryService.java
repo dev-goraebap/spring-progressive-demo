@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.blog.infra.view_model.*;
@@ -43,17 +44,7 @@ public class SeriesQueryService {
                 .groupBy(SERIES_POSTS.SERIES_ID)
                 .asTable("post_counts");
 
-        // 썸네일 서브쿼리
-        var thumbnailSubquery = select(
-                ATTACHMENTS.RECORD_ID,
-                BLOBS.KEY.as("thumbnail_key"),
-                BLOBS.METADATA.as("thumbnail_metadata")
-        )
-                .from(ATTACHMENTS)
-                .leftJoin(BLOBS).on(BLOBS.ID.eq(ATTACHMENTS.BLOB_ID))
-                .where(ATTACHMENTS.RECORD_TYPE.eq("series"))
-                .and(ATTACHMENTS.NAME.eq("thumbnail"))
-                .asTable("media");
+        var thumbnail = thumbnailSubquery("series");
 
         var seriesList = dsl.select(
                         SERIES.ID,
@@ -63,12 +54,12 @@ public class SeriesQueryService {
                         SERIES.STATUS,
                         SERIES.PUBLISHED_AT,
                         coalesce(postCountSubquery.field("cnt", Integer.class), 0).as("post_count"),
-                        thumbnailSubquery.field("thumbnail_key", String.class).as("thumbnail_key"),
-                        thumbnailSubquery.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
+                        thumbnail.field("thumbnail_key", String.class).as("thumbnail_key"),
+                        thumbnail.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
                 )
                 .from(SERIES)
                 .leftJoin(postCountSubquery).on(postCountSubquery.field("series_id", Long.class).eq(SERIES.ID))
-                .leftJoin(thumbnailSubquery).on(thumbnailSubquery.field("record_id", String.class).eq(SERIES.ID.cast(String.class)))
+                .leftJoin(thumbnail).on(thumbnail.field("record_id", String.class).eq(SERIES.ID.cast(String.class)))
                 .where(SERIES.IS_PUBLISHED_YN.eq("Y"))
                 .orderBy(
                         case_(SERIES.STATUS)
@@ -94,17 +85,7 @@ public class SeriesQueryService {
      * @return 시리즈 상세 정보 (없으면 null)
      */
     public SeriesDetailViewModel getSeriesWithPosts(String slug) {
-        // 시리즈 썸네일 서브쿼리
-        var seriesThumbnail = select(
-                ATTACHMENTS.RECORD_ID,
-                BLOBS.KEY.as("thumbnail_key"),
-                BLOBS.METADATA.as("thumbnail_metadata")
-        )
-                .from(ATTACHMENTS)
-                .innerJoin(BLOBS).on(BLOBS.ID.eq(ATTACHMENTS.BLOB_ID))
-                .where(ATTACHMENTS.RECORD_TYPE.eq("series"))
-                .and(ATTACHMENTS.NAME.eq("thumbnail"))
-                .asTable("series_media");
+        var seriesThumbnail = thumbnailSubquery("series");
 
         // 시리즈 기본 정보 조회
         var seriesRecord = dsl.select(
@@ -127,17 +108,7 @@ public class SeriesQueryService {
             return null;
         }
 
-        // 포스트 썸네일 서브쿼리
-        var postThumbnail = select(
-                ATTACHMENTS.RECORD_ID,
-                BLOBS.KEY.as("thumbnail_key"),
-                BLOBS.METADATA.as("thumbnail_metadata")
-        )
-                .from(ATTACHMENTS)
-                .innerJoin(BLOBS).on(BLOBS.ID.eq(ATTACHMENTS.BLOB_ID))
-                .where(ATTACHMENTS.RECORD_TYPE.eq("post"))
-                .and(ATTACHMENTS.NAME.eq("thumbnail"))
-                .asTable("post_media");
+        var postThumbnail = thumbnailSubquery("post");
 
         // 댓글 수 서브쿼리
         var commentCounts = select(COMMENTS.POST_ID, count().as("cnt"))
@@ -240,34 +211,9 @@ public class SeriesQueryService {
             }
         }
 
-        // 이전 포스트 찾기 (sort_order가 현재보다 작은 것 중 가장 큰 것)
-        PostSeriesNavViewModel.NavItem prevItem = null;
-        Record prevRecord = null;
-        for (int i = seriesPostsOrdered.size() - 1; i >= 0; i--) {
-            var record = seriesPostsOrdered.get(i);
-            if (record.get(SERIES_POSTS.SORT_ORDER, Integer.class) < rawOrder) {
-                prevRecord = record;
-                break;
-            }
-        }
-        if (prevRecord != null) {
-            prevItem = new PostSeriesNavViewModel.NavItem();
-            prevItem.setId(prevRecord.get(SERIES_POSTS.POST_ID));
-            prevItem.setSlug(prevRecord.get(POSTS.SLUG));
-            prevItem.setTitle(prevRecord.get(POSTS.TITLE));
-        }
-
-        // 다음 포스트 찾기 (sort_order가 현재보다 큰 것 중 가장 작은 것)
-        PostSeriesNavViewModel.NavItem nextItem = null;
-        for (var record : seriesPostsOrdered) {
-            if (record.get(SERIES_POSTS.SORT_ORDER, Integer.class) > rawOrder) {
-                nextItem = new PostSeriesNavViewModel.NavItem();
-                nextItem.setId(record.get(SERIES_POSTS.POST_ID));
-                nextItem.setSlug(record.get(POSTS.SLUG));
-                nextItem.setTitle(record.get(POSTS.TITLE));
-                break;
-            }
-        }
+        // 이전/다음 포스트 찾기
+        PostSeriesNavViewModel.NavItem prevItem = findPrevPost(seriesPostsOrdered, rawOrder);
+        PostSeriesNavViewModel.NavItem nextItem = findNextPost(seriesPostsOrdered, rawOrder);
 
         // 결과 조립
         PostSeriesNavViewModel nav = new PostSeriesNavViewModel();
@@ -330,17 +276,7 @@ public class SeriesQueryService {
                 .groupBy(SERIES_POSTS.SERIES_ID)
                 .asTable("post_counts");
 
-        // 썸네일 서브쿼리
-        var thumbnailSubquery = select(
-                ATTACHMENTS.RECORD_ID,
-                BLOBS.KEY.as("thumbnail_key"),
-                BLOBS.METADATA.as("thumbnail_metadata")
-        )
-                .from(ATTACHMENTS)
-                .leftJoin(BLOBS).on(BLOBS.ID.eq(ATTACHMENTS.BLOB_ID))
-                .where(ATTACHMENTS.RECORD_TYPE.eq("series"))
-                .and(ATTACHMENTS.NAME.eq("thumbnail"))
-                .asTable("thumbnail");
+        var thumbnail = thumbnailSubquery("series");
 
         // 시리즈 목록 조회
         var items = dsl.select(
@@ -353,12 +289,12 @@ public class SeriesQueryService {
                         SERIES.PUBLISHED_AT,
                         SERIES.CREATED_AT,
                         coalesce(postCountSubquery.field("post_count", Integer.class), 0).as("post_count"),
-                        thumbnailSubquery.field("thumbnail_key", String.class).as("thumbnail_key"),
-                        thumbnailSubquery.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
+                        thumbnail.field("thumbnail_key", String.class).as("thumbnail_key"),
+                        thumbnail.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
                 )
                 .from(SERIES)
                 .leftJoin(postCountSubquery).on(postCountSubquery.field("series_id", Long.class).eq(SERIES.ID))
-                .leftJoin(thumbnailSubquery).on(thumbnailSubquery.field("record_id", String.class).eq(SERIES.ID.cast(String.class)))
+                .leftJoin(thumbnail).on(thumbnail.field("record_id", String.class).eq(SERIES.ID.cast(String.class)))
                 .where(condition)
                 .orderBy(SERIES.CREATED_AT.desc())
                 .limit(size)
@@ -390,8 +326,8 @@ public class SeriesQueryService {
                 .groupBy(SERIES_POSTS.SERIES_ID)
                 .asTable("post_counts");
 
-        // 썸네일 서브쿼리
-        var thumbnailSubquery = select(
+        // 썸네일 서브쿼리 (특정 ID만 조회)
+        var thumbnail = select(
                 ATTACHMENTS.RECORD_ID,
                 BLOBS.KEY.as("thumbnail_key"),
                 BLOBS.METADATA.as("thumbnail_metadata")
@@ -413,12 +349,12 @@ public class SeriesQueryService {
                         SERIES.PUBLISHED_AT,
                         SERIES.CREATED_AT,
                         coalesce(postCountSubquery.field("post_count", Integer.class), 0).as("post_count"),
-                        thumbnailSubquery.field("thumbnail_key", String.class).as("thumbnail_key"),
-                        thumbnailSubquery.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
+                        thumbnail.field("thumbnail_key", String.class).as("thumbnail_key"),
+                        thumbnail.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
                 )
                 .from(SERIES)
                 .leftJoin(postCountSubquery).on(postCountSubquery.field("series_id", Long.class).eq(SERIES.ID))
-                .leftJoin(thumbnailSubquery).on(DSL.trueCondition())
+                .leftJoin(thumbnail).on(DSL.trueCondition())
                 .where(SERIES.ID.eq(id))
                 .fetchOneInto(AdminSeriesViewModel.class);
 
@@ -439,17 +375,7 @@ public class SeriesQueryService {
      * @return 시리즈에 포함된 포스트 목록
      */
     public List<SeriesPostViewModel> getSeriesPostsById(Long seriesId) {
-        // 포스트 썸네일 서브쿼리
-        var thumbnailSubquery = select(
-                ATTACHMENTS.RECORD_ID,
-                BLOBS.KEY.as("thumbnail_key"),
-                BLOBS.METADATA.as("thumbnail_metadata")
-        )
-                .from(ATTACHMENTS)
-                .leftJoin(BLOBS).on(BLOBS.ID.eq(ATTACHMENTS.BLOB_ID))
-                .where(ATTACHMENTS.RECORD_TYPE.eq("post"))
-                .and(ATTACHMENTS.NAME.eq("thumbnail"))
-                .asTable("thumbnail");
+        var thumbnail = thumbnailSubquery("post");
 
         var posts = dsl.select(
                         SERIES_POSTS.ID,
@@ -458,12 +384,12 @@ public class SeriesQueryService {
                         POSTS.SLUG.as("post_slug"),
                         SERIES_POSTS.SORT_ORDER,
                         SERIES_POSTS.CREATED_AT,
-                        thumbnailSubquery.field("thumbnail_key", String.class).as("thumbnail_key"),
-                        thumbnailSubquery.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
+                        thumbnail.field("thumbnail_key", String.class).as("thumbnail_key"),
+                        thumbnail.field("thumbnail_metadata", String.class).as("thumbnail_metadata")
                 )
                 .from(SERIES_POSTS)
                 .innerJoin(POSTS).on(POSTS.ID.eq(SERIES_POSTS.POST_ID))
-                .leftJoin(thumbnailSubquery).on(thumbnailSubquery.field("record_id", String.class).eq(POSTS.ID.cast(String.class)))
+                .leftJoin(thumbnail).on(thumbnail.field("record_id", String.class).eq(POSTS.ID.cast(String.class)))
                 .where(SERIES_POSTS.SERIES_ID.eq(seriesId))
                 .orderBy(SERIES_POSTS.SORT_ORDER.asc())
                 .fetchInto(SeriesPostViewModel.class);
@@ -505,5 +431,77 @@ public class SeriesQueryService {
                 .orderBy(POSTS.CREATED_AT.desc())
                 .limit(20)
                 .fetchInto(AvailablePostViewModel.class);
+    }
+
+    // ========== Private Methods ==========
+
+    /**
+     * 썸네일 조회용 서브쿼리 생성
+     * - attachments + blobs 조인
+     * - record_type별 썸네일 조회
+     *
+     * @param recordType 레코드 타입 ("series" 또는 "post")
+     * @return 서브쿼리 테이블
+     */
+    private Table<?> thumbnailSubquery(String recordType) {
+        return select(
+                ATTACHMENTS.RECORD_ID,
+                BLOBS.KEY.as("thumbnail_key"),
+                BLOBS.METADATA.as("thumbnail_metadata")
+        )
+                .from(ATTACHMENTS)
+                .leftJoin(BLOBS).on(BLOBS.ID.eq(ATTACHMENTS.BLOB_ID))
+                .where(ATTACHMENTS.RECORD_TYPE.eq(recordType))
+                .and(ATTACHMENTS.NAME.eq("thumbnail"))
+                .asTable("thumbnail_" + recordType);
+    }
+
+    /**
+     * 이전 포스트 찾기
+     * - sort_order가 현재보다 작은 것 중 가장 큰 것
+     *
+     * @param seriesPostsOrdered 정렬된 시리즈 포스트 목록
+     * @param currentSortOrder 현재 포스트의 sort_order
+     * @return 이전 포스트 정보 (없으면 null)
+     */
+    private PostSeriesNavViewModel.NavItem findPrevPost(
+            org.jooq.Result<? extends Record> seriesPostsOrdered,
+            Integer currentSortOrder
+    ) {
+        for (int i = seriesPostsOrdered.size() - 1; i >= 0; i--) {
+            var record = seriesPostsOrdered.get(i);
+            if (record.get(SERIES_POSTS.SORT_ORDER, Integer.class) < currentSortOrder) {
+                PostSeriesNavViewModel.NavItem item = new PostSeriesNavViewModel.NavItem();
+                item.setId(record.get(SERIES_POSTS.POST_ID));
+                item.setSlug(record.get(POSTS.SLUG));
+                item.setTitle(record.get(POSTS.TITLE));
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 다음 포스트 찾기
+     * - sort_order가 현재보다 큰 것 중 가장 작은 것
+     *
+     * @param seriesPostsOrdered 정렬된 시리즈 포스트 목록
+     * @param currentSortOrder 현재 포스트의 sort_order
+     * @return 다음 포스트 정보 (없으면 null)
+     */
+    private PostSeriesNavViewModel.NavItem findNextPost(
+            org.jooq.Result<? extends Record> seriesPostsOrdered,
+            Integer currentSortOrder
+    ) {
+        for (var record : seriesPostsOrdered) {
+            if (record.get(SERIES_POSTS.SORT_ORDER, Integer.class) > currentSortOrder) {
+                PostSeriesNavViewModel.NavItem item = new PostSeriesNavViewModel.NavItem();
+                item.setId(record.get(SERIES_POSTS.POST_ID));
+                item.setSlug(record.get(POSTS.SLUG));
+                item.setTitle(record.get(POSTS.TITLE));
+                return item;
+            }
+        }
+        return null;
     }
 }
