@@ -24,15 +24,15 @@
         <div class="p-4 border-b border-base-300 flex gap-4 text-sm">
             <div class="flex items-center gap-2">
                 <span class="text-base-content/60">총 소스:</span>
-                <span class="font-semibold">${String.valueOf(stats.get("totalsources"))}</span>
+                <span class="font-semibold">${String.valueOf(stats.get("totalSources"))}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-base-content/60">활성:</span>
-                <span class="font-semibold text-success">${String.valueOf(stats.get("activesources"))}</span>
+                <span class="font-semibold text-success">${String.valueOf(stats.get("activeSources"))}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-base-content/60">총 항목:</span>
-                <span class="font-semibold">${String.valueOf(stats.get("totalitems"))}</span>
+                <span class="font-semibold">${String.valueOf(stats.get("totalItems"))}</span>
             </div>
             <div class="flex-1"></div>
             <button type="button"
