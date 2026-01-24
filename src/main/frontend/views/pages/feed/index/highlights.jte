@@ -42,7 +42,7 @@
                 </div>
                 <a href="/patch-notes/${latestPatchNote.getSlug()}" class="flex flex-col hover:text-secondary">
                     <p class="text-sm line-clamp-2">${latestPatchNote.getTitle()}</p>
-                    <span class="text-xs text-base-content/70 mt-1">${latestPatchNote.getSummary()}</span>
+                    <span class="text-xs text-base-content/70 mt-1 line-clamp-2">${latestPatchNote.getSummary()}</span>
                 </a>
             </div>
         @endif
