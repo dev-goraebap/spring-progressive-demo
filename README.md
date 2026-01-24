@@ -29,10 +29,78 @@ FE/BE를 분리해서 개발하는 방식에 익숙하다면 적응하는 데 �
 원래 이 프로젝트는 회사에서 사용하는 기술 스택을 연습하기 위해 시작했습니다(프로젝트명도 spring-progressive-demo였음). 
 하지만 개발을 진행하면서 백엔드 언어와 무관하게 HDA의 UX와 DX를 깊이 경험해보고 싶어졌고, 기존 블로그의 기능을 그대로 마이그레이션하다 보니 자연스럽게 블로그 v2가 되었습니다.
 
-## 블로그를 직접 만드는 이유
+## 아키텍처
 
-나만의 블로그를 만드는 건 재미있는 일입니다. 아마 10번 가까이 새로 만든 것 같습니다.
+저는 [FSD(Feature-Sliced Design)](https://feature-sliced.design/)의 개념을 좋아하는 편이라 대부분의 프로젝트에 해당 방식들이 녹아있습니다. FSD는 논리적인 개념보다 물리적인 디렉토리 구조의 참조관계를 명확하게 합니다. OOP의 의존성 역전 등의 개념을 섞어주면 적은 비용으로 큰 틀의 규칙을 이해할 수 있습니다.
 
-블로그는 기술 스택을 실험하기에 이상적인 프로젝트입니다. 투두리스트처럼 단순한 프로젝트로는 기술의 한계를 체감하기 어렵습니다. 반면 블로그는 지속적으로 유지보수하면서 현재 개발 방식의 문제점을 발견하고, 다음 단계로 나아갈 수 있게 해줍니다.
+### 레이어 구조
 
-HTMX와 Alpine.js를 우아하게 사용하는 방식은 블로그 글에서 더 자세히 다루겠습니다.
+`xyz.goraebap.blog` 패키지 하위에 4개의 레이어가 있습니다. 상위 레이어에서 하위 레이어로만 참조할 수 있습니다.
+
+```
+app → contract → infra → shared
+```
+
+| 레이어 | 역할 |
+|--------|------|
+| **app** | 도메인 영역. JPA Entity, Repository, Service, Controller |
+| **contract** | 슬라이스 간 통신용 인터페이스 |
+| **infra** | 화면 조회 전용. JOOQ QueryService, ViewModel |
+| **shared** | 기술 영역. 설정, 보안, 서드파티 통합 |
+
+### 용어
+
+FSD의 용어를 차용했습니다.
+
+- **레이어**: `xyz.goraebap.blog` 하위의 최상위 패키지 (app, contract, infra, shared)
+- **슬라이스**: 레이어 내부의 직접 하위 패키지 (app.admin, app.client 등)
+- **세그먼트**: 슬라이스 내부의 파일 또는 패키지 (app.admin.domain, app.admin.service 등)
+
+### 참조 규칙
+
+**레이어 간**: 상위 → 하위만 가능
+
+```
+app → contract ✓    |    infra → app ✗
+app → infra ✓       |    contract → app ✗
+app → shared ✓      |    shared → app ✗
+```
+
+**슬라이스 간**: 같은 레이어 내 슬라이스끼리는 직접 참조 금지 (shared 제외)
+
+```
+app.admin → app.client ✗
+```
+
+다른 슬라이스의 기능이 필요하면 `contract` 레이어의 인터페이스를 통해 통신합니다.
+
+### 패키지 구조
+
+```
+xyz.goraebap.blog/
+├── app/                        # 도메인 (CUD)
+│   ├── admin/                  # 관리자 기능
+│   │   ├── domain/             # Entity + Repository
+│   │   ├── service/            # 비즈니스 로직
+│   │   ├── web/                # Controller
+│   │   └── dto/                # Request/Response
+│   ├── client/                 # 사용자 기능
+│   └── auth/                   # 인증
+├── contract/                   # 슬라이스 간 계약 인터페이스
+├── infra/                      # 화면 조회 (R)
+│   ├── service/                # JOOQ QueryService
+│   └── view_model/             # ViewModel
+└── shared/                     # 기술 영역
+    ├── config/                 # 설정
+    ├── security/               # 보안
+    ├── firebase/               # FCM 통합
+    ├── gemini/                 # Gemini API
+    └── r2/                     # Cloudflare R2
+```
+
+### CUD와 R의 분리
+
+- **CUD (Create, Update, Delete)**: `app` 레이어에서 JPA로 처리
+- **R (Read - 화면 조회)**: `infra` 레이어에서 JOOQ로 처리
+
+화면 조회는 여러 도메인이 자연스럽게 섞이기 때문에 별도 레이어로 분리했습니다. JOOQ를 사용해 타입 안전한 쿼리와 컴파일 타임 검증을 확보합니다.
