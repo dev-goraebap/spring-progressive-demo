@@ -60,12 +60,12 @@ public class PostTags extends TableImpl<PostTagsRecord> {
     /**
      * The column <code>public.post_tags.post_id</code>.
      */
-    public final TableField<PostTagsRecord, Integer> POST_ID = createField(DSL.name("post_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<PostTagsRecord, Long> POST_ID = createField(DSL.name("post_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.post_tags.tag_id</code>.
      */
-    public final TableField<PostTagsRecord, Integer> TAG_ID = createField(DSL.name("tag_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<PostTagsRecord, Long> TAG_ID = createField(DSL.name("tag_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     private PostTags(Name alias, Table<PostTagsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

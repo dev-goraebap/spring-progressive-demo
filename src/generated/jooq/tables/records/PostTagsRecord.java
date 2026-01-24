@@ -21,7 +21,7 @@ public class PostTagsRecord extends UpdatableRecordImpl<PostTagsRecord> {
     /**
      * Setter for <code>public.post_tags.post_id</code>.
      */
-    public PostTagsRecord setPostId(Integer value) {
+    public PostTagsRecord setPostId(Long value) {
         set(0, value);
         return this;
     }
@@ -29,14 +29,14 @@ public class PostTagsRecord extends UpdatableRecordImpl<PostTagsRecord> {
     /**
      * Getter for <code>public.post_tags.post_id</code>.
      */
-    public Integer getPostId() {
-        return (Integer) get(0);
+    public Long getPostId() {
+        return (Long) get(0);
     }
 
     /**
      * Setter for <code>public.post_tags.tag_id</code>.
      */
-    public PostTagsRecord setTagId(Integer value) {
+    public PostTagsRecord setTagId(Long value) {
         set(1, value);
         return this;
     }
@@ -44,8 +44,8 @@ public class PostTagsRecord extends UpdatableRecordImpl<PostTagsRecord> {
     /**
      * Getter for <code>public.post_tags.tag_id</code>.
      */
-    public Integer getTagId() {
-        return (Integer) get(1);
+    public Long getTagId() {
+        return (Long) get(1);
     }
 
     // -------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class PostTagsRecord extends UpdatableRecordImpl<PostTagsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Record2<Integer, Integer> key() {
+    public Record2<Long, Long> key() {
         return (Record2) super.key();
     }
 
@@ -71,7 +71,7 @@ public class PostTagsRecord extends UpdatableRecordImpl<PostTagsRecord> {
     /**
      * Create a detached, initialised PostTagsRecord
      */
-    public PostTagsRecord(Integer postId, Integer tagId) {
+    public PostTagsRecord(Long postId, Long tagId) {
         super(PostTags.POST_TAGS);
 
         setPostId(postId);
