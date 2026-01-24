@@ -121,9 +121,13 @@ sourceSets {
 
 // application-{profile}.properties에서 DB 접속 정보 로드
 // -PjooqProfile=prod 옵션으로 프로필 변경 가능 (기본값: local)
+// Docker 빌드 시에는 파일이 없을 수 있음 (JOOQ 코드는 이미 생성되어 있음)
 def jooqProfile = project.hasProperty('jooqProfile') ? project.property('jooqProfile') : 'local'
 def jooqProps = new Properties()
-file("src/main/resources/application-${jooqProfile}.properties").withInputStream { jooqProps.load(it) }
+def jooqPropsFile = file("src/main/resources/application-${jooqProfile}.properties")
+if (jooqPropsFile.exists()) {
+    jooqPropsFile.withInputStream { jooqProps.load(it) }
+}
 
 jooq {
     // Spring Boot가 관리하는 JOOQ 버전 사용 (버전 충돌 방지)
