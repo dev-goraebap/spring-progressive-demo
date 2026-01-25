@@ -160,7 +160,7 @@ jooq {
                     }
 
                     generate {
-                        records = true           // Record 클래스 생성 (PostsRecord 등)
+                        records = false      // Record 클래스 생성 (PostsRecord 등)
                         immutablePojos = false   // 변경 가능한 POJO
                         fluentSetters = true     // setter 체이닝 지원
                         javaTimeTypes = true     // java.time 패키지 사용 (LocalDateTime 등)

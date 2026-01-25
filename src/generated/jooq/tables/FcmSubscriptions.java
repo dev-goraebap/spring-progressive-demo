@@ -11,7 +11,6 @@ import java.util.List;
 
 import jooq.Keys;
 import jooq.Public;
-import jooq.tables.records.FcmSubscriptionsRecord;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -19,6 +18,7 @@ import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
  * FCM 푸시 알림 구독자 정보
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class FcmSubscriptions extends TableImpl<FcmSubscriptionsRecord> {
+public class FcmSubscriptions extends TableImpl<Record> {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,51 +49,51 @@ public class FcmSubscriptions extends TableImpl<FcmSubscriptionsRecord> {
      * The class holding records for this type
      */
     @Override
-    public Class<FcmSubscriptionsRecord> getRecordType() {
-        return FcmSubscriptionsRecord.class;
+    public Class<Record> getRecordType() {
+        return Record.class;
     }
 
     /**
      * The column <code>public.fcm_subscriptions.id</code>.
      */
-    public final TableField<FcmSubscriptionsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<Record, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.fcm_subscriptions.token</code>. FCM 디바이스 토큰
      */
-    public final TableField<FcmSubscriptionsRecord, String> TOKEN = createField(DSL.name("token"), SQLDataType.VARCHAR(500).nullable(false), this, "FCM 디바이스 토큰");
+    public final TableField<Record, String> TOKEN = createField(DSL.name("token"), SQLDataType.VARCHAR(500).nullable(false), this, "FCM 디바이스 토큰");
 
     /**
      * The column <code>public.fcm_subscriptions.ip_address</code>. 구독자 IP 주소
      */
-    public final TableField<FcmSubscriptionsRecord, String> IP_ADDRESS = createField(DSL.name("ip_address"), SQLDataType.VARCHAR(45), this, "구독자 IP 주소");
+    public final TableField<Record, String> IP_ADDRESS = createField(DSL.name("ip_address"), SQLDataType.VARCHAR(45), this, "구독자 IP 주소");
 
     /**
      * The column <code>public.fcm_subscriptions.browser</code>. 브라우저 종류
      */
-    public final TableField<FcmSubscriptionsRecord, String> BROWSER = createField(DSL.name("browser"), SQLDataType.VARCHAR(50), this, "브라우저 종류");
+    public final TableField<Record, String> BROWSER = createField(DSL.name("browser"), SQLDataType.VARCHAR(50), this, "브라우저 종류");
 
     /**
      * The column <code>public.fcm_subscriptions.os</code>. 운영체제
      */
-    public final TableField<FcmSubscriptionsRecord, String> OS = createField(DSL.name("os"), SQLDataType.VARCHAR(50), this, "운영체제");
+    public final TableField<Record, String> OS = createField(DSL.name("os"), SQLDataType.VARCHAR(50), this, "운영체제");
 
     /**
      * The column <code>public.fcm_subscriptions.device_type</code>. 디바이스 타입
      * (Desktop/Mobile/Tablet)
      */
-    public final TableField<FcmSubscriptionsRecord, String> DEVICE_TYPE = createField(DSL.name("device_type"), SQLDataType.VARCHAR(20), this, "디바이스 타입 (Desktop/Mobile/Tablet)");
+    public final TableField<Record, String> DEVICE_TYPE = createField(DSL.name("device_type"), SQLDataType.VARCHAR(20), this, "디바이스 타입 (Desktop/Mobile/Tablet)");
 
     /**
      * The column <code>public.fcm_subscriptions.created_at</code>. 구독 일시
      */
-    public final TableField<FcmSubscriptionsRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "구독 일시");
+    public final TableField<Record, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "구독 일시");
 
-    private FcmSubscriptions(Name alias, Table<FcmSubscriptionsRecord> aliased) {
+    private FcmSubscriptions(Name alias, Table<Record> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private FcmSubscriptions(Name alias, Table<FcmSubscriptionsRecord> aliased, Field<?>[] parameters, Condition where) {
+    private FcmSubscriptions(Name alias, Table<Record> aliased, Field<?>[] parameters, Condition where) {
         super(alias, null, aliased, parameters, DSL.comment("FCM 푸시 알림 구독자 정보"), TableOptions.table(), where);
     }
 
@@ -124,17 +124,17 @@ public class FcmSubscriptions extends TableImpl<FcmSubscriptionsRecord> {
     }
 
     @Override
-    public Identity<FcmSubscriptionsRecord, Long> getIdentity() {
-        return (Identity<FcmSubscriptionsRecord, Long>) super.getIdentity();
+    public Identity<Record, Long> getIdentity() {
+        return (Identity<Record, Long>) super.getIdentity();
     }
 
     @Override
-    public UniqueKey<FcmSubscriptionsRecord> getPrimaryKey() {
+    public UniqueKey<Record> getPrimaryKey() {
         return Keys.FCM_SUBSCRIPTIONS_PKEY;
     }
 
     @Override
-    public List<UniqueKey<FcmSubscriptionsRecord>> getUniqueKeys() {
+    public List<UniqueKey<Record>> getUniqueKeys() {
         return Arrays.asList(Keys.FCM_SUBSCRIPTIONS_TOKEN_KEY);
     }
 
