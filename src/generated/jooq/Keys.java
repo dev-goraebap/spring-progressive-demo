@@ -19,23 +19,9 @@ import jooq.tables.SeriesPosts;
 import jooq.tables.Tags;
 import jooq.tables.Todos;
 import jooq.tables.Users;
-import jooq.tables.records.AppLogsRecord;
-import jooq.tables.records.AttachmentsRecord;
-import jooq.tables.records.BlobsRecord;
-import jooq.tables.records.BlockedIpsRecord;
-import jooq.tables.records.CommentsRecord;
-import jooq.tables.records.CuratedItemsRecord;
-import jooq.tables.records.CuratedSourcesRecord;
-import jooq.tables.records.FcmSubscriptionsRecord;
-import jooq.tables.records.PostTagsRecord;
-import jooq.tables.records.PostsRecord;
-import jooq.tables.records.SeriesPostsRecord;
-import jooq.tables.records.SeriesRecord;
-import jooq.tables.records.TagsRecord;
-import jooq.tables.records.TodosRecord;
-import jooq.tables.records.UsersRecord;
 
 import org.jooq.ForeignKey;
+import org.jooq.Record;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -53,47 +39,47 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AppLogsRecord> APP_LOGS_PKEY = Internal.createUniqueKey(AppLogs.APP_LOGS, DSL.name("app_logs_pkey"), new TableField[] { AppLogs.APP_LOGS.ID }, true);
-    public static final UniqueKey<AttachmentsRecord> PK_5E1F050BCFF31E3084A1D662412 = Internal.createUniqueKey(Attachments.ATTACHMENTS, DSL.name("PK_5e1f050bcff31e3084a1d662412"), new TableField[] { Attachments.ATTACHMENTS.ID }, true);
-    public static final UniqueKey<BlobsRecord> BLOBS_CHECKSUM_UNIQUE = Internal.createUniqueKey(Blobs.BLOBS, DSL.name("blobs_checksum_unique"), new TableField[] { Blobs.BLOBS.CHECKSUM }, true);
-    public static final UniqueKey<BlobsRecord> BLOBS_KEY_UNIQUE = Internal.createUniqueKey(Blobs.BLOBS, DSL.name("blobs_key_unique"), new TableField[] { Blobs.BLOBS.KEY }, true);
-    public static final UniqueKey<BlobsRecord> PK_FE61649FA345F685EB31B949E4C = Internal.createUniqueKey(Blobs.BLOBS, DSL.name("PK_fe61649fa345f685eb31b949e4c"), new TableField[] { Blobs.BLOBS.ID }, true);
-    public static final UniqueKey<BlockedIpsRecord> PK_E86C3986AC081AD24D5443BB6C5 = Internal.createUniqueKey(BlockedIps.BLOCKED_IPS, DSL.name("PK_e86c3986ac081ad24d5443bb6c5"), new TableField[] { BlockedIps.BLOCKED_IPS.ID }, true);
-    public static final UniqueKey<CommentsRecord> COMMENTS_REQUEST_ID_UNIQUE = Internal.createUniqueKey(Comments.COMMENTS, DSL.name("comments_request_id_unique"), new TableField[] { Comments.COMMENTS.REQUEST_ID }, true);
-    public static final UniqueKey<CommentsRecord> PK_8BF68BC960F2B69E818BDB90DCB = Internal.createUniqueKey(Comments.COMMENTS, DSL.name("PK_8bf68bc960f2b69e818bdb90dcb"), new TableField[] { Comments.COMMENTS.ID }, true);
-    public static final UniqueKey<CuratedItemsRecord> CURATED_ITEMS_GUID_UNIQUE = Internal.createUniqueKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_guid_unique"), new TableField[] { CuratedItems.CURATED_ITEMS.GUID }, true);
-    public static final UniqueKey<CuratedItemsRecord> CURATED_ITEMS_LINK_UNIQUE = Internal.createUniqueKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_link_unique"), new TableField[] { CuratedItems.CURATED_ITEMS.LINK }, true);
-    public static final UniqueKey<CuratedItemsRecord> CURATED_ITEMS_PKEY = Internal.createUniqueKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_pkey"), new TableField[] { CuratedItems.CURATED_ITEMS.ID }, true);
-    public static final UniqueKey<CuratedSourcesRecord> CURATED_SOURCES_PKEY = Internal.createUniqueKey(CuratedSources.CURATED_SOURCES, DSL.name("curated_sources_pkey"), new TableField[] { CuratedSources.CURATED_SOURCES.ID }, true);
-    public static final UniqueKey<FcmSubscriptionsRecord> FCM_SUBSCRIPTIONS_PKEY = Internal.createUniqueKey(FcmSubscriptions.FCM_SUBSCRIPTIONS, DSL.name("fcm_subscriptions_pkey"), new TableField[] { FcmSubscriptions.FCM_SUBSCRIPTIONS.ID }, true);
-    public static final UniqueKey<FcmSubscriptionsRecord> FCM_SUBSCRIPTIONS_TOKEN_KEY = Internal.createUniqueKey(FcmSubscriptions.FCM_SUBSCRIPTIONS, DSL.name("fcm_subscriptions_token_key"), new TableField[] { FcmSubscriptions.FCM_SUBSCRIPTIONS.TOKEN }, true);
-    public static final UniqueKey<PostTagsRecord> POST_TAGS_POST_ID_TAG_ID_PK = Internal.createUniqueKey(PostTags.POST_TAGS, DSL.name("post_tags_post_id_tag_id_pk"), new TableField[] { PostTags.POST_TAGS.POST_ID, PostTags.POST_TAGS.TAG_ID }, true);
-    public static final UniqueKey<PostsRecord> PK_2829AC61EFF60FCEC60D7274B9E = Internal.createUniqueKey(Posts.POSTS, DSL.name("PK_2829ac61eff60fcec60d7274b9e"), new TableField[] { Posts.POSTS.ID }, true);
-    public static final UniqueKey<PostsRecord> POSTS_SLUG_UNIQUE = Internal.createUniqueKey(Posts.POSTS, DSL.name("posts_slug_unique"), new TableField[] { Posts.POSTS.SLUG }, true);
-    public static final UniqueKey<SeriesRecord> PK_E725676647382EB54540D7128BA = Internal.createUniqueKey(Series.SERIES, DSL.name("PK_e725676647382eb54540d7128ba"), new TableField[] { Series.SERIES.ID }, true);
-    public static final UniqueKey<SeriesRecord> SERIES_NAME_UNIQUE = Internal.createUniqueKey(Series.SERIES, DSL.name("series_name_unique"), new TableField[] { Series.SERIES.NAME }, true);
-    public static final UniqueKey<SeriesRecord> SERIES_SLUG_UNIQUE = Internal.createUniqueKey(Series.SERIES, DSL.name("series_slug_unique"), new TableField[] { Series.SERIES.SLUG }, true);
-    public static final UniqueKey<SeriesPostsRecord> PK_6A0C831E35B38B6517FD12E4191 = Internal.createUniqueKey(SeriesPosts.SERIES_POSTS, DSL.name("PK_6a0c831e35b38b6517fd12e4191"), new TableField[] { SeriesPosts.SERIES_POSTS.ID }, true);
-    public static final UniqueKey<SeriesPostsRecord> SERIES_POSTS_SERIES_ID_POST_ID_UNIQUE = Internal.createUniqueKey(SeriesPosts.SERIES_POSTS, DSL.name("series_posts_series_id_post_id_unique"), new TableField[] { SeriesPosts.SERIES_POSTS.SERIES_ID, SeriesPosts.SERIES_POSTS.POST_ID }, true);
-    public static final UniqueKey<SeriesPostsRecord> UKJELXEOQ29CBN6SYETTMBCUJVR = Internal.createUniqueKey(SeriesPosts.SERIES_POSTS, DSL.name("ukjelxeoq29cbn6syettmbcujvr"), new TableField[] { SeriesPosts.SERIES_POSTS.SERIES_ID, SeriesPosts.SERIES_POSTS.POST_ID }, true);
-    public static final UniqueKey<TagsRecord> PK_E7DC17249A1148A1970748EDA99 = Internal.createUniqueKey(Tags.TAGS, DSL.name("PK_e7dc17249a1148a1970748eda99"), new TableField[] { Tags.TAGS.ID }, true);
-    public static final UniqueKey<TagsRecord> TAGS_NAME_UNIQUE = Internal.createUniqueKey(Tags.TAGS, DSL.name("tags_name_unique"), new TableField[] { Tags.TAGS.NAME }, true);
-    public static final UniqueKey<TodosRecord> TODOS_PKEY = Internal.createUniqueKey(Todos.TODOS, DSL.name("todos_pkey"), new TableField[] { Todos.TODOS.ID }, true);
-    public static final UniqueKey<UsersRecord> PK_A3FFB1C0C8416B9FC6F907B7433 = Internal.createUniqueKey(Users.USERS, DSL.name("PK_a3ffb1c0c8416b9fc6f907b7433"), new TableField[] { Users.USERS.ID }, true);
-    public static final UniqueKey<UsersRecord> USERS_EMAIL_UNIQUE = Internal.createUniqueKey(Users.USERS, DSL.name("users_email_unique"), new TableField[] { Users.USERS.EMAIL }, true);
+    public static final UniqueKey<Record> APP_LOGS_PKEY = Internal.createUniqueKey(AppLogs.APP_LOGS, DSL.name("app_logs_pkey"), new TableField[] { AppLogs.APP_LOGS.ID }, true);
+    public static final UniqueKey<Record> PK_5E1F050BCFF31E3084A1D662412 = Internal.createUniqueKey(Attachments.ATTACHMENTS, DSL.name("PK_5e1f050bcff31e3084a1d662412"), new TableField[] { Attachments.ATTACHMENTS.ID }, true);
+    public static final UniqueKey<Record> BLOBS_CHECKSUM_UNIQUE = Internal.createUniqueKey(Blobs.BLOBS, DSL.name("blobs_checksum_unique"), new TableField[] { Blobs.BLOBS.CHECKSUM }, true);
+    public static final UniqueKey<Record> BLOBS_KEY_UNIQUE = Internal.createUniqueKey(Blobs.BLOBS, DSL.name("blobs_key_unique"), new TableField[] { Blobs.BLOBS.KEY }, true);
+    public static final UniqueKey<Record> PK_FE61649FA345F685EB31B949E4C = Internal.createUniqueKey(Blobs.BLOBS, DSL.name("PK_fe61649fa345f685eb31b949e4c"), new TableField[] { Blobs.BLOBS.ID }, true);
+    public static final UniqueKey<Record> PK_E86C3986AC081AD24D5443BB6C5 = Internal.createUniqueKey(BlockedIps.BLOCKED_IPS, DSL.name("PK_e86c3986ac081ad24d5443bb6c5"), new TableField[] { BlockedIps.BLOCKED_IPS.ID }, true);
+    public static final UniqueKey<Record> COMMENTS_REQUEST_ID_UNIQUE = Internal.createUniqueKey(Comments.COMMENTS, DSL.name("comments_request_id_unique"), new TableField[] { Comments.COMMENTS.REQUEST_ID }, true);
+    public static final UniqueKey<Record> PK_8BF68BC960F2B69E818BDB90DCB = Internal.createUniqueKey(Comments.COMMENTS, DSL.name("PK_8bf68bc960f2b69e818bdb90dcb"), new TableField[] { Comments.COMMENTS.ID }, true);
+    public static final UniqueKey<Record> CURATED_ITEMS_GUID_UNIQUE = Internal.createUniqueKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_guid_unique"), new TableField[] { CuratedItems.CURATED_ITEMS.GUID }, true);
+    public static final UniqueKey<Record> CURATED_ITEMS_LINK_UNIQUE = Internal.createUniqueKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_link_unique"), new TableField[] { CuratedItems.CURATED_ITEMS.LINK }, true);
+    public static final UniqueKey<Record> CURATED_ITEMS_PKEY = Internal.createUniqueKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_pkey"), new TableField[] { CuratedItems.CURATED_ITEMS.ID }, true);
+    public static final UniqueKey<Record> CURATED_SOURCES_PKEY = Internal.createUniqueKey(CuratedSources.CURATED_SOURCES, DSL.name("curated_sources_pkey"), new TableField[] { CuratedSources.CURATED_SOURCES.ID }, true);
+    public static final UniqueKey<Record> FCM_SUBSCRIPTIONS_PKEY = Internal.createUniqueKey(FcmSubscriptions.FCM_SUBSCRIPTIONS, DSL.name("fcm_subscriptions_pkey"), new TableField[] { FcmSubscriptions.FCM_SUBSCRIPTIONS.ID }, true);
+    public static final UniqueKey<Record> FCM_SUBSCRIPTIONS_TOKEN_KEY = Internal.createUniqueKey(FcmSubscriptions.FCM_SUBSCRIPTIONS, DSL.name("fcm_subscriptions_token_key"), new TableField[] { FcmSubscriptions.FCM_SUBSCRIPTIONS.TOKEN }, true);
+    public static final UniqueKey<Record> POST_TAGS_POST_ID_TAG_ID_PK = Internal.createUniqueKey(PostTags.POST_TAGS, DSL.name("post_tags_post_id_tag_id_pk"), new TableField[] { PostTags.POST_TAGS.POST_ID, PostTags.POST_TAGS.TAG_ID }, true);
+    public static final UniqueKey<Record> PK_2829AC61EFF60FCEC60D7274B9E = Internal.createUniqueKey(Posts.POSTS, DSL.name("PK_2829ac61eff60fcec60d7274b9e"), new TableField[] { Posts.POSTS.ID }, true);
+    public static final UniqueKey<Record> POSTS_SLUG_UNIQUE = Internal.createUniqueKey(Posts.POSTS, DSL.name("posts_slug_unique"), new TableField[] { Posts.POSTS.SLUG }, true);
+    public static final UniqueKey<Record> PK_E725676647382EB54540D7128BA = Internal.createUniqueKey(Series.SERIES, DSL.name("PK_e725676647382eb54540d7128ba"), new TableField[] { Series.SERIES.ID }, true);
+    public static final UniqueKey<Record> SERIES_NAME_UNIQUE = Internal.createUniqueKey(Series.SERIES, DSL.name("series_name_unique"), new TableField[] { Series.SERIES.NAME }, true);
+    public static final UniqueKey<Record> SERIES_SLUG_UNIQUE = Internal.createUniqueKey(Series.SERIES, DSL.name("series_slug_unique"), new TableField[] { Series.SERIES.SLUG }, true);
+    public static final UniqueKey<Record> PK_6A0C831E35B38B6517FD12E4191 = Internal.createUniqueKey(SeriesPosts.SERIES_POSTS, DSL.name("PK_6a0c831e35b38b6517fd12e4191"), new TableField[] { SeriesPosts.SERIES_POSTS.ID }, true);
+    public static final UniqueKey<Record> SERIES_POSTS_SERIES_ID_POST_ID_UNIQUE = Internal.createUniqueKey(SeriesPosts.SERIES_POSTS, DSL.name("series_posts_series_id_post_id_unique"), new TableField[] { SeriesPosts.SERIES_POSTS.SERIES_ID, SeriesPosts.SERIES_POSTS.POST_ID }, true);
+    public static final UniqueKey<Record> UKJELXEOQ29CBN6SYETTMBCUJVR = Internal.createUniqueKey(SeriesPosts.SERIES_POSTS, DSL.name("ukjelxeoq29cbn6syettmbcujvr"), new TableField[] { SeriesPosts.SERIES_POSTS.SERIES_ID, SeriesPosts.SERIES_POSTS.POST_ID }, true);
+    public static final UniqueKey<Record> PK_E7DC17249A1148A1970748EDA99 = Internal.createUniqueKey(Tags.TAGS, DSL.name("PK_e7dc17249a1148a1970748eda99"), new TableField[] { Tags.TAGS.ID }, true);
+    public static final UniqueKey<Record> TAGS_NAME_UNIQUE = Internal.createUniqueKey(Tags.TAGS, DSL.name("tags_name_unique"), new TableField[] { Tags.TAGS.NAME }, true);
+    public static final UniqueKey<Record> TODOS_PKEY = Internal.createUniqueKey(Todos.TODOS, DSL.name("todos_pkey"), new TableField[] { Todos.TODOS.ID }, true);
+    public static final UniqueKey<Record> PK_A3FFB1C0C8416B9FC6F907B7433 = Internal.createUniqueKey(Users.USERS, DSL.name("PK_a3ffb1c0c8416b9fc6f907b7433"), new TableField[] { Users.USERS.ID }, true);
+    public static final UniqueKey<Record> USERS_EMAIL_UNIQUE = Internal.createUniqueKey(Users.USERS, DSL.name("users_email_unique"), new TableField[] { Users.USERS.EMAIL }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<AttachmentsRecord, BlobsRecord> ATTACHMENTS__ATTACHMENTS_BLOB_ID_BLOBS_ID_FK = Internal.createForeignKey(Attachments.ATTACHMENTS, DSL.name("attachments_blob_id_blobs_id_fk"), new TableField[] { Attachments.ATTACHMENTS.BLOB_ID }, Keys.PK_FE61649FA345F685EB31B949E4C, new TableField[] { Blobs.BLOBS.ID }, true);
-    public static final ForeignKey<CommentsRecord, PostsRecord> COMMENTS__COMMENTS_POST_ID_POSTS_ID_FK = Internal.createForeignKey(Comments.COMMENTS, DSL.name("comments_post_id_posts_id_fk"), new TableField[] { Comments.COMMENTS.POST_ID }, Keys.PK_2829AC61EFF60FCEC60D7274B9E, new TableField[] { Posts.POSTS.ID }, true);
-    public static final ForeignKey<CuratedItemsRecord, CuratedSourcesRecord> CURATED_ITEMS__CURATED_ITEMS_SOURCE_ID_CURATED_SOURCES_ID_FK = Internal.createForeignKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_source_id_curated_sources_id_fk"), new TableField[] { CuratedItems.CURATED_ITEMS.SOURCE_ID }, Keys.CURATED_SOURCES_PKEY, new TableField[] { CuratedSources.CURATED_SOURCES.ID }, true);
-    public static final ForeignKey<PostTagsRecord, PostsRecord> POST_TAGS__POST_TAGS_POST_ID_POSTS_ID_FK = Internal.createForeignKey(PostTags.POST_TAGS, DSL.name("post_tags_post_id_posts_id_fk"), new TableField[] { PostTags.POST_TAGS.POST_ID }, Keys.PK_2829AC61EFF60FCEC60D7274B9E, new TableField[] { Posts.POSTS.ID }, true);
-    public static final ForeignKey<PostTagsRecord, TagsRecord> POST_TAGS__POST_TAGS_TAG_ID_TAGS_ID_FK = Internal.createForeignKey(PostTags.POST_TAGS, DSL.name("post_tags_tag_id_tags_id_fk"), new TableField[] { PostTags.POST_TAGS.TAG_ID }, Keys.PK_E7DC17249A1148A1970748EDA99, new TableField[] { Tags.TAGS.ID }, true);
-    public static final ForeignKey<PostsRecord, UsersRecord> POSTS__POSTS_USER_ID_USERS_ID_FK = Internal.createForeignKey(Posts.POSTS, DSL.name("posts_user_id_users_id_fk"), new TableField[] { Posts.POSTS.USER_ID }, Keys.PK_A3FFB1C0C8416B9FC6F907B7433, new TableField[] { Users.USERS.ID }, true);
-    public static final ForeignKey<SeriesRecord, UsersRecord> SERIES__SERIES_USER_ID_USERS_ID_FK = Internal.createForeignKey(Series.SERIES, DSL.name("series_user_id_users_id_fk"), new TableField[] { Series.SERIES.USER_ID }, Keys.PK_A3FFB1C0C8416B9FC6F907B7433, new TableField[] { Users.USERS.ID }, true);
-    public static final ForeignKey<SeriesPostsRecord, PostsRecord> SERIES_POSTS__SERIES_POSTS_POST_ID_POSTS_ID_FK = Internal.createForeignKey(SeriesPosts.SERIES_POSTS, DSL.name("series_posts_post_id_posts_id_fk"), new TableField[] { SeriesPosts.SERIES_POSTS.POST_ID }, Keys.PK_2829AC61EFF60FCEC60D7274B9E, new TableField[] { Posts.POSTS.ID }, true);
-    public static final ForeignKey<SeriesPostsRecord, SeriesRecord> SERIES_POSTS__SERIES_POSTS_SERIES_ID_SERIES_ID_FK = Internal.createForeignKey(SeriesPosts.SERIES_POSTS, DSL.name("series_posts_series_id_series_id_fk"), new TableField[] { SeriesPosts.SERIES_POSTS.SERIES_ID }, Keys.PK_E725676647382EB54540D7128BA, new TableField[] { Series.SERIES.ID }, true);
-    public static final ForeignKey<TagsRecord, UsersRecord> TAGS__TAGS_USER_ID_USERS_ID_FK = Internal.createForeignKey(Tags.TAGS, DSL.name("tags_user_id_users_id_fk"), new TableField[] { Tags.TAGS.USER_ID }, Keys.PK_A3FFB1C0C8416B9FC6F907B7433, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<Record, Record> ATTACHMENTS__ATTACHMENTS_BLOB_ID_BLOBS_ID_FK = Internal.createForeignKey(Attachments.ATTACHMENTS, DSL.name("attachments_blob_id_blobs_id_fk"), new TableField[] { Attachments.ATTACHMENTS.BLOB_ID }, Keys.PK_FE61649FA345F685EB31B949E4C, new TableField[] { Blobs.BLOBS.ID }, true);
+    public static final ForeignKey<Record, Record> COMMENTS__COMMENTS_POST_ID_POSTS_ID_FK = Internal.createForeignKey(Comments.COMMENTS, DSL.name("comments_post_id_posts_id_fk"), new TableField[] { Comments.COMMENTS.POST_ID }, Keys.PK_2829AC61EFF60FCEC60D7274B9E, new TableField[] { Posts.POSTS.ID }, true);
+    public static final ForeignKey<Record, Record> CURATED_ITEMS__CURATED_ITEMS_SOURCE_ID_CURATED_SOURCES_ID_FK = Internal.createForeignKey(CuratedItems.CURATED_ITEMS, DSL.name("curated_items_source_id_curated_sources_id_fk"), new TableField[] { CuratedItems.CURATED_ITEMS.SOURCE_ID }, Keys.CURATED_SOURCES_PKEY, new TableField[] { CuratedSources.CURATED_SOURCES.ID }, true);
+    public static final ForeignKey<Record, Record> POST_TAGS__POST_TAGS_POST_ID_POSTS_ID_FK = Internal.createForeignKey(PostTags.POST_TAGS, DSL.name("post_tags_post_id_posts_id_fk"), new TableField[] { PostTags.POST_TAGS.POST_ID }, Keys.PK_2829AC61EFF60FCEC60D7274B9E, new TableField[] { Posts.POSTS.ID }, true);
+    public static final ForeignKey<Record, Record> POST_TAGS__POST_TAGS_TAG_ID_TAGS_ID_FK = Internal.createForeignKey(PostTags.POST_TAGS, DSL.name("post_tags_tag_id_tags_id_fk"), new TableField[] { PostTags.POST_TAGS.TAG_ID }, Keys.PK_E7DC17249A1148A1970748EDA99, new TableField[] { Tags.TAGS.ID }, true);
+    public static final ForeignKey<Record, Record> POSTS__POSTS_USER_ID_USERS_ID_FK = Internal.createForeignKey(Posts.POSTS, DSL.name("posts_user_id_users_id_fk"), new TableField[] { Posts.POSTS.USER_ID }, Keys.PK_A3FFB1C0C8416B9FC6F907B7433, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<Record, Record> SERIES__SERIES_USER_ID_USERS_ID_FK = Internal.createForeignKey(Series.SERIES, DSL.name("series_user_id_users_id_fk"), new TableField[] { Series.SERIES.USER_ID }, Keys.PK_A3FFB1C0C8416B9FC6F907B7433, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<Record, Record> SERIES_POSTS__SERIES_POSTS_POST_ID_POSTS_ID_FK = Internal.createForeignKey(SeriesPosts.SERIES_POSTS, DSL.name("series_posts_post_id_posts_id_fk"), new TableField[] { SeriesPosts.SERIES_POSTS.POST_ID }, Keys.PK_2829AC61EFF60FCEC60D7274B9E, new TableField[] { Posts.POSTS.ID }, true);
+    public static final ForeignKey<Record, Record> SERIES_POSTS__SERIES_POSTS_SERIES_ID_SERIES_ID_FK = Internal.createForeignKey(SeriesPosts.SERIES_POSTS, DSL.name("series_posts_series_id_series_id_fk"), new TableField[] { SeriesPosts.SERIES_POSTS.SERIES_ID }, Keys.PK_E725676647382EB54540D7128BA, new TableField[] { Series.SERIES.ID }, true);
+    public static final ForeignKey<Record, Record> TAGS__TAGS_USER_ID_USERS_ID_FK = Internal.createForeignKey(Tags.TAGS, DSL.name("tags_user_id_users_id_fk"), new TableField[] { Tags.TAGS.USER_ID }, Keys.PK_A3FFB1C0C8416B9FC6F907B7433, new TableField[] { Users.USERS.ID }, true);
 }
