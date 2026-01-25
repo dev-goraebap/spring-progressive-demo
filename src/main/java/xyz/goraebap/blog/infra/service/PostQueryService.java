@@ -5,10 +5,12 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.SortField;
 import org.jooq.Table;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.blog.infra.view_model.AdminPostViewModel;
 import xyz.goraebap.blog.infra.view_model.Pagination;
 import xyz.goraebap.blog.infra.view_model.PostViewModel;
+import xyz.goraebap.blog.shared.config.CacheConfig;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -40,6 +42,7 @@ public class PostQueryService {
      * @param sort 정렬 기준 (예: "publishedAt,DESC")
      * @return 페이지네이션된 게시물 목록
      */
+    @Cacheable(value = CacheConfig.POSTS, key = "'list:' + #page + ':' + #sort + ':post'", condition = "#page <= 5")
     public Pagination<PostViewModel> getPostsWithPagination(int page, String sort) {
         return getPostsWithPagination(page, sort, "post");
     }
@@ -55,6 +58,7 @@ public class PostQueryService {
      * @param postType 게시물 타입 ("post", "patch-note" 등)
      * @return 페이지네이션된 게시물 목록
      */
+    @Cacheable(value = CacheConfig.POSTS, key = "'list:' + #page + ':' + #sort + ':' + #postType", condition = "#page <= 5")
     public Pagination<PostViewModel> getPostsWithPagination(int page, String sort, String postType) {
         String[] sortParts = sort.split(",");
         String sortBy = sortParts[0];
@@ -124,6 +128,7 @@ public class PostQueryService {
      * @param slug 게시물 slug
      * @return 게시물 상세 (없으면 null)
      */
+    @Cacheable(value = CacheConfig.POST_DETAIL, key = "'detail:' + #slug + ':post'")
     public PostViewModel getPostBySlug(String slug) {
         return getPostBySlug(slug, "post");
     }
@@ -138,6 +143,7 @@ public class PostQueryService {
      * @param postType 게시물 타입
      * @return 게시물 상세 (없으면 null)
      */
+    @Cacheable(value = CacheConfig.POST_DETAIL, key = "'detail:' + #slug + ':' + #postType")
     public PostViewModel getPostBySlug(String slug, String postType) {
         var thumbnail = thumbnailSubquery("post");
 
@@ -181,6 +187,7 @@ public class PostQueryService {
      *
      * @return 최신 패치노트 (없으면 null)
      */
+    @Cacheable(value = CacheConfig.LATEST_PATCH_NOTE, key = "'latest'")
     public PostViewModel getLatestPatchNote() {
         var thumbnail = thumbnailSubquery("post");
 
@@ -223,6 +230,7 @@ public class PostQueryService {
      *
      * @return 1주일 내 발행된 글 존재 여부
      */
+    @Cacheable(value = CacheConfig.PUBLISHED_WITHIN_WEEK, key = "'check'")
     public boolean hasPublishedWithinWeek() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
 

@@ -1,6 +1,8 @@
 package xyz.goraebap.blog.app.admin.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import xyz.goraebap.blog.app.admin.domain.PostEntity;
 import xyz.goraebap.blog.app.admin.domain.PostRepository;
 import xyz.goraebap.blog.app.admin.dto.AdminPostFormRequest;
 import xyz.goraebap.blog.contract.post.ViewCounter;
+import xyz.goraebap.blog.shared.config.CacheConfig;
 import xyz.goraebap.blog.shared.exception.BadRequestException;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
 
@@ -21,6 +24,11 @@ public class PostService implements ViewCounter {
     private final PostRepository postRepository;
     private final AttachmentRepository attachmentRepository;
 
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.POSTS, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true),
+            @CacheEvict(value = CacheConfig.PUBLISHED_WITHIN_WEEK, allEntries = true)
+    })
     public PostEntity create(AdminPostFormRequest req, Long userId) {
         // slug 중복 검증
         if (req.getSlug() != null && !req.getSlug().isBlank()) {
@@ -40,6 +48,11 @@ public class PostService implements ViewCounter {
         return post;
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.POSTS, allEntries = true),
+            @CacheEvict(value = CacheConfig.POST_DETAIL, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true)
+    })
     public void update(Long postId, AdminPostFormRequest req) {
         var post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));
@@ -62,6 +75,12 @@ public class PostService implements ViewCounter {
         }
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.POSTS, allEntries = true),
+            @CacheEvict(value = CacheConfig.POST_DETAIL, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true),
+            @CacheEvict(value = CacheConfig.PUBLISHED_WITHIN_WEEK, allEntries = true)
+    })
     public void delete(Long postId) {
         var post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다."));

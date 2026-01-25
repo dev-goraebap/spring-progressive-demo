@@ -6,8 +6,10 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.blog.infra.view_model.*;
+import xyz.goraebap.blog.shared.config.CacheConfig;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
 
 import java.util.List;
