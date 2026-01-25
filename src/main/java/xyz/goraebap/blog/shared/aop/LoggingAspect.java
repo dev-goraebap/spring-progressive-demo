@@ -15,8 +15,9 @@ public class LoggingAspect {
 
     /**
      * Controller 메서드 실행 로깅
+     * - within()으로 클래스 레벨 필터링 먼저 수행 (AOP 성능 최적화)
      */
-    @Around("execution(* xyz.goraebap.blog.app..*Controller.*(..))")
+    @Around("within(xyz.goraebap.blog.app.*.web..*) && execution(* *Controller.*(..))")
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = joinPoint.getSignature().getName();
@@ -46,8 +47,9 @@ public class LoggingAspect {
 
     /**
      * Service 메서드 실행 로깅
+     * - within()으로 클래스 레벨 필터링 먼저 수행 (AOP 성능 최적화)
      */
-    @Around("execution(* xyz.goraebap.blog.app..*Service.*(..))")
+    @Around("within(xyz.goraebap.blog.app.*.service..*) && execution(* *Service.*(..))")
     public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = joinPoint.getSignature().getName();
