@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.SortField;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import xyz.goraebap.blog.infra.view_model.AdminCuratedItemViewModel;
 import xyz.goraebap.blog.infra.view_model.AdminCuratedSourceViewModel;
 import xyz.goraebap.blog.infra.view_model.CurationViewModel;
 import xyz.goraebap.blog.infra.view_model.Pagination;
+import xyz.goraebap.blog.shared.config.CacheConfig;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
 
 import java.util.HashMap;
@@ -41,6 +43,7 @@ public class CurationQueryService {
      * @param limit 조회할 개수
      * @return 최신 항목 목록 (발행일시 내림차순)
      */
+    @Cacheable(value = CacheConfig.LATEST_CURATIONS, key = "#limit")
     public List<CurationViewModel> getLatestItems(int limit) {
         return dsl.select(
                         CURATED_ITEMS.ID,
@@ -62,6 +65,7 @@ public class CurationQueryService {
      * @param sort 정렬 기준 (예: "publishedAt,DESC")
      * @return 페이지네이션된 항목 목록
      */
+    @Cacheable(value = CacheConfig.CURATIONS, key = "'list:' + #page + ':' + #sort", condition = "#page <= 5")
     public Pagination<CurationViewModel> getItemsWithPagination(int page, String sort) {
         String[] sortParts = sort.split(",");
         String sortBy = sortParts[0];

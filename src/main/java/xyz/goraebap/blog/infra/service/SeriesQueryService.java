@@ -37,6 +37,7 @@ public class SeriesQueryService {
      *
      * @return 발행된 시리즈 목록
      */
+    @Cacheable(value = CacheConfig.SERIES, key = "'all'")
     public List<SeriesViewModel> getAllSeries() {
         // 시리즈별 발행된 포스트 수 서브쿼리
         var postCountSubquery = select(SERIES_POSTS.SERIES_ID, count().as("cnt"))
@@ -86,6 +87,7 @@ public class SeriesQueryService {
      * @param slug 시리즈 slug
      * @return 시리즈 상세 정보 (없으면 null)
      */
+    @Cacheable(value = CacheConfig.SERIES_DETAIL, key = "#slug")
     public SeriesDetailViewModel getSeriesWithPosts(String slug) {
         var seriesThumbnail = thumbnailSubquery("series");
 
@@ -155,6 +157,7 @@ public class SeriesQueryService {
      * @param postId 포스트 ID
      * @return 시리즈 네비게이션 정보 (시리즈에 속하지 않으면 null)
      */
+    @Cacheable(value = CacheConfig.SERIES_NAV, key = "#postId")
     public PostSeriesNavViewModel getSeriesNavByPostId(Long postId) {
         // 현재 포스트가 속한 시리즈 정보 조회
         var seriesBase = dsl.select(

@@ -1,9 +1,12 @@
 package xyz.goraebap.blog.app.admin.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.blog.app.admin.domain.*;
+import xyz.goraebap.blog.shared.config.CacheConfig;
 import xyz.goraebap.blog.shared.exception.BadRequestException;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
 
@@ -18,6 +21,11 @@ public class SeriesPostService {
     private final PostRepository postRepository;
     private final SeriesPostRepository seriesPostRepository;
 
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.SERIES, allEntries = true),
+            @CacheEvict(value = CacheConfig.SERIES_DETAIL, allEntries = true),
+            @CacheEvict(value = CacheConfig.SERIES_NAV, allEntries = true)
+    })
     public void addPost(Long seriesId, Long postId) {
         // 시리즈 존재 확인
         if (!seriesRepository.existsById(seriesId)) {
@@ -38,10 +46,19 @@ public class SeriesPostService {
         seriesPostRepository.save(seriesPost);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.SERIES, allEntries = true),
+            @CacheEvict(value = CacheConfig.SERIES_DETAIL, allEntries = true),
+            @CacheEvict(value = CacheConfig.SERIES_NAV, allEntries = true)
+    })
     public void removePost(Long seriesId, Long postId) {
         seriesPostRepository.deleteBySeriesIdAndPostId(seriesId, postId);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.SERIES_DETAIL, allEntries = true),
+            @CacheEvict(value = CacheConfig.SERIES_NAV, allEntries = true)
+    })
     public void updateOrders(List<OrderItem> items) {
         if (items == null || items.isEmpty()) return;
 

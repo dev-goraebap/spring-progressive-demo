@@ -6,10 +6,13 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.blog.app.admin.domain.*;
 import xyz.goraebap.blog.app.admin.dto.AdminCuratedSourceFormRequest;
+import xyz.goraebap.blog.shared.config.CacheConfig;
 import xyz.goraebap.blog.shared.exception.BadRequestException;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
 import xyz.goraebap.blog.shared.gemini.GeminiService;
@@ -75,6 +78,10 @@ public class CuratedSourceService {
     /**
      * 특정 소스에서 RSS 피드 가져오기
      */
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CURATIONS, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_CURATIONS, allEntries = true)
+    })
     public int fetchFromSource(Long sourceId) {
         var source = sourceRepository.findById(sourceId)
                 .orElseThrow(() -> new NotFoundException("소스를 찾을 수 없습니다."));
@@ -85,6 +92,10 @@ public class CuratedSourceService {
     /**
      * 모든 활성 소스에서 RSS 피드 가져오기
      */
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CURATIONS, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_CURATIONS, allEntries = true)
+    })
     public FetchResult fetchAllActiveSources() {
         var activeSources = sourceRepository.findByIsActiveYn("Y");
         var results = new ArrayList<SourceFetchResult>();
@@ -177,6 +188,10 @@ public class CuratedSourceService {
     /**
      * 단일 항목 삭제
      */
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CURATIONS, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_CURATIONS, allEntries = true)
+    })
     public void deleteItem(Long itemId) {
         itemRepository.deleteById(itemId);
     }
@@ -184,6 +199,10 @@ public class CuratedSourceService {
     /**
      * 오래된 항목 삭제
      */
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CURATIONS, allEntries = true),
+            @CacheEvict(value = CacheConfig.LATEST_CURATIONS, allEntries = true)
+    })
     public int cleanupOldItems(int days) {
         LocalDateTime threshold = LocalDateTime.now().minusDays(days);
         int deleted = itemRepository.deleteOldItems(threshold);
