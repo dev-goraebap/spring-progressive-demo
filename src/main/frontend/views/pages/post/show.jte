@@ -9,6 +9,9 @@
     description = post.getSummary(),
     ogImage = post.getThumbnailUrl(),
     content = @`
+    <%-- JSON-LD 구조화 데이터 --%>
+    @template.shared.components.jsonLd(post = post)
+
     @template.shared.components.appHeader(backAction = true, title = "돌아가기")
 
     <%-- 시리즈 네비게이션 (상단) --%>
