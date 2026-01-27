@@ -30,6 +30,9 @@
     <meta name="twitter:description" content="${description}">
     <meta name="twitter:image" content="${finalOgImage}">
 
+    <%-- Canonical URL --%>
+    <link rel="canonical" href="${currentUrl()}">
+
     <title>${siteName} | ${title}</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
 
