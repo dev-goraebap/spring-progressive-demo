@@ -22,7 +22,10 @@ public class SeriesService {
     private final SeriesRepository seriesRepository;
     private final AttachmentRepository attachmentRepository;
 
-    @CacheEvict(value = CacheConfig.SERIES, allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.SERIES, allEntries = true),
+            @CacheEvict(value = CacheConfig.SITEMAP, allEntries = true)
+    })
     public SeriesEntity create(AdminSeriesFormRequest req, Long userId) {
         // 이름 중복 검증
         if (seriesRepository.findByName(req.getName()).isPresent()) {
@@ -49,7 +52,8 @@ public class SeriesService {
 
     @Caching(evict = {
             @CacheEvict(value = CacheConfig.SERIES, allEntries = true),
-            @CacheEvict(value = CacheConfig.SERIES_DETAIL, allEntries = true)
+            @CacheEvict(value = CacheConfig.SERIES_DETAIL, allEntries = true),
+            @CacheEvict(value = CacheConfig.SITEMAP, allEntries = true)
     })
     public void update(Long seriesId, AdminSeriesFormRequest req) {
         var series = seriesRepository.findById(seriesId)
@@ -81,7 +85,8 @@ public class SeriesService {
     @Caching(evict = {
             @CacheEvict(value = CacheConfig.SERIES, allEntries = true),
             @CacheEvict(value = CacheConfig.SERIES_DETAIL, allEntries = true),
-            @CacheEvict(value = CacheConfig.SERIES_NAV, allEntries = true)
+            @CacheEvict(value = CacheConfig.SERIES_NAV, allEntries = true),
+            @CacheEvict(value = CacheConfig.SITEMAP, allEntries = true)
     })
     public void delete(Long seriesId) {
         var series = seriesRepository.findById(seriesId)

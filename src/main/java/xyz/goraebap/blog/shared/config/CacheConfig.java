@@ -53,6 +53,9 @@ public class CacheConfig {
     /** 댓글 목록 캐시 */
     public static final String COMMENTS = "comments";
 
+    /** Sitemap 캐시 */
+    public static final String SITEMAP = "sitemap";
+
     /**
      * 캐시 매니저 빈 등록
      * - 각 캐시별 개별 TTL 및 최대 크기 설정
@@ -79,7 +82,10 @@ public class CacheConfig {
                 buildCache(LATEST_CURATIONS, 120, 10),
 
                 // Comments - 12시간 (720분)
-                buildCache(COMMENTS, 720, 200)
+                buildCache(COMMENTS, 720, 200),
+
+                // Sitemap - 12시간 (720분)
+                buildCache(SITEMAP, 720, 1)
         ));
 
         return cacheManager;

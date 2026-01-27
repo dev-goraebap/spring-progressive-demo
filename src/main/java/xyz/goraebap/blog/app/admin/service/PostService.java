@@ -27,7 +27,8 @@ public class PostService implements ViewCounter {
     @Caching(evict = {
             @CacheEvict(value = CacheConfig.POSTS, allEntries = true),
             @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true),
-            @CacheEvict(value = CacheConfig.PUBLISHED_WITHIN_WEEK, allEntries = true)
+            @CacheEvict(value = CacheConfig.PUBLISHED_WITHIN_WEEK, allEntries = true),
+            @CacheEvict(value = CacheConfig.SITEMAP, allEntries = true)
     })
     public PostEntity create(AdminPostFormRequest req, Long userId) {
         // slug 중복 검증
@@ -51,7 +52,8 @@ public class PostService implements ViewCounter {
     @Caching(evict = {
             @CacheEvict(value = CacheConfig.POSTS, allEntries = true),
             @CacheEvict(value = CacheConfig.POST_DETAIL, allEntries = true),
-            @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true)
+            @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true),
+            @CacheEvict(value = CacheConfig.SITEMAP, allEntries = true)
     })
     public void update(Long postId, AdminPostFormRequest req) {
         var post = postRepository.findById(postId)
@@ -79,7 +81,8 @@ public class PostService implements ViewCounter {
             @CacheEvict(value = CacheConfig.POSTS, allEntries = true),
             @CacheEvict(value = CacheConfig.POST_DETAIL, allEntries = true),
             @CacheEvict(value = CacheConfig.LATEST_PATCH_NOTE, allEntries = true),
-            @CacheEvict(value = CacheConfig.PUBLISHED_WITHIN_WEEK, allEntries = true)
+            @CacheEvict(value = CacheConfig.PUBLISHED_WITHIN_WEEK, allEntries = true),
+            @CacheEvict(value = CacheConfig.SITEMAP, allEntries = true)
     })
     public void delete(Long postId) {
         var post = postRepository.findById(postId)
