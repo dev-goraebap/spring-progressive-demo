@@ -50,4 +50,5 @@ test.sql
 .config
 
 .claude
-.docs.infra
+.docs
+.infra
