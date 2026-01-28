@@ -6,11 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.blog.app.admin.domain.BlockedIpEntity;
 import xyz.goraebap.blog.app.admin.domain.BlockedIpRepository;
 import xyz.goraebap.blog.app.admin.dto.BlockedIpFormRequest;
+import xyz.goraebap.blog.contract.waf.IpBlockChecker;
 import xyz.goraebap.blog.shared.exception.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
-public class BlockedIpService {
+public class BlockedIpService implements IpBlockChecker {
 
     private final BlockedIpRepository blockedIpRepository;
 
