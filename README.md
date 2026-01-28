@@ -35,35 +35,49 @@ FE/BE를 분리해서 개발하는 방식에 익숙하다면 적응하는 데 �
 
 ### 레이어 구조
 
-`xyz.goraebap.blog` 패키지 하위에 4개의 레이어가 있습니다. 상위 레이어에서 하위 레이어로만 참조할 수 있습니다.
+`xyz.goraebap.blog` 패키지 하위에 3개의 레이어가 있습니다. 상위 레이어에서 하위 레이어로만 참조할 수 있습니다.
 
 ```
-app → contract → infra → shared
+app → infra → shared
 ```
 
 | 레이어 | 역할 |
 |--------|------|
 | **app** | 도메인 영역. JPA Entity, Repository, Service, Controller |
-| **contract** | 슬라이스 간 통신용 인터페이스 |
 | **infra** | 화면 조회 전용. JOOQ QueryService, ViewModel |
 | **shared** | 기술 영역. 설정, 보안, 서드파티 통합 |
+
+### 인터페이스 레이어 (contract)
+
+`contract`는 레이어 간/슬라이스 간 의존성 역전을 위한 인터페이스 패키지입니다. 모든 레이어에서 참조할 수 있습니다.
+
+```
+app ──→ contract ←── shared
+         ↑
+       infra
+```
+
+| 용도 | 예시 |
+|------|------|
+| 슬라이스 간 통신 | `app.client` → `CommentCreator` ← `app.admin` |
+| 레이어 간 의존성 역전 | `shared.WafFilter` → `IpBlockChecker` ← `app.admin` |
 
 ### 용어
 
 FSD의 용어를 차용했습니다.
 
-- **레이어**: `xyz.goraebap.blog` 하위의 최상위 패키지 (app, contract, infra, shared)
+- **레이어**: `xyz.goraebap.blog` 하위의 최상위 패키지 (app, infra, shared + contract)
 - **슬라이스**: 레이어 내부의 직접 하위 패키지 (app.admin, app.client 등)
 - **세그먼트**: 슬라이스 내부의 파일 또는 패키지 (app.admin.domain, app.admin.service 등)
 
 ### 참조 규칙
 
-**레이어 간**: 상위 → 하위만 가능
+**레이어 간**: 상위 → 하위만 가능 (contract는 모든 레이어에서 참조 가능)
 
 ```
-app → contract ✓    |    infra → app ✗
-app → infra ✓       |    contract → app ✗
+app → infra ✓       |    infra → app ✗
 app → shared ✓      |    shared → app ✗
+app → contract ✓    |    shared → contract ✓
 ```
 
 **슬라이스 간**: 같은 레이어 내 슬라이스끼리는 직접 참조 금지 (shared 제외)
@@ -72,7 +86,7 @@ app → shared ✓      |    shared → app ✗
 app.admin → app.client ✗
 ```
 
-다른 슬라이스의 기능이 필요하면 `contract` 레이어의 인터페이스를 통해 통신합니다.
+다른 슬라이스의 기능이 필요하거나 하위 레이어에서 상위 레이어 기능이 필요하면 `contract`의 인터페이스를 통해 의존성을 역전합니다.
 
 ### 패키지 구조
 

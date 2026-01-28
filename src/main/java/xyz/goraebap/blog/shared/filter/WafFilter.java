@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import xyz.goraebap.blog.app.admin.service.BlockedIpService;
+import xyz.goraebap.blog.contract.waf.IpBlockChecker;
 import xyz.goraebap.blog.shared.logging.ClientIpUtils;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class WafFilter implements Filter {
 
-    private final BlockedIpService blockedIpService;
+    private final IpBlockChecker ipBlockChecker;
 
     private static final int AUTO_BLOCK_HOURS = 24;
 
@@ -47,10 +47,20 @@ public class WafFilter implements Filter {
             "/api/v1/users", "/rest/api", "/graphql"
     );
 
-    // 악성 User-Agent 패턴
+    // 악성 User-Agent 패턴 (보안 스캐너, 취약점 탐지 도구)
     private static final Pattern MALICIOUS_USER_AGENT_PATTERN = Pattern.compile(
-            ".*(sqlmap|nikto|nmap|masscan|zgrab|shodan|censys|scanner|crawler|spider|bot).*",
+            ".*(sqlmap|nikto|nmap|masscan|zgrab|shodan|censys|acunetix|nessus|openvas|w3af|burpsuite|dirbuster|gobuster|wpscan|joomscan).*",
             Pattern.CASE_INSENSITIVE
+    );
+
+    // 허용된 검색 엔진 봇 (User-Agent에 포함되면 허용)
+    private static final Set<String> ALLOWED_BOTS = Set.of(
+            "googlebot", "bingbot", "yandexbot", "duckduckbot",
+            "slurp",      // Yahoo
+            "baiduspider", // Baidu
+            "facebookexternalhit", "twitterbot", "linkedinbot",  // SNS 미리보기
+            "applebot",   // Apple
+            "kakaotalk-scrap", "kakaostory-og-reader"  // 카카오
     );
 
     // WAF 검사에서 제외할 경로 prefix
@@ -81,7 +91,7 @@ public class WafFilter implements Filter {
         }
 
         // 1. IP 차단 확인
-        if (blockedIpService.isBlocked(ip)) {
+        if (ipBlockChecker.isBlocked(ip)) {
             log.warn("[WAF] Blocked IP access attempt: {} -> {}", ip, uri);
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
             return;
@@ -92,7 +102,7 @@ public class WafFilter implements Filter {
         if (maliciousPath != null) {
             String reason = "악성 경로 접근: " + maliciousPath;
             log.warn("[WAF] Malicious path detected: {} from {} - auto blocking", uri, ip);
-            blockedIpService.autoBlock(ip, reason, AUTO_BLOCK_HOURS);
+            ipBlockChecker.autoBlock(ip, reason, AUTO_BLOCK_HOURS);
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
             return;
         }
@@ -102,7 +112,7 @@ public class WafFilter implements Filter {
         if (isMaliciousUserAgent(userAgent)) {
             String reason = "악성 User-Agent: " + (userAgent != null ? userAgent.substring(0, Math.min(100, userAgent.length())) : "empty");
             log.warn("[WAF] Malicious User-Agent detected: {} from {} - auto blocking", userAgent, ip);
-            blockedIpService.autoBlock(ip, reason, AUTO_BLOCK_HOURS);
+            ipBlockChecker.autoBlock(ip, reason, AUTO_BLOCK_HOURS);
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
             return;
         }
@@ -138,11 +148,21 @@ public class WafFilter implements Filter {
     }
 
     private boolean isMaliciousUserAgent(String userAgent) {
-        // 빈 User-Agent는 의심
+        // 빈 User-Agent는 허용 (일부 정상 도구도 빈 UA 사용)
         if (userAgent == null || userAgent.isEmpty()) {
-            return true;
+            return false;
         }
 
+        String lowerUserAgent = userAgent.toLowerCase();
+
+        // 허용된 봇인지 먼저 확인
+        for (String allowedBot : ALLOWED_BOTS) {
+            if (lowerUserAgent.contains(allowedBot)) {
+                return false;  // 검색 엔진 봇은 허용
+            }
+        }
+
+        // 악성 패턴 확인
         return MALICIOUS_USER_AGENT_PATTERN.matcher(userAgent).matches();
     }
 }
