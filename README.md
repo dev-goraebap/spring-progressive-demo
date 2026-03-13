@@ -2,7 +2,7 @@
 
 [하이퍼미디어 기반 애플리케이션 (Hypermedia-Driven Application)](https://htmx.org/essays/hypermedia-driven-applications/) 방식으로 개발된 개인 블로그입니다.
 
-> 이전 NestJS 버전: [dev-goraebap-blog-nestjs](https://github.com/dev-goraebap/dev-goraebap-blog-nestjs)
+> 이전 NestJS 버전: [nestjs-with-hotwired-blog](https://github.com/dev-goraebap/nestjs-with-hotwired-blog)
 
 ## 기술 스택
 
